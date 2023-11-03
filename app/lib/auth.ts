@@ -1,8 +1,8 @@
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./connect";
-import { NextAuthOptions, getServerSession } from "next-auth";
-import { trace } from "console";
+import { NextAuthOptions, User, getServerSession } from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
   ],
   secret: process.env.SECRET,
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
@@ -28,10 +28,9 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { user?: User | undefined; token: JWT | any }) {
       const users = await prisma.user.findMany({});
-      console.log("length is", users.length);
-      if (users.length === 1) {
+      if (users.length === 1 && token.email) {
         await prisma.user.update({
           where: {
             email: token.email,
@@ -41,23 +40,25 @@ export const authOptions: NextAuthOptions = {
           },
         });
       }
-
-      const dbUser = await prisma.user.findFirst({
-        where: {
-          email: token.email,
-        },
-      });
-      if (!dbUser) {
-        token.id = user!.id;
-        return token;
+      if (token.email) {
+        const dbUser = await prisma.user.findFirst({
+          where: {
+            email: token.email,
+          },
+        });
+        if (!dbUser) {
+          token.id = user!.id;
+          return token;
+        }
+        return {
+          id: dbUser.id,
+          name: dbUser.name,
+          email: dbUser.email,
+          image: dbUser.image,
+          role: dbUser.role,
+        };
       }
-      return {
-        id: dbUser.id,
-        name: dbUser.name,
-        email: dbUser.email,
-        image: dbUser.image,
-        role: dbUser.role,
-      };
+      return token;
     },
   },
 };

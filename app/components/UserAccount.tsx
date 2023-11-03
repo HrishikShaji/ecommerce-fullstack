@@ -7,16 +7,16 @@ import Link from "next/link";
 export const UserAccount = () => {
   const { status, data } = useSession();
   const [isOpen, setIsOpen] = useState(false);
-  const dropDownRef = useRef(null);
-  const dropDownButtonRef = useRef(null);
+  const dropDownRef = useRef<HTMLDivElement | null>(null);
+  const dropDownButtonRef = useRef<HTMLButtonElement | null>(null);
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (
         isOpen &&
         dropDownRef.current &&
-        !dropDownRef.current.contains(e.target) &&
+        !dropDownRef.current.contains(e.target as Node) &&
         dropDownButtonRef.current &&
-        !dropDownButtonRef.current.contains(e.target)
+        !dropDownButtonRef.current.contains(e.target as Node)
       ) {
         setIsOpen(false);
       }
