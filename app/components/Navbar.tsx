@@ -4,7 +4,6 @@ import { UserAccount } from "./UserAccount";
 
 export const Navbar = async () => {
   const session = await getServerSession(authOptions);
-  console.log("session navbar", session);
   if (!session) return null;
   return (
     <div className="p-10 bg-neutral-900 text-white flex justify-between">
