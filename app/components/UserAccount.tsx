@@ -1,6 +1,6 @@
 "use client";
 import { FaUserCircle } from "react-icons/fa";
-import { signIn, useSession, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
@@ -31,22 +31,13 @@ export const UserAccount = () => {
   return (
     <div className="relative ">
       <div className="">
-        {status === "unauthenticated" ? (
-          <button
-            className="px-3 py-2 border-2 border-white"
-            onClick={() => signIn("google")}
-          >
-            Login
-          </button>
-        ) : (
-          <button
-            ref={dropDownButtonRef}
-            className=""
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <FaUserCircle size={25} />
-          </button>
-        )}
+        <button
+          ref={dropDownButtonRef}
+          className=""
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <FaUserCircle size={25} />
+        </button>
       </div>
 
       {isOpen && (
