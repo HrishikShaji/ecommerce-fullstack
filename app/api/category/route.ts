@@ -1,10 +1,11 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
+import { revalidateTag } from "next/cache";
 
 export async function POST(request: Request, response: Response) {
   try {
-    const { name } = await request.json();
+    const { name, parentId } = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
@@ -13,6 +14,16 @@ export async function POST(request: Request, response: Response) {
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
+    }
+    if (parentId) {
+      const category = await prisma.category.create({
+        data: {
+          name: name,
+          parentId: parentId,
+        },
+      });
+      console.log(category);
+      return new Response(JSON.stringify(category), { status: 200 });
     }
 
     const category = await prisma.category.create({
@@ -59,6 +70,8 @@ export async function DELETE(request: Request, response: Response) {
         id: id,
       },
     });
+
+    revalidateTag("categories");
 
     return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error) {

@@ -8,6 +8,7 @@ async function getData(url: string) {
     cache: "no-store",
     method: "GET",
     headers: { "Content-Type": "application/json" },
+    next: { tags: ["categories"] },
   });
 
   if (!response.ok) {
@@ -24,7 +25,7 @@ const Page = async () => {
       <CategorySection />
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Categories</h1>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-full">
           {categories.map((category: CategoryType) => (
             <Category key={category.id} category={category} />
           ))}
