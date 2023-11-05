@@ -12,6 +12,5 @@ export async function getData() {
     throw new Error("Error fetching data");
   }
 
-  const data = await response.json();
-  return data;
+  return response.json();
 }

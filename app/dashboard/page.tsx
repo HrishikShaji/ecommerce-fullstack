@@ -1,11 +1,10 @@
-import { CategorySection } from "../components/CategorySection";
-import { Sample } from "../components/Sample";
+import { getData } from "../lib/utils";
 
-const Page = () => {
+export default async function Page() {
+  const data = await getData();
   return (
     <div className="p-10 text-white flex flex-col gap-10">
-      <CategorySection />
-      <Sample />
+      <h1>{data}</h1>
       {/*  
 
       <div className="flex flex-col gap-2">
@@ -20,5 +19,4 @@ const Page = () => {
 */}
     </div>
   );
-};
-export default Page;
+}
