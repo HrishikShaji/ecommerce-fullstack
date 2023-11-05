@@ -26,7 +26,7 @@ const Page = async () => {
         <h1 className="text-xl font-semibold">Categories</h1>
 
         <div className="flex flex-col gap-2 w-full">
-          {categories.map((category: CategoryChild) => (
+          {categories?.map((category: CategoryChild) => (
             <Category key={category.id} category={category} />
           ))}
         </div>
