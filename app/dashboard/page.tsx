@@ -3,8 +3,8 @@ import { baseUrl } from "../lib/connect";
 import { Category } from "../components/Category";
 import { CategoryChild } from "@/types/types";
 
-async function getData(url: string) {
-  const response = await fetch(url, {
+async function getData() {
+  const response = await fetch(`${baseUrl}api/sample`, {
     cache: "no-store",
     method: "GET",
     headers: { "Content-Type": "application/json" },
@@ -18,7 +18,7 @@ async function getData(url: string) {
 
 export default async function Page() {
   console.log(baseUrl);
-  const categories = await getData(`${baseUrl}api/sample`);
+  const categories = await getData();
   if (!categories) return <div>NOthing here</div>;
   return (
     <div className="p-10 text-white flex flex-col gap-10">

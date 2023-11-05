@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export default async function middleware(request: NextRequest) {
   const res = NextResponse.next();
   const { pathname, searchParams } = request.nextUrl;
-  const requireAuth = ["/"];
   const token = await getToken({
     req: request,
     secret: process.env.SECRET,
