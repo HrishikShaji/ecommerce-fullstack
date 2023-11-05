@@ -69,6 +69,9 @@ export async function GET(request: Request, response: Response) {
   try {
     const user = (await getServerSession(authOptions)) as Session;
 
+    if (user.user.role !== "ADMIN") {
+      return new Response(JSON.stringify("unauthorized"), { status: 401 });
+    }
     const categories = await prisma.category.findMany({});
     if (!categories) {
       return new Response(JSON.stringify("No data"), { status: 400 });
