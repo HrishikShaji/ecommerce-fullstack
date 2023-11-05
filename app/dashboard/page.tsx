@@ -1,13 +1,11 @@
 import { CategorySection } from "../components/CategorySection";
-import { getData } from "../lib/utils";
+import { Sample } from "../components/Sample";
 
-const Page = async () => {
-  const categories = await getData();
-  console.log(categories);
+const Page = () => {
   return (
     <div className="p-10 text-white flex flex-col gap-10">
       <CategorySection />
-
+      <Sample />
       {/*  
 
       <div className="flex flex-col gap-2">
