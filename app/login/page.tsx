@@ -11,7 +11,7 @@ const Page = () => {
     if (status === "authenticated") {
       router.push("/");
     }
-  }, [status]);
+  }, [status, router]);
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <button
