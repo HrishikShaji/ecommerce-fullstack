@@ -1,7 +1,7 @@
 import { CategorySection } from "../components/CategorySection";
 import { getData } from "../lib/utils";
 
-export default async function Page() {
+const Page = async () => {
   const categories = await getData();
   console.log(categories);
   return (
@@ -22,4 +22,5 @@ export default async function Page() {
 */}
     </div>
   );
-}
+};
+export default Page;
