@@ -5,7 +5,7 @@ import { revalidateTag } from "next/cache";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
 
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
   try {
     const { name, parentId } = await request.json();
 
@@ -65,7 +65,7 @@ const getCategories = (
   return categoryList;
 };
 
-export async function GET(request: Request, response: Response) {
+export async function GET(request: Request) {
   try {
     const user = (await getServerSession(authOptions)) as Session;
 
@@ -85,7 +85,7 @@ export async function GET(request: Request, response: Response) {
   }
 }
 
-export async function DELETE(request: Request, response: Response) {
+export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
