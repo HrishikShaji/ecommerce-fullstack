@@ -8,7 +8,6 @@ async function getData(url: string) {
     cache: "no-store",
     method: "GET",
     headers: { "Content-Type": "application/json" },
-    next: { tags: ["categories"] },
   });
 
   if (!response.ok) {
@@ -18,10 +17,13 @@ async function getData(url: string) {
 }
 
 const Page = async () => {
-  const categories = await getData(`${baseUrl}api/category`);
+  const categories = await getData(`${baseUrl}api/sample`);
   return (
     <div className="p-10 text-white flex flex-col gap-10">
       <CategorySection />
+      {categories}
+      {/*
+			
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Categories</h1>
 
@@ -31,6 +33,7 @@ const Page = async () => {
           ))}
         </div>
       </div>
+			*/}
     </div>
   );
 };
