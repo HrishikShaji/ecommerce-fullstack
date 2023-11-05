@@ -19,6 +19,7 @@ async function getData(url: string) {
 const Page = async () => {
   console.log(baseUrl);
   const categories = await getData(`${baseUrl}api/sample`);
+  if (!categories) return <div>NOthing here</div>;
   return (
     <div className="p-10 text-white flex flex-col gap-10">
       <CategorySection />
