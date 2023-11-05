@@ -3,7 +3,6 @@ import { baseUrl } from "./connect";
 export async function getData() {
   console.log(baseUrl);
   const response = await fetch(`${baseUrl}api/sample`, {
-    cache: "no-store",
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
