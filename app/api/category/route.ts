@@ -67,17 +67,11 @@ const getCategories = (
 
 export async function GET(request: Request) {
   try {
-    const user = (await getServerSession(authOptions)) as Session;
-
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
-    }
     const categories = await prisma.category.findMany({});
     if (!categories) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
     const allCategories = getCategories(categories);
-
     return new Response(JSON.stringify(allCategories), { status: 200 });
   } catch (error) {
     console.log(error);
