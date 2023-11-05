@@ -16,7 +16,7 @@ async function getData(url: string) {
   return response.json();
 }
 
-const Page = async () => {
+export default async function Page() {
   console.log(baseUrl);
   const categories = await getData(`${baseUrl}api/sample`);
   if (!categories) return <div>NOthing here</div>;
@@ -38,6 +38,4 @@ const Page = async () => {
 */}
     </div>
   );
-};
-
-export default Page;
+}
