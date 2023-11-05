@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
+export const baseUrl = process.env.NEXTAUTH_URL;
+
 declare global {
   var prisma: PrismaClient | undefined;
 }
