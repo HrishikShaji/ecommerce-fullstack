@@ -70,11 +70,12 @@ export async function GET(request: Request, response: Response) {
     const user = (await getServerSession(authOptions)) as Session;
 
     const categories = await prisma.category.findMany({});
-    if (categories) {
-      const allCategories = getCategories(categories);
-
-      return new Response(JSON.stringify(allCategories), { status: 200 });
+    if (!categories) {
+      return new Response(JSON.stringify("No data"), { status: 400 });
     }
+    const allCategories = getCategories(categories);
+
+    return new Response(JSON.stringify(allCategories), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });

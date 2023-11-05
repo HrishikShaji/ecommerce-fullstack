@@ -14,7 +14,6 @@ async function getData(url: string) {
   if (!response.ok) {
     throw new Error("Error fetching data");
   }
-
   return response.json();
 }
 
