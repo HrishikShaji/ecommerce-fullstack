@@ -17,7 +17,8 @@ async function getData(url: string) {
 }
 
 const Page = async () => {
-  const categories = await getData(`${baseUrl}api/sample`);
+  console.log(baseUrl);
+  const categories = await getData(`${baseUrl}/api/sample`);
   return (
     <div className="p-10 text-white flex flex-col gap-10">
       <CategorySection />
