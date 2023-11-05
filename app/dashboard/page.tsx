@@ -1,29 +1,13 @@
 import { CategorySection } from "../components/CategorySection";
-import { baseUrl } from "../lib/connect";
-import { Category } from "../components/Category";
-import { CategoryChild } from "@/types/types";
-
-async function getData() {
-  const response = await fetch(`${baseUrl}api/sample`, {
-    cache: "no-store",
-    method: "GET",
-    headers: { "Content-Type": "application/json" },
-  });
-
-  if (!response.ok) {
-    throw new Error("Error fetching data");
-  }
-  return response.json();
-}
+import { getData } from "../lib/utils";
 
 export default async function Page() {
-  console.log(baseUrl);
   const categories = await getData();
-  if (!categories) return <div>NOthing here</div>;
+  console.log(categories);
   return (
     <div className="p-10 text-white flex flex-col gap-10">
       <CategorySection />
-      {categories}
+
       {/*  
 
       <div className="flex flex-col gap-2">
