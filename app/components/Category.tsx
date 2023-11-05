@@ -1,8 +1,10 @@
 "use client";
 import { MdDelete } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
+import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import { FormEvent, useState } from "react";
 import { CategoryChild } from "@/types/types";
+import { BsCircleFill } from "react-icons/bs";
 
 interface CategoryProps {
   category: CategoryChild;
@@ -17,7 +19,9 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
   const [loading, setLoading] = useState(false);
   const [subLoading, setSubLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubOpen, setIsSubOpen] = useState(false);
   const [subCategory, setSubCategory] = useState("");
+
   const deleteCategory = async (id: string) => {
     try {
       setLoading(true);
@@ -50,9 +54,23 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
 
   return (
     <div>
-      <div className="flex justify-between items-center bg-neutral-800 p-2">
-        <h1>{category.name}</h1>
+      <div
+        className={`flex justify-between items-center  border-b-2 p-2 ${
+          category.parentId === null ? "bg-neutral-900" : "bg-neutral-900"
+        } `}
+      >
+        <div className="flex items-center gap-4">
+          <BsCircleFill size={10} />
+          <h1>{category.name}</h1>
+        </div>
         <div className="flex gap-2">
+          <button onClick={() => setIsSubOpen(!isSubOpen)}>
+            {isSubOpen ? (
+              <IoMdArrowDropupCircle />
+            ) : (
+              <IoMdArrowDropdownCircle />
+            )}
+          </button>
           <button onClick={() => setIsOpen(!isOpen)}>
             <IoAddCircle />
           </button>
@@ -79,14 +97,16 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
           </button>
         </form>
       )}
-      <div className="pl-10">
-        {category.children.length > 0 &&
-          (category.children as CategoryChild[]).map(
-            (category: CategoryChild) => (
-              <Category category={category} key={category.id} />
-            ),
-          )}
-      </div>
+      {isSubOpen && (
+        <div className="pl-10">
+          {category.children.length > 0 &&
+            (category.children as CategoryChild[]).map(
+              (category: CategoryChild) => (
+                <Category category={category} key={category.id} />
+              ),
+            )}
+        </div>
+      )}
     </div>
   );
 };
