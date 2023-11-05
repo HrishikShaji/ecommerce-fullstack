@@ -71,7 +71,7 @@ export async function GET(request: Request, response: Response) {
 
     const categories = await prisma.category.findMany({});
     if (categories) {
-      const allCategories = await getCategories(categories);
+      const allCategories = getCategories(categories);
 
       return new Response(JSON.stringify(allCategories), { status: 200 });
     }
