@@ -1,11 +1,11 @@
 "use client";
-import { Category as CategoryType } from "@prisma/client";
 import { MdDelete } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
 import { FormEvent, useState } from "react";
+import { CategoryChild } from "@/types/types";
 
 interface CategoryProps {
-  category: CategoryType;
+  category: CategoryChild;
 }
 
 type payload = {
@@ -49,7 +49,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
   };
 
   return (
-    <>
+    <div>
       <div className="flex justify-between items-center bg-neutral-800 p-2">
         <h1>{category.name}</h1>
         <div className="flex gap-2">
@@ -79,6 +79,14 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
           </button>
         </form>
       )}
-    </>
+      <div className="pl-10">
+        {category.children.length > 0 &&
+          (category.children as CategoryChild[]).map(
+            (category: CategoryChild) => (
+              <Category category={category} key={category.id} />
+            ),
+          )}
+      </div>
+    </div>
   );
 };

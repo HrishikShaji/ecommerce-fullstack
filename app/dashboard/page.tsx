@@ -1,7 +1,7 @@
-import { Category as CategoryType } from "@prisma/client";
 import { CategorySection } from "../components/CategorySection";
 import { baseUrl } from "../lib/connect";
 import { Category } from "../components/Category";
+import { CategoryChild } from "@/types/types";
 
 async function getData(url: string) {
   const response = await fetch(url, {
@@ -20,13 +20,14 @@ async function getData(url: string) {
 
 const Page = async () => {
   const categories = await getData(`${baseUrl}/api/category`);
+  console.log(categories);
   return (
     <div className="p-10 text-white flex flex-col gap-10">
       <CategorySection />
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Categories</h1>
         <div className="flex flex-col gap-2 w-full">
-          {categories.map((category: CategoryType) => (
+          {categories.map((category: CategoryChild) => (
             <Category key={category.id} category={category} />
           ))}
         </div>

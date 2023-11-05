@@ -2,6 +2,8 @@ import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { revalidateTag } from "next/cache";
+import { Category } from "@prisma/client";
+import { CategoryChild } from "@/types/types";
 
 export async function POST(request: Request, response: Response) {
   try {
@@ -22,7 +24,6 @@ export async function POST(request: Request, response: Response) {
           parentId: parentId,
         },
       });
-      console.log(category);
       return new Response(JSON.stringify(category), { status: 200 });
     }
 
@@ -31,7 +32,6 @@ export async function POST(request: Request, response: Response) {
         name: name,
       },
     });
-    console.log(category);
 
     return new Response(JSON.stringify(category), { status: 200 });
   } catch (error) {
@@ -40,12 +40,41 @@ export async function POST(request: Request, response: Response) {
   }
 }
 
+const getCategories = (
+  categories: Category[],
+  parentId: string | null = null,
+) => {
+  let categoryList: CategoryChild[] = [];
+
+  let category;
+
+  if (parentId == null) {
+    category = categories.filter((cat) => cat.parentId == null);
+  } else {
+    category = categories.filter((cat) => cat.parentId === parentId);
+  }
+
+  for (let cat of category) {
+    categoryList.push({
+      id: cat.id,
+      name: cat.name,
+      parentId: cat.parentId,
+      children: getCategories(categories, cat.id),
+    });
+  }
+  return categoryList;
+};
+
 export async function GET(request: Request, response: Response) {
   try {
     const user = (await getServerSession(authOptions)) as Session;
 
     const categories = await prisma.category.findMany({});
-    return new Response(JSON.stringify(categories), { status: 200 });
+    if (categories) {
+      const allCategories = await getCategories(categories);
+
+      return new Response(JSON.stringify(allCategories), { status: 200 });
+    }
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
