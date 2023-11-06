@@ -4,17 +4,16 @@ import { CategoryChild } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
-
-type payload = {
-  name: string;
-};
+import {
+  CategoryPayload,
+  validateCategoryPayload,
+} from "../lib/validators/category";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async () => {
-      const payload: payload = { name: category };
+  const { mutate: addCategory, isPending } = useMutation({
+    mutationFn: async (payload: CategoryPayload) => {
       const response = await fetch("/api/category", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -30,9 +29,10 @@ export const CategorySection = () => {
       setCategory("");
     },
   });
-  const addCategory = async (e: FormEvent) => {
+  const handleAddCategory = async (e: FormEvent, payload: CategoryPayload) => {
     e.preventDefault();
-    mutate();
+    const isValidPayload = validateCategoryPayload(payload);
+    addCategory(isValidPayload);
   };
   const {
     data: categories,
@@ -55,7 +55,10 @@ export const CategorySection = () => {
     <div className="p-10 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Add Categories</h1>
-        <form className="flex gap-2" onSubmit={addCategory}>
+        <form
+          className="flex gap-2"
+          onSubmit={(e) => handleAddCategory(e, { name: category })}
+        >
           <input
             value={category}
             className="p-2 text-black focus:outline-none placeholder-gray-800"
