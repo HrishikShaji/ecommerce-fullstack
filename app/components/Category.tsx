@@ -5,6 +5,8 @@ import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import { FormEvent, useState } from "react";
 import { CategoryChild } from "@/types/types";
 import { BsCircleFill } from "react-icons/bs";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Spinner } from "./Spinner";
 
 interface CategoryProps {
   category: CategoryChild;
@@ -16,40 +18,47 @@ type payload = {
 };
 
 export const Category: React.FC<CategoryProps> = ({ category }) => {
-  const [loading, setLoading] = useState(false);
-  const [subLoading, setSubLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setIsSubOpen] = useState(false);
   const [subCategory, setSubCategory] = useState("");
 
-  const deleteCategory = async (id: string) => {
-    try {
-      setLoading(true);
-      await fetch(`/api/category?id=${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const queryClient = useQueryClient();
 
-  const addSubCategory = async (e: FormEvent, payload: payload) => {
-    e.preventDefault();
-    try {
-      setSubLoading(true);
-      await fetch("/api/category", {
+  const { mutate: addSubCategory, isPending: isAdding } = useMutation({
+    mutationFn: async (payload: payload) => {
+      const response = await fetch("/api/category", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setSubLoading(false);
-    }
+      return response;
+    },
+    onError: () => {
+      return <div>Error adding subCategory</div>;
+    },
+    onSuccess: () => {
+      setSubCategory("");
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+  const { mutate: deleteCategory, isPending: isDeleting } = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await fetch(`/api/category?id=${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      return response;
+    },
+    onError: () => {
+      return <div>Error adding subCategory</div>;
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["categories"] }),
+  });
+
+  const handleCategory = async (e: FormEvent, payload: payload) => {
+    e.preventDefault();
+    addSubCategory(payload);
   };
 
   return (
@@ -75,7 +84,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
             <IoAddCircle />
           </button>
           <button onClick={() => deleteCategory(category.id)}>
-            {loading ? "Deleting" : <MdDelete />}
+            {isDeleting ? <Spinner /> : <MdDelete />}
           </button>
         </div>
       </div>
@@ -83,7 +92,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
         <form
           className="flex gap-2 w-full"
           onSubmit={(e) =>
-            addSubCategory(e, { parentId: category.id, name: subCategory })
+            handleCategory(e, { parentId: category.id, name: subCategory })
           }
         >
           <input
@@ -93,7 +102,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
             onChange={(e) => setSubCategory(e.target.value)}
           />
           <button className="px-3 py-2 border-white border-2">
-            {subLoading ? "Adding..." : "Add"}
+            {isAdding ? <Spinner /> : "Add"}
           </button>
         </form>
       )}
