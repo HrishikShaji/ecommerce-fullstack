@@ -25,6 +25,7 @@ export async function POST(request: Request) {
       data: {
         name: name,
         categoryId: categoryId,
+        userId: user.user.id,
       },
     });
 
