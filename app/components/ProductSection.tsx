@@ -1,4 +1,5 @@
 "use client";
+import { MdDelete, MdEdit } from "react-icons/md";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
@@ -92,19 +93,14 @@ export const ProductSection = () => {
           <Spinner />
         ) : (
           <table className="w-full">
-            <tr className="w-full flex justify-around">
+            <tr className="text-left">
               <th>Product</th>
               <th>Category</th>
               <th>Date</th>
+              <th></th>
             </tr>
             {products.map((product: ProductChild) => {
-              return (
-                <tr key={product.id} className="w-full flex justify-around">
-                  <td>{product.name}</td>
-                  <td>{product.category.name}</td>
-                  <td>{product.id}</td>
-                </tr>
-              );
+              return <Product key={product.id} product={product} />;
             })}
           </table>
         )}
