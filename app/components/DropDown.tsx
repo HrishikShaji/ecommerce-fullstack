@@ -1,6 +1,13 @@
 import { CategoryChild } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { BiDownArrow } from "react-icons/bi";
 
 type Item = {
@@ -18,6 +25,26 @@ export const DropDown: React.FC<DropDownProps> = ({
   setSelectedItem,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside: EventListener = (e) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   const {
     data: categories,
     isError,
@@ -39,12 +66,16 @@ export const DropDown: React.FC<DropDownProps> = ({
     <div className="flex flex-col  w-64">
       <div className="flex gap-5 p-2 h-full bg-neutral-800 justify-between items-center">
         <h1>{selectedItem.name ? selectedItem.name : "Select"}</h1>
-        <div className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+        <div
+          className="cursor-pointer"
+          ref={buttonRef}
+          onClick={() => setIsOpen(!isOpen)}
+        >
           <BiDownArrow />
         </div>
       </div>
       {isOpen && isSuccess && (
-        <div className="relative  text-left">
+        <div className="relative  text-left" ref={dropdownRef}>
           <div className="origin-top-right absolute right-0  w-64 rounded-md shadow-lg  ring-1 ring-black ring-opacity-5">
             <div className="border-b-1 border-white">
               <ul className="">
