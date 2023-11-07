@@ -1,22 +1,25 @@
 "use client";
-import { Category } from "../components/Category";
-import { CategoryChild } from "@/types/types";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
-import {
-  CategoryPayload,
-  validateCategoryPayload,
-} from "../lib/validators/category";
 import {
   ProductPayload,
   validateProductPayload,
 } from "../lib/validators/Product";
 import { DropDown } from "./DropDown";
 
+type Item = {
+  name: string;
+  id: string;
+};
+
 export const ProductSection = () => {
   const [product, setProduct] = useState("");
 
+  const [selectedItem, setSelectedItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
   const { mutate: addProduct, isPending } = useMutation({
     mutationFn: async (payload: ProductPayload) => {
       const response = await fetch("/api/product", {
@@ -35,6 +38,7 @@ export const ProductSection = () => {
     },
   });
   const handleAddProduct = async (e: FormEvent, payload: ProductPayload) => {
+    console.log(payload);
     e.preventDefault();
     const isValidPayload = validateProductPayload(payload);
     addProduct(isValidPayload);
@@ -62,7 +66,9 @@ export const ProductSection = () => {
         <h1 className="text-xl font-semibold">Add Products</h1>
         <form
           className="flex gap-2"
-          onSubmit={(e) => handleAddProduct(e, { name: product })}
+          onSubmit={(e) =>
+            handleAddProduct(e, { name: product, categoryId: selectedItem.id })
+          }
         >
           <input
             value={product}
@@ -73,24 +79,12 @@ export const ProductSection = () => {
           <button type="submit" className="px-3 py-2 border-white border-2">
             {isPending ? <Spinner /> : "Add"}
           </button>
-          <DropDown />
+          <DropDown
+            selectedItem={selectedItem}
+            setSelectedItem={setSelectedItem}
+          />
         </form>
       </div>
-      {/* 
-
-      <div className="flex flex-col gap-2">
-        <h1 className="text-xl font-semibold">Categories</h1>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <div className="flex flex-col gap-2 w-full">
-            {categories.map((category: CategoryChild) => (
-              <Category key={category.id} category={category} />
-            ))}
-          </div>
-        )}
-      </div>
-			*/}
     </div>
   );
 };
