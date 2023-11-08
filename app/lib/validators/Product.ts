@@ -6,6 +6,7 @@ const productPayload = z.object({
     .min(3, { message: "must be more than 3 characters" })
     .max(15, { message: "must be less than 15 charaters" }),
   categoryId: z.string(),
+  billboardId: z.string(),
 });
 
 export type ProductPayload = z.infer<typeof productPayload>;

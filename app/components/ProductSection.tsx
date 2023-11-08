@@ -17,7 +17,10 @@ type Item = {
 
 export const ProductSection = () => {
   const [product, setProduct] = useState("");
-
+  const [selectedBillboardItem, setSelectedBillboardItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
   const [selectedItem, setSelectedItem] = useState<Item>({
     name: "",
     id: "",
@@ -68,7 +71,11 @@ export const ProductSection = () => {
         <form
           className="flex gap-2"
           onSubmit={(e) =>
-            handleAddProduct(e, { name: product, categoryId: selectedItem.id })
+            handleAddProduct(e, {
+              name: product,
+              categoryId: selectedItem.id,
+              billboardId: selectedBillboardItem.id,
+            })
           }
         >
           <input
@@ -80,6 +87,14 @@ export const ProductSection = () => {
           <DropDown
             selectedItem={selectedItem}
             setSelectedItem={setSelectedItem}
+            query="categories"
+            url="category"
+          />
+          <DropDown
+            selectedItem={selectedBillboardItem}
+            setSelectedItem={setSelectedBillboardItem}
+            query="billboards"
+            url="billboard"
           />
           <button type="submit" className="px-3 py-2 border-white border-2">
             {isPending ? <Spinner /> : "Add"}

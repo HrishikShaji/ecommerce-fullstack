@@ -18,11 +18,15 @@ type Item = {
 interface DropDownProps {
   selectedItem: Item;
   setSelectedItem: Dispatch<SetStateAction<Item>>;
+  url: string;
+  query: string;
 }
 
 export const DropDown: React.FC<DropDownProps> = ({
   selectedItem,
   setSelectedItem,
+  url,
+  query,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -50,9 +54,9 @@ export const DropDown: React.FC<DropDownProps> = ({
     isError,
     isSuccess,
   } = useQuery({
-    queryKey: ["categories"],
+    queryKey: [query],
     queryFn: async () => {
-      const response = await fetch(`/api/category`, {
+      const response = await fetch(`/api/${url}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -131,7 +135,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         className="cursor-pointer hover:bg-neutral-600 flex justify-between items-center bg-neutral-700 border-b-2 border-neutral-800 pl-2"
       >
         <h1 className="">{category.name}</h1>
-        {category.children.length > 0 && (
+        {category.children && category.children.length > 0 && (
           <div onClick={handleClick} className="p-1 bg-neutral-500">
             <BiDownArrow />{" "}
           </div>
