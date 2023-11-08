@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Providers from "./components/Providers";
 import { Navbar } from "./components/Navbar";
+import { Modal } from "./components/Modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <Providers>
         <body className="bg-neutral-900">
+          <Modal />
           <Navbar />
           {children}
         </body>

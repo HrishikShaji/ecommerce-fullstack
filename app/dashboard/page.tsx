@@ -2,12 +2,24 @@
 import { useState } from "react";
 import { CategorySection } from "../components/CategorySection";
 import { ProductSection } from "../components/ProductSection";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { onOpen } from "@/redux/slices/modalSlice";
 
 const Page = () => {
   const [categorySectionOpen, setCategorySectionOpen] = useState(false);
   const [productSectionOpen, setProductSectionOpen] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+
   return (
     <div className="text-white p-10 flex flex-col gap-4">
+      <button
+        onClick={() => dispatch(onOpen())}
+        className="px-3 py-2 border-white border-2"
+      >
+        Modal
+      </button>
       <div
         className="p-2 pl-4 w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
         onClick={() => setCategorySectionOpen(!categorySectionOpen)}
