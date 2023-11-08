@@ -6,11 +6,13 @@ type InitialState = {
 
 type ModalState = {
   isOpen: boolean;
+  type: "" | "product" | "category" | "size" | "color" | "billboard";
 };
 
 const initialState = {
   value: {
     isOpen: false,
+    type: "",
   } as ModalState,
 } as InitialState;
 
@@ -21,10 +23,16 @@ export const modal = createSlice({
     onClose: () => {
       return initialState;
     },
-    onOpen: () => {
+    onOpen: (
+      state,
+      action: PayloadAction<
+        "" | "product" | "category" | "size" | "color" | "billboard"
+      >,
+    ) => {
       return {
         value: {
           isOpen: true,
+          type: action.payload,
         },
       };
     },

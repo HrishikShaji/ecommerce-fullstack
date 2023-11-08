@@ -1,14 +1,11 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
-import { Category } from "@prisma/client";
-import { CategoryChild } from "@/types/types";
 
 export async function POST(request: Request) {
   try {
     const { name, categoryId } = await request.json();
 
-    console.log("its here");
     const user = (await getServerSession(authOptions)) as Session;
 
     if (!name) {
