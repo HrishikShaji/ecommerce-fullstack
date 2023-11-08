@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { CategorySection } from "../components/CategorySection";
 import { ProductSection } from "../components/ProductSection";
-
 const Page = () => {
   const [categorySectionOpen, setCategorySectionOpen] = useState(false);
   const [productSectionOpen, setProductSectionOpen] = useState(false);
+
   return (
     <div className="text-white p-10 flex flex-col gap-4">
       <div
