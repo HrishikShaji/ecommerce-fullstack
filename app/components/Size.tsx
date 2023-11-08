@@ -1,22 +1,12 @@
 "use client";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { FormEvent } from "react";
-import { ProductChild } from "@/types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./Spinner";
-import {
-  CategoryPayload,
-  validateCategoryPayload,
-} from "../lib/validators/category";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
-import { Modal } from "./Modal";
-import { BillBoard, Size as SizeType } from "@prisma/client";
-import {
-  BillboardPayload,
-  validateBillboardPayload,
-} from "../lib/validators/Billboard";
+import { Size as SizeType } from "@prisma/client";
 import { SizePayload, validateSizePayload } from "../lib/validators/size";
 
 interface SizeProps {
@@ -27,22 +17,6 @@ export const Size: React.FC<SizeProps> = ({ size }) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { mutate: updateSize, isPending: isAdding } = useMutation({
-    mutationFn: async (payload: SizePayload) => {
-      const response = await fetch("/api/size", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error adding subCategory</div>;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["sizes"] });
-    },
-  });
   const { mutate: deleteSize, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(`/api/size?id=${id}`, {

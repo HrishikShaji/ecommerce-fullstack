@@ -1,16 +1,12 @@
 "use client";
 
-import { Product } from "@prisma/client";
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { BillBoard, Color, Product, Size } from "@prisma/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
 import { Spinner } from "./Spinner";
 
 interface ProductUpdateFormProps {
-  product: Product;
+  product: Product | Color | Size | BillBoard;
 }
 
 type Payload = {
@@ -25,7 +21,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({
   const queryClient = useQueryClient();
   const { mutate: updateProduct, isPending } = useMutation({
     mutationFn: async (payload: Payload) => {
-      const response = await fetch("/api/product", {
+      await fetch("/api/product", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

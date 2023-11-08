@@ -15,14 +15,13 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
 
-    const billboard = await prisma.billBoard.create({
+    const color = await prisma.color.create({
       data: {
         name: name,
-        userId: user.user.id,
       },
     });
 
-    return new Response(JSON.stringify(billboard), { status: 200 });
+    return new Response(JSON.stringify(color), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
@@ -31,13 +30,13 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const billboards = await prisma.billBoard.findMany({});
+    const colors = await prisma.color.findMany({});
 
-    if (!billboards) {
+    if (!colors) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
 
-    return new Response(JSON.stringify(billboards), { status: 200 });
+    return new Response(JSON.stringify(colors), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
@@ -57,7 +56,7 @@ export async function DELETE(request: Request) {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
 
-    await prisma.billBoard.delete({
+    await prisma.color.delete({
       where: {
         id: id,
       },

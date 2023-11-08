@@ -2,16 +2,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
-import {
-  ProductPayload,
-  validateProductPayload,
-} from "../lib/validators/Product";
-import { BillBoard as BillBoardType, Size as SizeType } from "@prisma/client";
-import { Billboard } from "./Billboard";
-import {
-  BillboardPayload,
-  validateBillboardPayload,
-} from "../lib/validators/Billboard";
+import { Size as SizeType } from "@prisma/client";
 import { SizePayload, validateSizePayload } from "../lib/validators/size";
 import { Size } from "./Size";
 

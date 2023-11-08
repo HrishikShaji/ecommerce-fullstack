@@ -1,17 +1,12 @@
 "use client";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { FormEvent } from "react";
-import { ProductChild } from "@/types/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./Spinner";
-import {
-  CategoryPayload,
-  validateCategoryPayload,
-} from "../lib/validators/category";
+import { CategoryPayload } from "../lib/validators/category";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
-import { Modal } from "./Modal";
 import { BillBoard } from "@prisma/client";
 import {
   BillboardPayload,
@@ -26,22 +21,6 @@ export const Billboard: React.FC<BillboardProps> = ({ billboard }) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { mutate: updateBillboard, isPending: isAdding } = useMutation({
-    mutationFn: async (payload: CategoryPayload) => {
-      const response = await fetch("/api/billboard", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error adding subCategory</div>;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["billboards"] });
-    },
-  });
   const { mutate: deleteBillboard, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(`/api/billboard?id=${id}`, {

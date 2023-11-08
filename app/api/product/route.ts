@@ -4,7 +4,7 @@ import prisma from "@/app/lib/connect";
 
 export async function POST(request: Request) {
   try {
-    const { name, categoryId } = await request.json();
+    const { name, categoryId, billboardId } = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
@@ -12,6 +12,9 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify("Wrong input"), { status: 400 });
     }
     if (!categoryId) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (!billboardId) {
       return new Response(JSON.stringify("wrong input"), { status: 200 });
     }
     if (user.user.role !== "ADMIN") {
@@ -23,6 +26,7 @@ export async function POST(request: Request) {
         name: name,
         categoryId: categoryId,
         userId: user.user.id,
+        billoardId: billboardId,
       },
     });
 
