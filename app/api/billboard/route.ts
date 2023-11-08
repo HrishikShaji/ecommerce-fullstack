@@ -1,81 +1,45 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
+import { Category } from "@prisma/client";
+import { CategoryChild } from "@/types/types";
 
 export async function POST(request: Request) {
   try {
-    const { name, categoryId } = await request.json();
+    const { name } = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
     if (!name) {
       return new Response(JSON.stringify("Wrong input"), { status: 400 });
     }
-    if (!categoryId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
 
-    const product = await prisma.product.create({
+    const billboard = await prisma.billBoard.create({
       data: {
         name: name,
-        categoryId: categoryId,
         userId: user.user.id,
       },
     });
 
-    return new Response(JSON.stringify(product), { status: 200 });
+    return new Response(JSON.stringify(billboard), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
 
-export async function PATCH(request: Request) {
-  try {
-    const { name, id } = await request.json();
-
-    const user = (await getServerSession(authOptions)) as Session;
-
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!id) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
-    }
-
-    const product = await prisma.product.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name: name,
-      },
-    });
-
-    return new Response(JSON.stringify(product), { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify("error"), { status: 500 });
-  }
-}
 export async function GET(request: Request) {
   try {
-    console.log("its here");
-    const products = await prisma.product.findMany({
-      include: { category: true },
-    });
+    const billboards = await prisma.billBoard.findMany({});
 
-    if (!products) {
+    if (!billboards) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    console.log(products);
-    return new Response(JSON.stringify(products), { status: 200 });
+
+    return new Response(JSON.stringify(billboards), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
@@ -95,7 +59,7 @@ export async function DELETE(request: Request) {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
 
-    await prisma.product.delete({
+    await prisma.billBoard.delete({
       where: {
         id: id,
       },

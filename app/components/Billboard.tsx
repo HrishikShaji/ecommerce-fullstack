@@ -12,18 +12,23 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { Modal } from "./Modal";
+import { BillBoard } from "@prisma/client";
+import {
+  BillboardPayload,
+  validateBillboardPayload,
+} from "../lib/validators/Billboard";
 
-interface ProductProps {
-  product: ProductChild;
+interface BillboardProps {
+  billboard: BillBoard;
 }
 
-export const Product: React.FC<ProductProps> = ({ product }) => {
+export const Billboard: React.FC<BillboardProps> = ({ billboard }) => {
   const queryClient = useQueryClient();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { mutate: updateProduct, isPending: isAdding } = useMutation({
+  const { mutate: updateBillboard, isPending: isAdding } = useMutation({
     mutationFn: async (payload: CategoryPayload) => {
-      const response = await fetch("/api/product", {
+      const response = await fetch("/api/billboard", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -34,12 +39,12 @@ export const Product: React.FC<ProductProps> = ({ product }) => {
       return <div>Error adding subCategory</div>;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["billboards"] });
     },
   });
-  const { mutate: deleteProduct, isPending: isDeleting } = useMutation({
+  const { mutate: deleteBillboard, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => {
-      const response = await fetch(`/api/product?id=${id}`, {
+      const response = await fetch(`/api/billboard?id=${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
@@ -48,30 +53,32 @@ export const Product: React.FC<ProductProps> = ({ product }) => {
     onError: () => {
       return <div>Error deleting Product</div>;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["billboards"] }),
   });
 
-  const handleProduct = async (e: FormEvent, payload: CategoryPayload) => {
+  const handleBillboard = async (e: FormEvent, payload: BillboardPayload) => {
     e.preventDefault();
-    const isValidPayload = validateCategoryPayload(payload);
+    const isValidPayload = validateBillboardPayload(payload);
   };
 
   return (
     <>
-      <tr key={product.id} className="">
-        <td>{product.name}</td>
-        <td>{product.category.name}</td>
-        <td>{product.id}</td>
+      <tr key={billboard.id} className="">
+        <td>{billboard.name}</td>
+        <td>{billboard.id}</td>
         <td className="flex items-center w-full justify-center  gap-2">
           <button
-            onClick={() => dispatch(onOpen({ mode: "product", data: product }))}
+            onClick={() =>
+              dispatch(onOpen({ mode: "billboard", data: billboard }))
+            }
             className="cursor-pointer"
           >
             <MdEdit />
           </button>
           <button
             className="cursor-pointer"
-            onClick={() => deleteProduct(product.id)}
+            onClick={() => deleteBillboard(billboard.id)}
           >
             {isDeleting ? <Spinner /> : <MdDelete />}
           </button>
