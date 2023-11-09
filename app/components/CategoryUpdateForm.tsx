@@ -1,12 +1,13 @@
 "use client";
 
-import { Product } from "@prisma/client";
+import { Category, Product } from "@prisma/client";
 import { FormEvent, useState } from "react";
 import { Spinner } from "./Spinner";
 import { useUpdateProduct } from "../lib/queries/product";
+import { useUpdateCategory } from "../lib/queries/category";
 
-interface ProductUpdateFormProps {
-  product: Product;
+interface CategoryUpdateFormProps {
+  category: Category;
 }
 
 type Payload = {
@@ -14,20 +15,19 @@ type Payload = {
   id: string;
 };
 
-export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({
-  product,
+export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({
+  category,
 }) => {
-  const [name, setName] = useState(product.name);
+  const [name, setName] = useState(category.name || "");
 
-  const { updateProduct, isPending } = useUpdateProduct();
-  const handleUpdate = async (e: FormEvent, payload: Payload) => {
-    e.preventDefault();
-    updateProduct(payload);
-  };
+  const { updateCategory, isPending } = useUpdateCategory();
   return (
     <form
       className="flex flex-col gap-2"
-      onSubmit={(e) => handleUpdate(e, { name: name || "", id: product.id })}
+      onSubmit={(e) => {
+        e.preventDefault();
+        updateCategory({ name: name, id: category.id });
+      }}
     >
       <input
         value={name || ""}

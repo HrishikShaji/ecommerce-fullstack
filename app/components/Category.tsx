@@ -1,17 +1,15 @@
 "use client";
-import { MdDelete } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
 import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import { FormEvent, useState } from "react";
 import { CategoryChild } from "@/types/types";
 import { BsCircleFill } from "react-icons/bs";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./Spinner";
-import {
-  CategoryPayload,
-  validateCategoryPayload,
-} from "../lib/validators/category";
 import { useAddCategory, useDeleteCategory } from "../lib/queries/category";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { onOpen } from "@/redux/slices/modalSlice";
 
 interface CategoryProps {
   category: CategoryChild;
@@ -24,6 +22,8 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
 
   const { addCategory, isPending } = useAddCategory();
   const { deleteCategory, isDeleting } = useDeleteCategory();
+
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div>
@@ -46,6 +46,13 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
               <IoMdArrowDropdownCircle />
             )}
           </button>
+          <button
+            onClick={() =>
+              dispatch(onOpen({ mode: "category", data: category }))
+            }
+          >
+            <MdEdit />
+          </button>
           <button onClick={() => setIsOpen(!isOpen)}>
             <IoAddCircle />
           </button>
@@ -60,6 +67,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
           onSubmit={(e) => {
             e.preventDefault();
             addCategory({ parentId: category.id, name: subCategory });
+            setSubCategory("");
           }}
         >
           <input

@@ -69,3 +69,35 @@ export async function DELETE(request: Request) {
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    const { name, id } = await request.json();
+
+    const user = (await getServerSession(authOptions)) as Session;
+
+    if (!name) {
+      return new Response(JSON.stringify("Wrong input"), { status: 400 });
+    }
+    if (!id) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (user.user.role !== "ADMIN") {
+      return new Response(JSON.stringify("unauthorized"), { status: 401 });
+    }
+
+    const billboard = await prisma.billBoard.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+      },
+    });
+
+    return new Response(JSON.stringify(billboard), { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify("error"), { status: 500 });
+  }
+}

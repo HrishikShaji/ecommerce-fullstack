@@ -67,3 +67,26 @@ export const useDeleteBillboard = () => {
 
   return { deleteBillboard, isDeleting };
 };
+
+type Payload = {
+  name: string;
+  id: string;
+};
+
+export const useUpdateBillboard = () => {
+  const queryClient = useQueryClient();
+  const { mutate: updateBillboard, isPending } = useMutation({
+    mutationFn: async (payload: Payload) => {
+      await fetch("/api/billboard", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["billboards"] });
+    },
+  });
+
+  return { updateBillboard, isPending };
+};

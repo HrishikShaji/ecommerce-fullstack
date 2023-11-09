@@ -4,6 +4,9 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { ProductUpdateForm } from "./ProductUpdateForm";
+import { BillBoardUpdateForm } from "./BillboardUpdateForm";
+import { BillBoard, Category, Product } from "@prisma/client";
+import { CategoryUpdateForm } from "./CategoryUpdateForm";
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
@@ -23,7 +26,19 @@ export const Modal = () => {
         {title === "product" && (
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Product</h1>
-            <ProductUpdateForm product={data} />
+            <ProductUpdateForm product={data as Product} />
+          </div>
+        )}
+        {title === "billboard" && (
+          <div className="flex flex-col gap-5 items-center">
+            <h1 className="text-xl font-semibold">Update Billboard</h1>
+            <BillBoardUpdateForm billboard={data as BillBoard} />
+          </div>
+        )}
+        {title === "category" && (
+          <div className="flex flex-col gap-5 items-center">
+            <h1 className="text-xl font-semibold">Update Category</h1>
+            <CategoryUpdateForm category={data as Category} />
           </div>
         )}
       </div>

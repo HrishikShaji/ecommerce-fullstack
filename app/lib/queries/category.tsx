@@ -67,3 +67,25 @@ export const useDeleteCategory = () => {
 
   return { deleteCategory, isDeleting };
 };
+
+type Payload = {
+  name: string;
+  id: string;
+};
+export const useUpdateCategory = () => {
+  const queryClient = useQueryClient();
+  const { mutate: updateCategory, isPending } = useMutation({
+    mutationFn: async (payload: Payload) => {
+      await fetch("/api/category", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+
+  return { updateCategory, isPending };
+};

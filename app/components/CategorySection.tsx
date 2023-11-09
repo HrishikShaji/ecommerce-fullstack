@@ -21,6 +21,7 @@ export const CategorySection = () => {
           onSubmit={(e) => {
             e.preventDefault();
             addCategory({ name: category });
+            setCategory("");
           }}
         >
           <input

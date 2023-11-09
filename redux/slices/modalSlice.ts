@@ -1,4 +1,4 @@
-import { BillBoard, Color, Product, Size } from "@prisma/client";
+import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type InitialState = {
@@ -16,7 +16,7 @@ enum Mode {
 type ModalState = {
   isOpen: boolean;
   mode: "product" | "category" | "size" | "color" | "billboard" | "";
-  data: Product | BillBoard | Size | Color;
+  data: Product | BillBoard | Size | Color | Category;
 };
 
 const initialState = {

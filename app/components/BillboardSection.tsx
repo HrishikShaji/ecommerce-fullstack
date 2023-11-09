@@ -54,8 +54,6 @@ export const BillboardSection = () => {
             <tr className="text-left">
               <th>Billboard</th>
               <th>Category</th>
-              <th>Date</th>
-              <th></th>
             </tr>
             {billboards.map((billboard: BillBoardType) => {
               return <Billboard billboard={billboard} key={billboard.id} />;

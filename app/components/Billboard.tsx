@@ -5,7 +5,9 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { BillBoard } from "@prisma/client";
-import { useDeleteBillboard } from "../lib/queries/billboard";
+import {
+  useDeleteBillboard,
+} from "../lib/queries/billboard";
 
 interface BillboardProps {
   billboard: BillBoard;
