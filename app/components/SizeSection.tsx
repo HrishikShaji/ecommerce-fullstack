@@ -22,6 +22,7 @@ export const SizeSection = () => {
             addSize({
               name: size,
             });
+            setSize("");
           }}
         >
           <input

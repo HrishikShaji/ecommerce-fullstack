@@ -1,13 +1,10 @@
 "use client";
 import { MdDelete, MdEdit } from "react-icons/md";
-import { FormEvent } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Spinner } from "./Spinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { Color as ColorType } from "@prisma/client";
-import { ColorPayload, validateColorPayload } from "../lib/validators/color";
 import { useDeleteColor } from "../lib/queries/color";
 
 interface ColorProps {

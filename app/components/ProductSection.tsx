@@ -1,11 +1,6 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
-import { FormEvent, useState } from "react";
-import {
-  ProductPayload,
-  validateProductPayload,
-} from "../lib/validators/Product";
+import { useState } from "react";
 import { DropDown } from "./DropDown";
 import { Product } from "./Product";
 import { ProductChild } from "@/types/types";
@@ -43,6 +38,7 @@ export const ProductSection = () => {
               categoryId: selectedItem.id,
               billboardId: selectedBillboardItem.id,
             });
+            setProduct("");
           }}
         >
           <input

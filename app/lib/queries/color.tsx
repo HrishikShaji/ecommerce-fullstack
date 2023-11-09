@@ -67,3 +67,25 @@ export const useDeleteColor = () => {
 
   return { deleteColor, isDeleting };
 };
+
+type Payload = {
+  name: string;
+  id: string;
+};
+export const useUpdateColor = () => {
+  const queryClient = useQueryClient();
+  const { mutate: updateColor, isPending } = useMutation({
+    mutationFn: async (payload: Payload) => {
+      await fetch("/api/color", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["colors"] });
+    },
+  });
+
+  return { updateColor, isPending };
+};

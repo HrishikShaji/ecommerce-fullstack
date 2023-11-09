@@ -2,7 +2,7 @@
 import { Category } from "../components/Category";
 import { CategoryChild } from "@/types/types";
 import { Spinner } from "../components/Spinner";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useAddCategory, useGetCategories } from "../lib/queries/category";
 
 export const CategorySection = () => {

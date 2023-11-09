@@ -43,6 +43,37 @@ export async function GET(request: Request) {
   }
 }
 
+export async function PATCH(request: Request) {
+  try {
+    const { name, id } = await request.json();
+
+    const user = (await getServerSession(authOptions)) as Session;
+
+    if (!name) {
+      return new Response(JSON.stringify("Wrong input"), { status: 400 });
+    }
+    if (!id) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (user.user.role !== "ADMIN") {
+      return new Response(JSON.stringify("unauthorized"), { status: 401 });
+    }
+
+    const color = await prisma.color.update({
+      where: {
+        id: id,
+      },
+      data: {
+        name: name,
+      },
+    });
+
+    return new Response(JSON.stringify(color), { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify("error"), { status: 500 });
+  }
+}
 export async function DELETE(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

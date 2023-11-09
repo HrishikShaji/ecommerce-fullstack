@@ -1,26 +1,24 @@
 "use client";
 
-import { Product } from "@prisma/client";
+import { Size } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateProduct } from "../lib/queries/product";
+import { useUpdateSize } from "../lib/queries/size";
 
-interface ProductUpdateFormProps {
-  product: Product;
+interface SizeUpdateFormProps {
+  size: Size;
 }
 
-export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({
-  product,
-}) => {
-  const [name, setName] = useState(product.name || "");
+export const SizeUpdateForm: React.FC<SizeUpdateFormProps> = ({ size }) => {
+  const [name, setName] = useState(size.name || "");
 
-  const { updateProduct, isPending } = useUpdateProduct();
+  const { updateSize, isPending } = useUpdateSize();
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        updateProduct({ name: name, id: product.id });
+        updateSize({ name: name, id: size.id });
       }}
     >
       <input

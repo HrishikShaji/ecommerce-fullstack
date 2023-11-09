@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 export const UserAccount = () => {
-  const { status, data } = useSession();
+  const { data } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement | null>(null);
   const dropDownButtonRef = useRef<HTMLButtonElement | null>(null);

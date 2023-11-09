@@ -1,6 +1,6 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Color as ColorType } from "@prisma/client";
 import { Color } from "./Color";
 import { useAddColors, useGetColors } from "../lib/queries/color";
@@ -23,6 +23,7 @@ export const ColorSection = () => {
             addColor({
               name: color,
             });
+            setColor("");
           }}
         >
           <input

@@ -63,3 +63,25 @@ export const useDeleteSize = () => {
 
   return { deleteSize, isDeleting };
 };
+
+type Payload = {
+  name: string;
+  id: string;
+};
+export const useUpdateSize = () => {
+  const queryClient = useQueryClient();
+  const { mutate: updateSize, isPending } = useMutation({
+    mutationFn: async (payload: Payload) => {
+      await fetch("/api/size", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sizes"] });
+    },
+  });
+
+  return { updateSize, isPending };
+};

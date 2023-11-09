@@ -1,27 +1,14 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { BillBoard as BillBoardType } from "@prisma/client";
 import { Billboard } from "./Billboard";
-import {
-  BillboardPayload,
-  validateBillboardPayload,
-} from "../lib/validators/Billboard";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
   const { billboards, isLoading, isError } = useGetBillboards();
   const { addBillboard, isPending } = useAddBillboard();
-  const handleAddBillboard = async (
-    e: FormEvent,
-    payload: BillboardPayload,
-  ) => {
-    e.preventDefault();
-    const isValidPayload = validateBillboardPayload(payload);
-    addBillboard(isValidPayload);
-    setBillboard("");
-  };
   if (isError) return null;
   return (
     <div className="p-10 text-white flex flex-col gap-10">
@@ -29,11 +16,13 @@ export const BillboardSection = () => {
         <h1 className="text-xl font-semibold">Add Billboards</h1>
         <form
           className="flex gap-2"
-          onSubmit={(e) =>
-            handleAddBillboard(e, {
+          onSubmit={(e) => {
+            e.preventDefault();
+            addBillboard({
               name: billboard,
-            })
-          }
+            });
+            setBillboard("");
+          }}
         >
           <input
             value={billboard}

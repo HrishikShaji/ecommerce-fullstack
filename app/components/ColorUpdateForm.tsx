@@ -1,26 +1,24 @@
 "use client";
 
-import { Product } from "@prisma/client";
+import { Color } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateProduct } from "../lib/queries/product";
+import { useUpdateColor } from "../lib/queries/color";
 
-interface ProductUpdateFormProps {
-  product: Product;
+interface ColorUpdateFormProps {
+  color: Color;
 }
 
-export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({
-  product,
-}) => {
-  const [name, setName] = useState(product.name || "");
+export const ColorUpdateForm: React.FC<ColorUpdateFormProps> = ({ color }) => {
+  const [name, setName] = useState(color.name || "");
 
-  const { updateProduct, isPending } = useUpdateProduct();
+  const { updateColor, isPending } = useUpdateColor();
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        updateProduct({ name: name, id: product.id });
+        updateColor({ name: name, id: color.id });
       }}
     >
       <input
