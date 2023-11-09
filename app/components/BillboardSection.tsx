@@ -5,7 +5,6 @@ import { BillBoard as BillBoardType } from "@prisma/client";
 import { Billboard } from "./Billboard";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 import { ImSearch } from "react-icons/im";
-import { Billboards } from "./Billboards";
 import { SectionContainer } from "./SectionContainer";
 
 export const BillboardSection = () => {
