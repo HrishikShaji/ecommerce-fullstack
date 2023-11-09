@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Color as ColorType } from "@prisma/client";
 import { Color } from "./Color";
 import { useAddColors, useGetColors } from "../lib/queries/color";
+import { SectionContainer } from "./SectionContainer";
 
 export const ColorSection = () => {
   const [color, setColor] = useState("");
@@ -41,17 +42,11 @@ export const ColorSection = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <table className="w-full">
-            <tr className="text-left">
-              <th>Color</th>
-              <th>Category</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-            {colors.map((color: ColorType) => {
-              return <Color color={color} key={color.id} />;
-            })}
-          </table>
+          <SectionContainer
+            title="Colors"
+            headings={["Color", "Category", "Date"]}
+            data={colors}
+          />
         )}
       </div>
     </div>

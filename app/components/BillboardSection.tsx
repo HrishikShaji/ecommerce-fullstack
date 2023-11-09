@@ -42,7 +42,7 @@ export const BillboardSection = () => {
         <Spinner />
       ) : (
         <SectionContainer
-          title="billboards"
+          title="Billboards"
           headings={["Bill", "Cat"]}
           data={billboards}
         />

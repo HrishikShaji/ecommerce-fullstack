@@ -5,6 +5,7 @@ import { DropDown } from "./DropDown";
 import { Product } from "./Product";
 import { ProductChild } from "@/types/types";
 import { useAddProduct, useGetProducts } from "../lib/queries/product";
+import { SectionContainer } from "./SectionContainer";
 
 type Item = {
   name: string;
@@ -90,19 +91,18 @@ export const ProductSection = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <table className="w-full">
-            <tr className="text-left">
-              <th>Product</th>
-              <th>Category</th>
-              <th>Billboard</th>
-              <th>Size</th>
-              <th>Color</th>
-              <th>Username</th>
-            </tr>
-            {products.map((product: ProductChild) => {
-              return <Product key={product.id} product={product} />;
-            })}
-          </table>
+          <SectionContainer
+            title="Products"
+            headings={[
+              "Product",
+              "Category",
+              "Billboard",
+              "Size",
+              "Color",
+              "Username",
+            ]}
+            data={products}
+          />
         )}
       </div>
     </div>

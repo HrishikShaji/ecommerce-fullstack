@@ -1,14 +1,22 @@
-import { BillBoard as BillboardType } from "@prisma/client";
+import {
+  BillBoard as BillboardType,
+  Size as SizeType,
+  Color as ColorType,
+} from "@prisma/client";
 import { useState } from "react";
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 import { ImSearch } from "react-icons/im";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
 import { Billboard } from "./Billboard";
+import { Product } from "./Product";
+import { ProductChild } from "@/types/types";
+import { Size } from "./Size";
+import { Color } from "./Color";
 
 interface SectionContainerProps {
-  title: string;
+  title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   headings: string[];
-  data: BillboardType[];
+  data: BillboardType[] | ProductChild[] | SizeType[] | ColorType[];
 }
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
@@ -45,9 +53,29 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
             <th key={i}>{heading}</th>
           ))}
         </tr>
-        {data.map((billboard: BillboardType) => {
-          return <Billboard billboard={billboard} key={billboard.id} />;
-        })}
+        {title === "Billboards" &&
+          data.map((billboard) => {
+            return (
+              <Billboard
+                billboard={billboard as BillboardType}
+                key={billboard.id}
+              />
+            );
+          })}
+        {title === "Products" &&
+          data.map((product) => {
+            return (
+              <Product product={product as ProductChild} key={product.id} />
+            );
+          })}
+        {title === "Sizes" &&
+          data.map((size) => {
+            return <Size size={size as SizeType} key={size.id} />;
+          })}
+        {title === "Colors" &&
+          data.map((color) => {
+            return <Color color={color as ColorType} key={color.id} />;
+          })}
       </table>
       <div className="w-full flex gap-2 justify-end">
         <button>

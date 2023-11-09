@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Size as SizeType } from "@prisma/client";
 import { Size } from "./Size";
 import { useAddSize, useGetSizes } from "../lib/queries/size";
+import { SectionContainer } from "./SectionContainer";
 
 export const SizeSection = () => {
   const [size, setSize] = useState("");
@@ -40,17 +41,11 @@ export const SizeSection = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <table className="w-full">
-            <tr className="text-left">
-              <th>Size</th>
-              <th>Category</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-            {sizes.map((size: SizeType) => {
-              return <Size size={size} key={size.id} />;
-            })}
-          </table>
+          <SectionContainer
+            title="Sizes"
+            headings={["Size", "Category", "Date"]}
+            data={sizes}
+          />
         )}
       </div>
     </div>
