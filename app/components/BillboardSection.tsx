@@ -4,6 +4,9 @@ import { useState } from "react";
 import { BillBoard as BillBoardType } from "@prisma/client";
 import { Billboard } from "./Billboard";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
+import { ImSearch } from "react-icons/im";
+import { Billboards } from "./Billboards";
+import { SectionContainer } from "./SectionContainer";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
@@ -12,7 +15,7 @@ export const BillboardSection = () => {
   if (isError) return null;
   return (
     <div className="p-10 text-white flex flex-col gap-10">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">Add Billboards</h1>
         <form
           className="flex gap-2"
@@ -35,21 +38,15 @@ export const BillboardSection = () => {
           </button>
         </form>
       </div>
-      <div>
-        {isLoading ? (
-          <Spinner />
-        ) : (
-          <table className="w-full">
-            <tr className="text-left">
-              <th>Billboard</th>
-              <th>Category</th>
-            </tr>
-            {billboards.map((billboard: BillBoardType) => {
-              return <Billboard billboard={billboard} key={billboard.id} />;
-            })}
-          </table>
-        )}
-      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <SectionContainer
+          title="billboards"
+          headings={["Bill", "Cat"]}
+          data={billboards}
+        />
+      )}
     </div>
   );
 };

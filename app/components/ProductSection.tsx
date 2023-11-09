@@ -21,6 +21,14 @@ export const ProductSection = () => {
     name: "",
     id: "",
   });
+  const [selectedSizeItem, setSelectedSizeItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
+  const [selectedColorItem, setSelectedColorItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
 
   const { products, isError, isLoading } = useGetProducts();
   const { addProduct, isPending } = useAddProduct();
@@ -37,6 +45,8 @@ export const ProductSection = () => {
               name: product,
               categoryId: selectedItem.id,
               billboardId: selectedBillboardItem.id,
+              sizeId: selectedSizeItem.id,
+              colorId: selectedColorItem.id,
             });
             setProduct("");
           }}
@@ -59,6 +69,18 @@ export const ProductSection = () => {
             query="billboards"
             url="billboard"
           />
+          <DropDown
+            selectedItem={selectedSizeItem}
+            setSelectedItem={setSelectedSizeItem}
+            query="sizes"
+            url="size"
+          />
+          <DropDown
+            selectedItem={selectedColorItem}
+            setSelectedItem={setSelectedColorItem}
+            query="colors"
+            url="color"
+          />
           <button type="submit" className="px-3 py-2 border-white border-2">
             {isPending ? <Spinner /> : "Add"}
           </button>
@@ -72,8 +94,10 @@ export const ProductSection = () => {
             <tr className="text-left">
               <th>Product</th>
               <th>Category</th>
-              <th>Date</th>
-              <th></th>
+              <th>Billboard</th>
+              <th>Size</th>
+              <th>Color</th>
+              <th>Username</th>
             </tr>
             {products.map((product: ProductChild) => {
               return <Product key={product.id} product={product} />;

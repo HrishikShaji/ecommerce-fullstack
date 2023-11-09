@@ -1,4 +1,11 @@
-import { Category, Product } from "@prisma/client";
+import {
+  BillBoard,
+  Category,
+  Color,
+  Product,
+  Size,
+  User,
+} from "@prisma/client";
 
 export type CategoryChild = Category & {
   children: CategoryChild[];
@@ -6,4 +13,8 @@ export type CategoryChild = Category & {
 
 export type ProductChild = Product & {
   category: Category;
+  size: Size;
+  color: Color;
+  billboard: BillBoard;
+  user: User;
 };

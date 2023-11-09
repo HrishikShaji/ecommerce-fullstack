@@ -21,7 +21,10 @@ export const Product: React.FC<ProductProps> = ({ product }) => {
       <tr key={product.id} className="">
         <td>{product.name}</td>
         <td>{product.category.name}</td>
-        <td>{product.id}</td>
+        <td>{product.billboard.name}</td>
+        <td>{product.size.name}</td>
+        <td>{product.color.name}</td>
+        <td>{product.user.name}</td>
         <td className="flex items-center w-full justify-center  gap-2">
           <button
             onClick={() => dispatch(onOpen({ mode: "product", data: product }))}

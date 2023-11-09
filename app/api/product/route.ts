@@ -4,7 +4,8 @@ import prisma from "@/app/lib/connect";
 
 export async function POST(request: Request) {
   try {
-    const { name, categoryId, billboardId } = await request.json();
+    const { name, categoryId, billboardId, sizeId, colorId } =
+      await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
@@ -17,6 +18,12 @@ export async function POST(request: Request) {
     if (!billboardId) {
       return new Response(JSON.stringify("wrong input"), { status: 200 });
     }
+    if (!sizeId) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (!colorId) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
@@ -27,6 +34,8 @@ export async function POST(request: Request) {
         categoryId: categoryId,
         userId: user.user.id,
         billoardId: billboardId,
+        sizeId: sizeId,
+        colorId: colorId,
       },
     });
 
@@ -72,7 +81,13 @@ export async function GET(request: Request) {
   try {
     console.log("its here");
     const products = await prisma.product.findMany({
-      include: { category: true },
+      include: {
+        user: true,
+        category: true,
+        size: true,
+        color: true,
+        billboard: true,
+      },
     });
 
     if (!products) {

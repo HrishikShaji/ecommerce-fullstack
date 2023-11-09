@@ -56,6 +56,8 @@ model Product {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
 
+createdAt DateTime @default(now())
+updatedAt DateTime @updatedAt
   userId String @db.ObjectId
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   categoryId String @db.ObjectId
@@ -64,9 +66,12 @@ model Product {
   billoardId String @db.ObjectId
   billboard         BillBoard     @relation(fields: [billoardId], references: [id], onDelete: Cascade)
 
+  
+  sizeId String @unique @db.ObjectId
+  size         Size     @relation(fields: [sizeId], references: [id], onDelete: Cascade)
 
-createdAt DateTime @default(now())
-updatedAt DateTime @updatedAt
+  colorId String @unique @db.ObjectId
+  color         Color     @relation(fields: [colorId], references: [id], onDelete: Cascade)
 
 }
 
@@ -101,10 +106,14 @@ model Size {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
-}
+  products Product[]
+
+  }
 model Color {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name String?
   hexCode String?
+  products Product[]
 }
+
