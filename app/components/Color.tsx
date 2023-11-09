@@ -17,10 +17,10 @@ export const Color: React.FC<ColorProps> = ({ color }) => {
   const { deleteColor, isDeleting } = useDeleteColor();
   return (
     <>
-      <tr key={color.id} className="">
-        <td>{color.name}</td>
+      <tr key={color.id} className="border-neutral-700 border-b-2">
+        <td className="py-1">{color.name}</td>
         <td>{color.id}</td>
-        <td className="flex items-center w-full justify-center  gap-2">
+        <td className="flex items-center w-full justify-end pt-2 gap-2">
           <button
             onClick={() => dispatch(onOpen({ mode: "color", data: color }))}
             className="cursor-pointer"

@@ -18,14 +18,14 @@ export const Product: React.FC<ProductProps> = ({ product }) => {
 
   return (
     <>
-      <tr key={product.id} className="">
-        <td>{product.name}</td>
+      <tr key={product.id} className="border-b-2 border-neutral-700 ">
+        <td className="py-1">{product.name}</td>
         <td>{product.category.name}</td>
         <td>{product.billboard.name}</td>
         <td>{product.size.name}</td>
         <td>{product.color.name}</td>
         <td>{product.user.name}</td>
-        <td className="flex items-center w-full justify-center  gap-2">
+        <td className="flex items-center w-full justify-end  pt-2  gap-2">
           <button
             onClick={() => dispatch(onOpen({ mode: "product", data: product }))}
             className="cursor-pointer"

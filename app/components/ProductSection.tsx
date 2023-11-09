@@ -2,8 +2,6 @@
 import { Spinner } from "../components/Spinner";
 import { useState } from "react";
 import { DropDown } from "./DropDown";
-import { Product } from "./Product";
-import { ProductChild } from "@/types/types";
 import { useAddProduct, useGetProducts } from "../lib/queries/product";
 import { SectionContainer } from "./SectionContainer";
 

@@ -28,17 +28,11 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
   return (
     <div>
       <div
-        className={`flex justify-between items-center  border-b-2 pl-0 p-2 ${
-          category.parentId === null ? "bg-neutral-900" : "bg-neutral-900"
+        className={`flex justify-between items-center border-neutral-700 border-b-2 pl-0 p-1 ${
+          category.parentId === null ? "bg-neutral-800" : "bg-neutral-800"
         } `}
       >
         <div className="flex items-center gap-4">
-          <div className="bg-neutral-700 h-full p-2">
-            <BsCircleFill size={10} />
-          </div>
-          <h1>{category.name}</h1>
-        </div>
-        <div className="flex gap-2">
           <button onClick={() => setIsSubOpen(!isSubOpen)}>
             {isSubOpen ? (
               <IoMdArrowDropupCircle />
@@ -46,6 +40,9 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
               <IoMdArrowDropdownCircle />
             )}
           </button>
+          <h1>{category.name}</h1>
+        </div>
+        <div className="flex gap-2">
           <button
             onClick={() =>
               dispatch(onOpen({ mode: "category", data: category }))
@@ -76,7 +73,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
             placeholder="eg : shoes"
             onChange={(e) => setSubCategory(e.target.value)}
           />
-          <button className="px-3 py-2 border-white border-2">
+          <button className="px-3 py-2 border-neutral-700 border-2">
             {isPending ? <Spinner /> : "Add"}
           </button>
         </form>

@@ -1,9 +1,8 @@
 "use client";
-import { Category } from "../components/Category";
-import { CategoryChild } from "@/types/types";
 import { Spinner } from "../components/Spinner";
 import { useState } from "react";
 import { useAddCategory, useGetCategories } from "../lib/queries/category";
+import { SectionContainer } from "./SectionContainer";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
@@ -40,11 +39,7 @@ export const CategorySection = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <div className="flex flex-col gap-2 w-full">
-            {categories.map((category: CategoryChild) => (
-              <Category key={category.id} category={category} />
-            ))}
-          </div>
+          <SectionContainer title="Categories" data={categories} />
         )}
       </div>
     </div>
