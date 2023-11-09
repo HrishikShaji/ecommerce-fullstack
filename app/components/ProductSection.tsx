@@ -9,6 +9,7 @@ import {
 import { DropDown } from "./DropDown";
 import { Product } from "./Product";
 import { ProductChild } from "@/types/types";
+import { useAddProduct, useGetProducts } from "../lib/queries/product";
 
 type Item = {
   name: string;
@@ -25,44 +26,9 @@ export const ProductSection = () => {
     name: "",
     id: "",
   });
-  const { mutate: addProduct, isPending } = useMutation({
-    mutationFn: async (payload: ProductPayload) => {
-      const response = await fetch("/api/product", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error addind category</div>;
-    },
-    onSuccess: () => {
-      setProduct("");
-      refetch();
-    },
-  });
-  const handleAddProduct = async (e: FormEvent, payload: ProductPayload) => {
-    e.preventDefault();
-    const isValidPayload = validateProductPayload(payload);
-    addProduct(isValidPayload);
-  };
-  const {
-    data: products,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const response = await fetch(`/api/product`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      return response.json();
-    },
-  });
 
+  const { products, isError, isLoading } = useGetProducts();
+  const { addProduct, isPending } = useAddProduct();
   if (isError) return null;
   return (
     <div className="p-10 text-white flex flex-col gap-10">
@@ -70,13 +36,14 @@ export const ProductSection = () => {
         <h1 className="text-xl font-semibold">Add Products</h1>
         <form
           className="flex gap-2"
-          onSubmit={(e) =>
-            handleAddProduct(e, {
+          onSubmit={(e) => {
+            e.preventDefault();
+            addProduct({
               name: product,
               categoryId: selectedItem.id,
               billboardId: selectedBillboardItem.id,
-            })
-          }
+            });
+          }}
         >
           <input
             value={product}

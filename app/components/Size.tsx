@@ -7,35 +7,16 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { Size as SizeType } from "@prisma/client";
-import { SizePayload, validateSizePayload } from "../lib/validators/size";
+import { useDeleteSize } from "../lib/queries/size";
 
 interface SizeProps {
   size: SizeType;
 }
 
 export const Size: React.FC<SizeProps> = ({ size }) => {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { mutate: deleteSize, isPending: isDeleting } = useMutation({
-    mutationFn: async (id: string) => {
-      const response = await fetch(`/api/size?id=${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error deleting Product</div>;
-    },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["sizes"] }),
-  });
-
-  const handleSize = async (e: FormEvent, payload: SizePayload) => {
-    e.preventDefault();
-    const isValidPayload = validateSizePayload(payload);
-  };
-
+  const { deleteSize, isDeleting } = useDeleteSize();
   return (
     <>
       <tr key={size.id} className="">

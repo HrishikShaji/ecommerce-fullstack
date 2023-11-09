@@ -1,38 +1,18 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
-import {
-  ProductPayload,
-  validateProductPayload,
-} from "../lib/validators/Product";
 import { BillBoard as BillBoardType } from "@prisma/client";
 import { Billboard } from "./Billboard";
 import {
   BillboardPayload,
   validateBillboardPayload,
 } from "../lib/validators/Billboard";
+import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
-
-  const { mutate: addBillboard, isPending } = useMutation({
-    mutationFn: async (payload: BillboardPayload) => {
-      const response = await fetch("/api/billboard", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error addind category</div>;
-    },
-    onSuccess: () => {
-      setBillboard("");
-      refetch();
-    },
-  });
+  const { billboards, isLoading, isError } = useGetBillboards();
+  const { addBillboard, isPending } = useAddBillboard();
   const handleAddBillboard = async (
     e: FormEvent,
     payload: BillboardPayload,
@@ -40,23 +20,8 @@ export const BillboardSection = () => {
     e.preventDefault();
     const isValidPayload = validateBillboardPayload(payload);
     addBillboard(isValidPayload);
+    setBillboard("");
   };
-  const {
-    data: billboards,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["billboards"],
-    queryFn: async () => {
-      const response = await fetch(`/api/billboard`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      return response.json();
-    },
-  });
-
   if (isError) return null;
   return (
     <div className="p-10 text-white flex flex-col gap-10">

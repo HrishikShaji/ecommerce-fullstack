@@ -1,51 +1,14 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { Size as SizeType } from "@prisma/client";
-import { SizePayload, validateSizePayload } from "../lib/validators/size";
 import { Size } from "./Size";
+import { useAddSize, useGetSizes } from "../lib/queries/size";
 
 export const SizeSection = () => {
   const [size, setSize] = useState("");
-
-  const { mutate: addSize, isPending } = useMutation({
-    mutationFn: async (payload: SizePayload) => {
-      const response = await fetch("/api/size", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error addind category</div>;
-    },
-    onSuccess: () => {
-      setSize("");
-      refetch();
-    },
-  });
-  const handleAddSize = async (e: FormEvent, payload: SizePayload) => {
-    e.preventDefault();
-    const isValidPayload = validateSizePayload(payload);
-    addSize(isValidPayload);
-  };
-  const {
-    data: sizes,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["sizes"],
-    queryFn: async () => {
-      const response = await fetch(`/api/size`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      return response.json();
-    },
-  });
+  const { sizes, isLoading, isError } = useGetSizes();
+  const { addSize, isPending } = useAddSize();
 
   if (isError) return null;
   return (
@@ -54,11 +17,12 @@ export const SizeSection = () => {
         <h1 className="text-xl font-semibold">Add Sizes</h1>
         <form
           className="flex gap-2"
-          onSubmit={(e) =>
-            handleAddSize(e, {
+          onSubmit={(e) => {
+            e.preventDefault();
+            addSize({
               name: size,
-            })
-          }
+            });
+          }}
         >
           <input
             value={size}

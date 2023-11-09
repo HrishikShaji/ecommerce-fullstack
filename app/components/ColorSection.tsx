@@ -1,51 +1,15 @@
 "use client";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
 import { Color as ColorType } from "@prisma/client";
-import { ColorPayload, validateColorPayload } from "../lib/validators/color";
 import { Color } from "./Color";
+import { useAddColors, useGetColors } from "../lib/queries/color";
 
 export const ColorSection = () => {
   const [color, setColor] = useState("");
 
-  const { mutate: addColor, isPending } = useMutation({
-    mutationFn: async (payload: ColorPayload) => {
-      const response = await fetch("/api/color", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error addind category</div>;
-    },
-    onSuccess: () => {
-      setColor("");
-      refetch();
-    },
-  });
-  const handleAddColor = async (e: FormEvent, payload: ColorPayload) => {
-    e.preventDefault();
-    const isValidPayload = validateColorPayload(payload);
-    addColor(isValidPayload);
-  };
-  const {
-    data: colors,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["colors"],
-    queryFn: async () => {
-      const response = await fetch(`/api/color`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      return response.json();
-    },
-  });
+  const { colors, isError, isLoading } = useGetColors();
+  const { addColor, isPending } = useAddColors();
 
   if (isError) return null;
   return (
@@ -54,11 +18,12 @@ export const ColorSection = () => {
         <h1 className="text-xl font-semibold">Add Colors</h1>
         <form
           className="flex gap-2"
-          onSubmit={(e) =>
-            handleAddColor(e, {
+          onSubmit={(e) => {
+            e.preventDefault();
+            addColor({
               name: color,
-            })
-          }
+            });
+          }}
         >
           <input
             value={color}

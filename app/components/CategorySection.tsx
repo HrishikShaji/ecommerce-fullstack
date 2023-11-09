@@ -1,54 +1,15 @@
 "use client";
 import { Category } from "../components/Category";
 import { CategoryChild } from "@/types/types";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "../components/Spinner";
 import { FormEvent, useState } from "react";
-import {
-  CategoryPayload,
-  validateCategoryPayload,
-} from "../lib/validators/category";
+import { useAddCategory, useGetCategories } from "../lib/queries/category";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
 
-  const { mutate: addCategory, isPending } = useMutation({
-    mutationFn: async (payload: CategoryPayload) => {
-      const response = await fetch("/api/category", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      return response;
-    },
-    onError: () => {
-      return <div>Error addind category</div>;
-    },
-    onSuccess: () => {
-      refetch();
-      setCategory("");
-    },
-  });
-  const handleAddCategory = async (e: FormEvent, payload: CategoryPayload) => {
-    e.preventDefault();
-    const isValidPayload = validateCategoryPayload(payload);
-    addCategory(isValidPayload);
-  };
-  const {
-    data: categories,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => {
-      const response = await fetch(`/api/category`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
-      return response.json();
-    },
-  });
+  const { categories, isError, isLoading } = useGetCategories();
+  const { addCategory, isPending } = useAddCategory();
 
   if (isError) return null;
   return (
@@ -57,7 +18,10 @@ export const CategorySection = () => {
         <h1 className="text-xl font-semibold">Add Categories</h1>
         <form
           className="flex gap-2"
-          onSubmit={(e) => handleAddCategory(e, { name: category })}
+          onSubmit={(e) => {
+            e.preventDefault();
+            addCategory({ name: category });
+          }}
         >
           <input
             value={category}
