@@ -3,18 +3,18 @@ import { Spinner } from "../components/Spinner";
 import { useState } from "react";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 import { SectionContainer } from "./SectionContainer";
-import { Form } from "./Form";
+import { Form, InputItem } from "./Form";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
   const { billboards, isLoading, isError } = useGetBillboards();
   const { addBillboard, isPending } = useAddBillboard();
-  const values = [
+  const values: InputItem[] = [
     {
       label: "Billboard",
       name: "name",
       value: billboard,
-      placeholder: "easter",
+      placeholder: "eg: easter",
       onChange: setBillboard,
     },
   ];

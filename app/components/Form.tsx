@@ -1,8 +1,16 @@
-import { ChangeEvent, FormEvent, useState, useRef } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Button } from "./Button";
 
+export type InputItem = {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+};
+
 interface FormProps {
-  values: any;
+  values: InputItem[];
   apiFunction: (values: any) => void;
   isPending: boolean;
 }
@@ -13,17 +21,17 @@ export const Form: React.FC<FormProps> = ({
   isPending,
 }) => {
   const [formData, setFormData] = useState({});
-  const formRef = useRef<HTMLFormElement | null>(null);
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
     apiFunction(formData);
-    formRef.current?.reset();
+    values.forEach((item: InputItem) => {
+      item.onChange("");
+    });
   };
   return (
-    <form ref={formRef} onSubmit={onSubmit} className="flex gap-2 items-end">
-      {values.map((value: any, i: number) => (
-        <FormItem key={i} values={value} setFormData={setFormData} />
+    <form onSubmit={onSubmit} className="flex gap-2 items-end">
+      {values.map((value: InputItem, i: number) => (
+        <FormItem key={i} value={value} setFormData={setFormData} />
       ))}
       <Button isPending={isPending} />
     </form>
@@ -31,12 +39,12 @@ export const Form: React.FC<FormProps> = ({
 };
 
 interface FormItemProps {
-  values: any;
+  value: InputItem;
   setFormData: (values: any) => void;
 }
 
-const FormItem: React.FC<FormItemProps> = ({ values, setFormData }) => {
-  const { label, onChange, ...inputProps } = values;
+const FormItem: React.FC<FormItemProps> = ({ value, setFormData }) => {
+  const { label, onChange, ...inputProps } = value;
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((formData: any) => ({
       ...formData,
