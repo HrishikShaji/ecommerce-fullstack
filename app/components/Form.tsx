@@ -1,5 +1,12 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from "react";
 import { Button } from "./Button";
+import { DropDown } from "./DropDown";
 
 export type InputItem = {
   label: string;
@@ -9,16 +16,32 @@ export type InputItem = {
   placeholder: string;
 };
 
+type Item = {
+  name: string;
+  id: string;
+};
+
+type DropdownInputItem = {
+  selectedItem: Item;
+  setSelectedItem: Dispatch<SetStateAction<Item>>;
+  url: string;
+  query: string;
+  name: string;
+  label: string;
+};
+
 interface FormProps {
   values: InputItem[];
   apiFunction: (values: any) => void;
   isPending: boolean;
+  dropdownValues?: DropdownInputItem[];
 }
 
 export const Form: React.FC<FormProps> = ({
   values,
   apiFunction,
   isPending,
+  dropdownValues,
 }) => {
   const [formData, setFormData] = useState({});
   const onSubmit = (e: FormEvent) => {
@@ -33,8 +56,35 @@ export const Form: React.FC<FormProps> = ({
       {values.map((value: InputItem, i: number) => (
         <FormItem key={i} value={value} setFormData={setFormData} />
       ))}
+      {dropdownValues &&
+        dropdownValues.map((item: DropdownInputItem, i) => (
+          <DropdownItem key={i} value={item} setFormData={setFormData} />
+        ))}
       <Button isPending={isPending} />
     </form>
+  );
+};
+
+interface DropdownItemProps {
+  value: DropdownInputItem;
+  setFormData: (values: any) => void;
+}
+
+const DropdownItem: React.FC<DropdownItemProps> = ({ value, setFormData }) => {
+  setFormData((formData: any) => ({
+    ...formData,
+    [value.name]: value.selectedItem.id,
+  }));
+  return (
+    <div className="flex flex-col gap-2 w-full">
+      <label>{value.label}</label>
+      <DropDown
+        selectedItem={value.selectedItem}
+        setSelectedItem={value.setSelectedItem}
+        query={value.query}
+        url={value.url}
+      />
+    </div>
   );
 };
 
