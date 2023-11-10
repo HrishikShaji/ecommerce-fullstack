@@ -4,6 +4,7 @@ import { useState } from "react";
 import { DropDown } from "./DropDown";
 import { useAddProduct, useGetProducts } from "../lib/queries/product";
 import { SectionContainer } from "./SectionContainer";
+import { Form, InputItem } from "./Form";
 
 type Item = {
   name: string;
@@ -36,6 +37,7 @@ export const ProductSection = () => {
       setSelectedItem: setSelectedItem,
       url: "category",
       query: "categories",
+      name: "categoryId",
     },
     {
       label: "Billboard",
@@ -43,6 +45,7 @@ export const ProductSection = () => {
       setSelectedItem: setSelectedBillboardItem,
       url: "billboard",
       query: "billboards",
+      name: "billboardId",
     },
     {
       label: "Size",
@@ -50,6 +53,7 @@ export const ProductSection = () => {
       setSelectedItem: setSelectedSizeItem,
       url: "size",
       query: "sizes",
+      name: "sizeId",
     },
     {
       label: "Color",
@@ -57,9 +61,19 @@ export const ProductSection = () => {
       setSelectedItem: setSelectedColorItem,
       url: "color",
       query: "colors",
+      name: "colorId",
     },
   ];
 
+  const values: InputItem[] = [
+    {
+      label: "Product",
+      name: "name",
+      value: product,
+      placeholder: "eg: shoes",
+      onChange: setProduct,
+    },
+  ];
   const { products, isError, isLoading } = useGetProducts();
   const { addProduct, isPending } = useAddProduct();
   if (isError) return null;
@@ -67,48 +81,12 @@ export const ProductSection = () => {
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Add Products</h1>
-        <form
-          className="flex gap-2 items-end justify-around"
-          onSubmit={(e) => {
-            e.preventDefault();
-            addProduct({
-              name: product,
-              categoryId: selectedItem.id,
-              billboardId: selectedBillboardItem.id,
-              sizeId: selectedSizeItem.id,
-              colorId: selectedColorItem.id,
-            });
-            setProduct("");
-          }}
-        >
-          <div className="flex flex-col gap-2">
-            <label>Product Name</label>
-
-            <input
-              value={product}
-              className="p-1 text-black rounded-md focus:outline-none placeholder-gray-600"
-              placeholder="eg : shoes"
-              onChange={(e) => setProduct(e.target.value)}
-            />
-          </div>
-          {dropDownValues.map((item, i) => (
-            <div key={i} className="flex flex-col gap-2 w-full">
-              <label>{item.label}</label>
-              <DropDown
-                selectedItem={item.selectedItem}
-                setSelectedItem={item.setSelectedItem}
-                query={item.query}
-                url={item.url}
-              />
-            </div>
-          ))}
-          <button
-            type="submit"
-            className="py-1 px-3 bg-white text-black rounded-md"
-          >
-            {isPending ? <Spinner /> : "Add"}
-          </button>
-        </form>
+        <Form
+          dropdownValues={dropDownValues}
+          values={values}
+          apiFunction={addProduct}
+          isPending={isPending}
+        />
       </div>
       <div>
         {isLoading ? (

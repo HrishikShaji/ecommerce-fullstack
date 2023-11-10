@@ -46,6 +46,14 @@ export const Form: React.FC<FormProps> = ({
   const [formData, setFormData] = useState({});
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
+    console.log(formData);
+    dropdownValues?.forEach((item, i) => {
+      setFormData((formData) => ({
+        ...formData,
+        [item.name]: item.selectedItem.id,
+      }));
+    });
+    console.log(formData);
     apiFunction(formData);
     values.forEach((item: InputItem) => {
       item.onChange("");
@@ -71,10 +79,12 @@ interface DropdownItemProps {
 }
 
 const DropdownItem: React.FC<DropdownItemProps> = ({ value, setFormData }) => {
-  setFormData((formData: any) => ({
+  {
+    /*setFormData((formData: any) => ({
     ...formData,
     [value.name]: value.selectedItem.id,
-  }));
+  }));*/
+  }
   return (
     <div className="flex flex-col gap-2 w-full">
       <label>{value.label}</label>
