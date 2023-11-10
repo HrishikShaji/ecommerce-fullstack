@@ -16,7 +16,7 @@ export const Billboard: React.FC<BillboardProps> = ({ billboard }) => {
   const { deleteBillboard, isDeleting } = useDeleteBillboard();
 
   return (
-    <>
+    <tbody>
       <tr key={billboard.id} className="border-b-2 border-neutral-700">
         <td className="py-1">{billboard.name}</td>
         <td>{billboard.id}</td>
@@ -37,6 +37,6 @@ export const Billboard: React.FC<BillboardProps> = ({ billboard }) => {
           </button>
         </td>
       </tr>
-    </>
+    </tbody>
   );
 };

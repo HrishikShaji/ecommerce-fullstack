@@ -26,7 +26,7 @@ export const useAddProduct = () => {
   const { mutate: addProduct, isPending } = useMutation({
     mutationFn: async (payload: ProductPayload) => {
       const isValidPayload = validateProductPayload(payload);
-
+      console.log(isValidPayload);
       const response = await fetch("/api/product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

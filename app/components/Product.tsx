@@ -17,7 +17,7 @@ export const Product: React.FC<ProductProps> = ({ product }) => {
   const { deleteProduct, isDeleting } = useDeleteProduct();
 
   return (
-    <>
+    <tbody>
       <tr key={product.id} className="border-b-2 border-neutral-700 ">
         <td className="py-1">{product.name}</td>
         <td>{product.category.name}</td>
@@ -40,6 +40,6 @@ export const Product: React.FC<ProductProps> = ({ product }) => {
           </button>
         </td>
       </tr>
-    </>
+    </tbody>
   );
 };

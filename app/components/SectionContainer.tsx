@@ -49,14 +49,16 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
         </div>
       </div>
       <table className="w-full">
-        <tr className="text-left border-b-2 border-neutral-700 ">
-          {headings &&
-            headings.map((heading, i) => (
-              <th className="py-2" key={i}>
-                {heading}
-              </th>
-            ))}
-        </tr>
+        <thead>
+          <tr className="text-left border-b-2 border-neutral-700 ">
+            {headings &&
+              headings.map((heading, i) => (
+                <th className="py-2" key={i}>
+                  {heading}
+                </th>
+              ))}
+          </tr>
+        </thead>
         {title === "Billboards" &&
           data.map((billboard) => {
             return (
