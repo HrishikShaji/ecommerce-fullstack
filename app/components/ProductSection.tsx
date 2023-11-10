@@ -29,6 +29,37 @@ export const ProductSection = () => {
     id: "",
   });
 
+  const dropDownValues = [
+    {
+      label: "Category",
+      selectedItem: selectedItem,
+      setSelectedItem: setSelectedItem,
+      url: "category",
+      query: "categories",
+    },
+    {
+      label: "Billboard",
+      selectedItem: selectedBillboardItem,
+      setSelectedItem: setSelectedBillboardItem,
+      url: "billboard",
+      query: "billboards",
+    },
+    {
+      label: "Size",
+      selectedItem: selectedSizeItem,
+      setSelectedItem: setSelectedSizeItem,
+      url: "size",
+      query: "sizes",
+    },
+    {
+      label: "Color",
+      selectedItem: selectedColorItem,
+      setSelectedItem: setSelectedColorItem,
+      url: "color",
+      query: "colors",
+    },
+  ];
+
   const { products, isError, isLoading } = useGetProducts();
   const { addProduct, isPending } = useAddProduct();
   if (isError) return null;
@@ -60,42 +91,17 @@ export const ProductSection = () => {
               onChange={(e) => setProduct(e.target.value)}
             />
           </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label>Category</label>
-            <DropDown
-              selectedItem={selectedItem}
-              setSelectedItem={setSelectedItem}
-              query="categories"
-              url="category"
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label>Billboard</label>
-            <DropDown
-              selectedItem={selectedBillboardItem}
-              setSelectedItem={setSelectedBillboardItem}
-              query="billboards"
-              url="billboard"
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label>Size</label>
-            <DropDown
-              selectedItem={selectedSizeItem}
-              setSelectedItem={setSelectedSizeItem}
-              query="sizes"
-              url="size"
-            />
-          </div>
-          <div className="flex flex-col gap-2 w-full">
-            <label>Color</label>
-            <DropDown
-              selectedItem={selectedColorItem}
-              setSelectedItem={setSelectedColorItem}
-              query="colors"
-              url="color"
-            />
-          </div>
+          {dropDownValues.map((item, i) => (
+            <div key={i} className="flex flex-col gap-2 w-full">
+              <label>{item.label}</label>
+              <DropDown
+                selectedItem={item.selectedItem}
+                setSelectedItem={item.setSelectedItem}
+                query={item.query}
+                url={item.url}
+              />
+            </div>
+          ))}
           <button
             type="submit"
             className="py-1 px-3 bg-white text-black rounded-md"
