@@ -16,7 +16,7 @@ export const Color: React.FC<ColorProps> = ({ color }) => {
 
   const { deleteColor, isDeleting } = useDeleteColor();
   return (
-    <>
+    <tbody>
       <tr key={color.id} className="border-neutral-700 border-b-2">
         <td className="py-1">{color.name}</td>
         <td>{color.id}</td>
@@ -35,6 +35,6 @@ export const Color: React.FC<ColorProps> = ({ color }) => {
           </button>
         </td>
       </tr>
-    </>
+    </tbody>
   );
 };

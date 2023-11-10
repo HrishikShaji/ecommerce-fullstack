@@ -67,11 +67,11 @@ export const DropDown: React.FC<DropDownProps> = ({
   if (isError) return null;
 
   return (
-    <div className="flex flex-col  w-64">
-      <div className="flex gap-5 p-2 h-full bg-neutral-800 justify-between items-center">
+    <div className="flex flex-col bg-neutral-800 rounded-md ">
+      <div className="flex gap-5 p-1  h-full  justify-between items-center">
         <h1>{selectedItem.name ? selectedItem.name : "Select"}</h1>
         <div
-          className="cursor-pointer"
+          className="cursor-pointer hover:bg-neutral-700 p-1 rounded-md"
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}
         >
@@ -80,8 +80,8 @@ export const DropDown: React.FC<DropDownProps> = ({
       </div>
       {isOpen && isSuccess && (
         <div className="relative  text-left" ref={dropdownRef}>
-          <div className="origin-top-right absolute right-0  w-64 rounded-md shadow-lg  ring-1 ring-black ring-opacity-5">
-            <div className="border-b-1 border-white">
+          <div className="origin-top-right absolute right-0 top-2 p-1 pb-2 bg-neutral-600 w-full  rounded-md shadow-lg  ring-1 ring-black z-30 ring-opacity-5">
+            <div className="">
               <ul className="">
                 {categories.map((category: CategoryChild) => (
                   <MenuItem
@@ -127,16 +127,19 @@ const MenuItem: React.FC<MenuItemProps> = ({
   };
 
   return (
-    <li className="relative bg-neutral-700">
+    <li className="relative ">
       <div
         onClick={() =>
           handleSelect({ name: category.name || "", id: category.id || "" })
         }
-        className="cursor-pointer hover:bg-neutral-600 flex justify-between items-center bg-neutral-700 border-b-2 border-neutral-800 pl-2"
+        className="cursor-pointer flex justify-between items-center border-b-2 border-neutral-800 rounded-md hover:bg-neutral-800 pl-2"
       >
         <h1 className="">{category.name}</h1>
         {category.children && category.children.length > 0 && (
-          <div onClick={handleClick} className="p-1 bg-neutral-500">
+          <div
+            onClick={handleClick}
+            className="p-1 rounded-md hover:bg-neutral-700"
+          >
             <BiDownArrow />{" "}
           </div>
         )}

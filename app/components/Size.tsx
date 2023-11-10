@@ -16,7 +16,7 @@ export const Size: React.FC<SizeProps> = ({ size }) => {
 
   const { deleteSize, isDeleting } = useDeleteSize();
   return (
-    <>
+    <tbody>
       <tr key={size.id} className="border-neutral-700 border-b-2">
         <td className="py-1">{size.name}</td>
         <td>{size.id}</td>
@@ -35,6 +35,6 @@ export const Size: React.FC<SizeProps> = ({ size }) => {
           </button>
         </td>
       </tr>
-    </>
+    </tbody>
   );
 };

@@ -5,49 +5,53 @@ import { ProductSection } from "../components/ProductSection";
 import { BillboardSection } from "../components/BillboardSection";
 import { SizeSection } from "../components/SizeSection";
 import { ColorSection } from "../components/ColorSection";
+
+const sections = [
+  {
+    title: "Billboard",
+    component: <BillboardSection />,
+  },
+  {
+    title: "Category",
+    component: <CategorySection />,
+  },
+  {
+    title: "Product",
+    component: <ProductSection />,
+  },
+  {
+    title: "Size",
+    component: <SizeSection />,
+  },
+  {
+    title: "Color",
+    component: <ColorSection />,
+  },
+];
+
 const Page = () => {
-  const [categorySectionOpen, setCategorySectionOpen] = useState(false);
-  const [productSectionOpen, setProductSectionOpen] = useState(false);
-  const [billboardSectionOpen, setBillboardSectionOpen] = useState(false);
-  const [sizeSectionOpen, setSizeSectionOpen] = useState(false);
-  const [colorSectionOpen, setColorSectionOpen] = useState(false);
+  const [showSection, setShowSection] = useState(
+    Array(sections.length).fill(false),
+  );
   return (
     <div className="text-white p-10 flex flex-col gap-4">
-      <div
-        className="p-2 pl-4 w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
-        onClick={() => setBillboardSectionOpen(!billboardSectionOpen)}
-      >
-        Billboard
-      </div>
-      {billboardSectionOpen && <BillboardSection />}
-      <div
-        className="p-2 pl-4 w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
-        onClick={() => setCategorySectionOpen(!categorySectionOpen)}
-      >
-        Category
-      </div>
-      {categorySectionOpen && <CategorySection />}
-      <div
-        className="p-2 pl-4 w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
-        onClick={() => setProductSectionOpen(!productSectionOpen)}
-      >
-        Product
-      </div>
-      {productSectionOpen && <ProductSection />}
-      <div
-        className="p-2 pl-4 w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
-        onClick={() => setSizeSectionOpen(!sizeSectionOpen)}
-      >
-        Size
-      </div>
-      {sizeSectionOpen && <SizeSection />}
-      <div
-        className="p-2 pl-4 w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
-        onClick={() => setColorSectionOpen(!colorSectionOpen)}
-      >
-        Color
-      </div>
-      {colorSectionOpen && <ColorSection />}
+      {sections.map((section, i) => {
+        return (
+          <div key={i}>
+            <div
+              className="p-2  w-full font-semibold cursor-pointer text-xl bg-neutral-800 hover:bg-neutral-700"
+              onClick={() => {
+                const newShowSections = [...showSection];
+                newShowSections[i] = !newShowSections[i];
+                setShowSection(newShowSections);
+              }}
+            >
+              {section.title}
+            </div>
+            {showSection[i] && section.component}
+          </div>
+        );
+      })}
     </div>
   );
 };
