@@ -3,6 +3,7 @@ import {
   Dispatch,
   FormEvent,
   SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import { Button } from "./Button";
@@ -44,16 +45,25 @@ export const Form: React.FC<FormProps> = ({
   dropdownValues,
 }) => {
   const [formData, setFormData] = useState({});
+  const updateDropdownValuesInFormData = () => {
+    let updatedFormData = { ...formData };
+
+    dropdownValues?.forEach((item) => {
+      updatedFormData = {
+        ...updatedFormData,
+        [item.name]: item.selectedItem.id,
+      };
+    });
+
+    setFormData(updatedFormData);
+  };
+
+  useEffect(() => {
+    updateDropdownValuesInFormData();
+  }, [dropdownValues]);
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    dropdownValues?.forEach((item, i) => {
-      setFormData((formData) => ({
-        ...formData,
-        [item.name]: item.selectedItem.id,
-      }));
-    });
-    console.log(formData);
+
     apiFunction(formData);
     values.forEach((item: InputItem) => {
       item.onChange("");
@@ -66,7 +76,7 @@ export const Form: React.FC<FormProps> = ({
       ))}
       {dropdownValues &&
         dropdownValues.map((item: DropdownInputItem, i) => (
-          <DropdownItem key={i} value={item} setFormData={setFormData} />
+          <DropdownItem key={i} value={item} />
         ))}
       <Button isPending={isPending} />
     </form>
@@ -75,16 +85,9 @@ export const Form: React.FC<FormProps> = ({
 
 interface DropdownItemProps {
   value: DropdownInputItem;
-  setFormData: (values: any) => void;
 }
 
-const DropdownItem: React.FC<DropdownItemProps> = ({ value, setFormData }) => {
-  {
-    /*setFormData((formData: any) => ({
-    ...formData,
-    [value.name]: value.selectedItem.id,
-  }));*/
-  }
+const DropdownItem: React.FC<DropdownItemProps> = ({ value }) => {
   return (
     <div className="flex flex-col gap-2 w-full">
       <label>{value.label}</label>

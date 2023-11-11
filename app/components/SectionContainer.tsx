@@ -28,7 +28,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   const [isSortOpen, setIsSortOpen] = useState(false);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
-      <div className="flex justify-between items-center ">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
         <h1>{title}</h1>
         <div className="flex gap-2 items-center">
           <form className="relative flex items-center ">
