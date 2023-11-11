@@ -30,8 +30,14 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = Number(searchParams.get("page"));
+  console.log("page is", page);
   try {
-    const billboards = await prisma.billBoard.findMany({});
+    const billboards = await prisma.billBoard.findMany({
+      take: 2,
+      skip: 2 * (page === 0 ? 1 : page - 1),
+    });
 
     if (!billboards) {
       return new Response(JSON.stringify("No data"), { status: 400 });

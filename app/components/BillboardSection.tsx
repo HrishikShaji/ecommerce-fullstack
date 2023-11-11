@@ -1,13 +1,15 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
-  const { billboards, isLoading, isError } = useGetBillboards();
+  const [page, setPage] = useState(0);
+  console.log(page);
+  const { billboards, isLoading, isError } = useGetBillboards(page);
   const { addBillboard, isPending } = useAddBillboard();
   const values: InputItem[] = [
     {
@@ -37,6 +39,8 @@ export const BillboardSection = () => {
           title="Billboards"
           headings={["Bill", "Cat"]}
           data={billboards}
+          setPage={setPage}
+          page={page}
         />
       )}
     </div>

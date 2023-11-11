@@ -3,7 +3,7 @@ import {
   Size as SizeType,
   Color as ColorType,
 } from "@prisma/client";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 import { ImSearch } from "react-icons/im";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
@@ -18,14 +18,20 @@ interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   headings?: string[];
   data: BillboardType[] | ProductChild[] | SizeType[] | ColorType[];
+  setPage: Dispatch<SetStateAction<number>>;
+  page: number;
 }
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
   title,
   headings,
   data,
+  setPage,
+  page,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const hasPrev = page <= 0;
+  const hasNext = page < data.length - 1;
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
@@ -93,10 +99,24 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
           })}
       </table>
       <div className="w-full flex gap-2 justify-end">
-        <button>
+        <button
+          disabled={hasPrev}
+          onClick={() =>
+            setPage((prevState: number) => {
+              return prevState - 1;
+            })
+          }
+        >
           <BsArrowLeftSquareFill />
         </button>
-        <button>
+        <button
+          disabled={!hasNext}
+          onClick={() =>
+            setPage((prevState: number) => {
+              return prevState + 1;
+            })
+          }
+        >
           <BsArrowRightSquareFill />
         </button>
       </div>

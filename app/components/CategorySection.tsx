@@ -7,7 +7,7 @@ import { Form, InputItem } from "./Form";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
-
+  const [page, setPage] = useState(0);
   const { categories, isError, isLoading } = useGetCategories();
   const { addCategory, isPending } = useAddCategory();
 
@@ -32,7 +32,12 @@ export const CategorySection = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <SectionContainer title="Categories" data={categories} />
+          <SectionContainer
+            title="Categories"
+            setPage={setPage}
+            page={page}
+            data={categories}
+          />
         )}
       </div>
     </div>
