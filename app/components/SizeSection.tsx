@@ -9,7 +9,7 @@ export const SizeSection = () => {
   const [size, setSize] = useState("");
   const { sizes, isLoading, isError } = useGetSizes();
   const { addSize, isPending } = useAddSize();
-
+  const [page, setPage] = useState(0);
   const values: InputItem[] = [
     {
       label: "Size",
@@ -34,6 +34,8 @@ export const SizeSection = () => {
             title="Sizes"
             headings={["Size", "Category", "Date"]}
             data={sizes}
+            setPage={setPage}
+            page={page}
           />
         )}
       </div>

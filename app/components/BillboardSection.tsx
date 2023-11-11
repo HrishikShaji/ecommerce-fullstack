@@ -9,6 +9,8 @@ export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
   const { billboards, isLoading, isError } = useGetBillboards();
   const { addBillboard, isPending } = useAddBillboard();
+  const [page, setPage] = useState(0);
+  console.log(page);
   const values: InputItem[] = [
     {
       label: "Billboard",
@@ -37,6 +39,8 @@ export const BillboardSection = () => {
           title="Billboards"
           headings={["Bill", "Cat"]}
           data={billboards}
+          setPage={setPage}
+          page={page}
         />
       )}
     </div>

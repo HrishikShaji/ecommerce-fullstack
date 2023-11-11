@@ -13,6 +13,7 @@ type Item = {
 
 export const ProductSection = () => {
   const [product, setProduct] = useState("");
+  const [page, setPage] = useState(0);
   const [selectedBillboardItem, setSelectedBillboardItem] = useState<Item>({
     name: "",
     id: "",
@@ -102,6 +103,8 @@ export const ProductSection = () => {
               "Color",
               "Username",
             ]}
+            setPage={setPage}
+            page={page}
             data={products}
           />
         )}

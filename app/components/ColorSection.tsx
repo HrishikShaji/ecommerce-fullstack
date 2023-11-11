@@ -7,7 +7,7 @@ import { Form, InputItem } from "./Form";
 
 export const ColorSection = () => {
   const [color, setColor] = useState("");
-
+  const [page, setPage] = useState(0);
   const { colors, isError, isLoading } = useGetColors();
   const { addColor, isPending } = useAddColors();
 
@@ -35,6 +35,8 @@ export const ColorSection = () => {
             title="Colors"
             headings={["Color", "Category", "Date"]}
             data={colors}
+            setPage={setPage}
+            page={page}
           />
         )}
       </div>
