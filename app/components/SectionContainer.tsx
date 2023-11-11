@@ -32,7 +32,6 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   const [isSortOpen, setIsSortOpen] = useState(false);
   const hasPrev = page <= 0;
   const hasNext = page < data.length - 1;
-  console.log(hasPrev, hasNext);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">

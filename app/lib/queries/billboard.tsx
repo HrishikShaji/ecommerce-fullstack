@@ -4,7 +4,8 @@ import {
   validateBillboardPayload,
 } from "../validators/Billboard";
 
-export const useGetBillboards = () => {
+export const useGetBillboards = (page: number) => {
+  console.log(page);
   const {
     data: billboards,
     isError,
@@ -13,7 +14,7 @@ export const useGetBillboards = () => {
   } = useQuery({
     queryKey: ["billboards"],
     queryFn: async () => {
-      const response = await fetch(`/api/billboard`, {
+      const response = await fetch(`/api/billboard?page=${page}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
