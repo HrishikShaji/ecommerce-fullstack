@@ -49,12 +49,8 @@ export const DropDown: React.FC<DropDownProps> = ({
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
-  const {
-    data: categories,
-    isError,
-    isSuccess,
-  } = useQuery({
-    queryKey: [query],
+  const { data, isError, isSuccess } = useQuery({
+    queryKey: [`dropdown${query}`],
     queryFn: async () => {
       const response = await fetch(`/api/${url}`, {
         method: "GET",
@@ -83,7 +79,7 @@ export const DropDown: React.FC<DropDownProps> = ({
           <div className="origin-top-right absolute right-0 top-2 p-1 pb-2 bg-neutral-600 w-full  rounded-md shadow-lg  ring-1 ring-black z-30 ring-opacity-5">
             <div className="">
               <ul className="">
-                {categories.map((category: CategoryChild) => (
+                {data.map((category: CategoryChild) => (
                   <MenuItem
                     key={category.id}
                     category={category}

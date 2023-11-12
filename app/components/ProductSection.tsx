@@ -1,6 +1,6 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DropDown } from "./DropDown";
 import { useAddProduct, useGetProducts } from "../lib/queries/product";
 import { SectionContainer } from "./SectionContainer";
@@ -13,7 +13,7 @@ type Item = {
 
 export const ProductSection = () => {
   const [product, setProduct] = useState("");
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [selectedBillboardItem, setSelectedBillboardItem] = useState<Item>({
     name: "",
     id: "",
@@ -75,7 +75,10 @@ export const ProductSection = () => {
       onChange: setProduct,
     },
   ];
-  const { products, isError, isLoading } = useGetProducts();
+  const { products, refetch, count, isError, isLoading } = useGetProducts(page);
+  useEffect(() => {
+    refetch();
+  }, [page]);
   const { addProduct, isPending } = useAddProduct();
   if (isError) return null;
   return (
@@ -94,6 +97,7 @@ export const ProductSection = () => {
           <Spinner />
         ) : (
           <SectionContainer
+            count={count}
             title="Products"
             headings={[
               "Product",

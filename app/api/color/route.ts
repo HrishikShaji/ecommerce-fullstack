@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
+import { itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -29,14 +30,30 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = Number(searchParams.get("page"));
+  console.log("page:", page);
   try {
-    const colors = await prisma.color.findMany({});
+    if (page === 0) {
+      const colors = await prisma.color.findMany({});
+
+      if (!colors) {
+        return new Response(JSON.stringify("No data"), { status: 400 });
+      }
+
+      return new Response(JSON.stringify(colors), { status: 200 });
+    }
+    const count = await prisma.color.count();
+    const colors = await prisma.color.findMany({
+      take: itemsPerPage,
+      skip: itemsPerPage * (page - 1),
+    });
 
     if (!colors) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
 
-    return new Response(JSON.stringify(colors), { status: 200 });
+    return new Response(JSON.stringify({ count, colors }), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });

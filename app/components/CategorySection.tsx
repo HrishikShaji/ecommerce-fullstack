@@ -1,16 +1,21 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddCategory, useGetCategories } from "../lib/queries/category";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
-  const [page, setPage] = useState(0);
-  const { categories, isError, isLoading } = useGetCategories();
+  const [page, setPage] = useState(1);
+  const { categories, isError, isLoading, refetch, count } =
+    useGetCategories(page);
   const { addCategory, isPending } = useAddCategory();
 
+  useEffect(() => {
+    refetch();
+  }, [page]);
+  console.log(categories);
   const values: InputItem[] = [
     {
       label: "Category",
@@ -37,6 +42,7 @@ export const CategorySection = () => {
             setPage={setPage}
             page={page}
             data={categories}
+            count={count}
           />
         )}
       </div>

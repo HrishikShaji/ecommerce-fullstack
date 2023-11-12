@@ -3,6 +3,7 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
+import { itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -33,6 +34,7 @@ export async function POST(request: Request) {
         userId: user.user.id,
       },
     });
+    console.log("category added", category);
 
     return new Response(JSON.stringify(category), { status: 200 });
   } catch (error) {
@@ -69,16 +71,40 @@ const getCategories = (
   return categoryList;
 };
 
+function paginateArray(categories: CategoryChild[], page: number) {
+  const startIndex = page === 1 ? 0 : (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  return categories.slice(startIndex, endIndex);
+}
+
 export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const page = Number(searchParams.get("page"));
   try {
+    if (page === 0) {
+      const categories = await prisma.category.findMany({});
+
+      if (!categories) {
+        return new Response(JSON.stringify("No data"), { status: 400 });
+      }
+      const allCategories = getCategories(categories);
+      return new Response(JSON.stringify(allCategories), {
+        status: 200,
+      });
+    }
+
     const categories = await prisma.category.findMany({});
 
     if (!categories) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    const allCategories = getCategories(categories);
-
-    return new Response(JSON.stringify(allCategories), { status: 200 });
+    const withSubCategories = getCategories(categories);
+    const count = withSubCategories.length;
+    const allCategories = paginateArray(withSubCategories, page);
+    return new Response(JSON.stringify({ count, allCategories }), {
+      status: 200,
+    });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
