@@ -3,7 +3,13 @@ import {
   Size as SizeType,
   Color as ColorType,
 } from "@prisma/client";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 import { ImSearch } from "react-icons/im";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
@@ -14,9 +20,11 @@ import { Size } from "./Size";
 import { Color } from "./Color";
 import { Category } from "./Category";
 import { itemsPerPage } from "../lib/utils";
+import { useSearch } from "../lib/queries/search";
 
 interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
+  section: "billBoard" | "color" | "size" | "product" | "category";
   headings?: string[];
   data: BillboardType[] | ProductChild[] | SizeType[] | ColorType[];
   setPage: Dispatch<SetStateAction<number>>;
@@ -31,15 +39,40 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   setPage,
   page,
   count,
+  section,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchPage, setSearchPage] = useState(1);
+
+  useEffect(() => {}, [searchPage, section, searchQuery]);
+  const { results, refetch } = useSearch({
+    page: searchPage,
+    section: section,
+    searchString: searchQuery,
+  });
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+
+    console.log(searchQuery);
+    setSearchQuery(searchQuery);
+    refetch();
+  };
+  console.log(results);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
         <h1>{title}</h1>
         <div className="flex gap-2 items-center">
-          <form className="relative flex items-center ">
-            <input className="rounded-md p-1" />
+          <form
+            onSubmit={handleSearch}
+            className="relative text-black flex items-center "
+          >
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="rounded-md p-1"
+            />
             <button className="absolute right-2 ">
               <ImSearch color="black" />
             </button>
