@@ -26,7 +26,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <tr>
+    <div>
       <div
         className={`flex justify-between items-center border-neutral-700 border-b-2 pl-0 p-1 ${
           category.parentId === null ? "bg-neutral-800" : "bg-neutral-800"
@@ -88,6 +88,6 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
             )}
         </div>
       )}
-    </tr>
+    </div>
   );
 };

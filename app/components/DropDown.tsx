@@ -50,7 +50,7 @@ export const DropDown: React.FC<DropDownProps> = ({
     };
   }, []);
   const { data, isError, isSuccess } = useQuery({
-    queryKey: [query],
+    queryKey: [`dropdown${query}`],
     queryFn: async () => {
       const response = await fetch(`/api/${url}`, {
         method: "GET",

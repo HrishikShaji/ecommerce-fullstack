@@ -67,7 +67,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
           </tr>
         </thead>
         {title === "Billboards" &&
-          data.map((billboard) => {
+          data?.map((billboard) => {
             return (
               <Billboard
                 billboard={billboard as BillboardType}
@@ -76,29 +76,29 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
             );
           })}
         {title === "Products" &&
-          data.map((product) => {
+          data?.map((product) => {
             return (
               <Product product={product as ProductChild} key={product.id} />
             );
           })}
         {title === "Sizes" &&
-          data.map((size) => {
+          data?.map((size) => {
             return <Size size={size as SizeType} key={size.id} />;
           })}
         {title === "Colors" &&
-          data.map((color) => {
+          data?.map((color) => {
             return <Color color={color as ColorType} key={color.id} />;
           })}
-        {title === "Categories" &&
-          data?.map((categories) => {
-            return (
-              <Category
-                category={categories as CategoryChild}
-                key={categories.id}
-              />
-            );
-          })}
       </table>
+      {title === "Categories" &&
+        data?.map((categories) => {
+          return (
+            <Category
+              category={categories as CategoryChild}
+              key={categories.id}
+            />
+          );
+        })}
       <div className="w-full flex gap-2 justify-end">
         <button
           disabled={page === 1}
