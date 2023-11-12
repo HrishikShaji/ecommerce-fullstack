@@ -46,6 +46,7 @@ export const BillboardSection = () => {
           setPage={setPage}
           page={page}
           count={count}
+          section="billBoard"
         />
       )}
     </div>
