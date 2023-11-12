@@ -3,7 +3,7 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
-import { itemsPerPage } from "@/app/lib/utils";
+import { itemsPerPage, paginateArray } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -71,13 +71,6 @@ const getCategories = (
   return categoryList;
 };
 
-function paginateArray(categories: CategoryChild[], page: number) {
-  const startIndex = page === 1 ? 0 : (page - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  return categories.slice(startIndex, endIndex);
-}
-
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
@@ -101,7 +94,10 @@ export async function GET(request: Request) {
     }
     const withSubCategories = getCategories(categories);
     const count = withSubCategories.length;
-    const allCategories = paginateArray(withSubCategories, page);
+    const allCategories = paginateArray({
+      array: withSubCategories,
+      page: page,
+    });
     return new Response(JSON.stringify({ count, allCategories }), {
       status: 200,
     });

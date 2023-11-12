@@ -21,6 +21,7 @@ import { Color } from "./Color";
 import { Category } from "./Category";
 import { itemsPerPage } from "../lib/utils";
 import { useSearch } from "../lib/queries/search";
+import { AiFillCloseCircle } from "react-icons/ai";
 
 interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
@@ -44,28 +45,38 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchPage, setSearchPage] = useState(1);
+  const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {}, [searchPage, section, searchQuery]);
-  const { results, refetch } = useSearch({
+  const {
+    results,
+    refetch,
+    count: searchCount,
+  } = useSearch({
     page: searchPage,
     section: section,
     searchString: searchQuery,
   });
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-
     console.log(searchQuery);
     setSearchQuery(searchQuery);
     refetch();
+    if (isSearch) {
+      setSearchQuery("");
+    }
   };
-  console.log(results);
+  console.log(results, searchCount);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
         <h1>{title}</h1>
         <div className="flex gap-2 items-center">
           <form
-            onSubmit={handleSearch}
+            onSubmit={(e) => {
+              setIsSearch(!isSearch);
+              handleSearch(e);
+            }}
             className="relative text-black flex items-center "
           >
             <input
@@ -74,7 +85,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
               className="rounded-md p-1"
             />
             <button className="absolute right-2 ">
-              <ImSearch color="black" />
+              {isSearch ? <AiFillCloseCircle /> : <ImSearch color="black" />}
             </button>
           </form>
           <div className="relative flex gap-2 bg-neutral-700 py-1 px-2 items-center rounded-md">
@@ -99,15 +110,21 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
               ))}
           </tr>
         </thead>
-        {title === "Billboards" &&
-          data?.map((billboard) => {
-            return (
-              <Billboard
-                billboard={billboard as BillboardType}
-                key={billboard.id}
-              />
-            );
-          })}
+        {title === "Billboards"
+          ? isSearch
+            ? results?.map((billboard: BillboardType) => (
+                <Billboard
+                  billboard={billboard as BillboardType}
+                  key={billboard.id}
+                />
+              ))
+            : data?.map((billboard) => (
+                <Billboard
+                  billboard={billboard as BillboardType}
+                  key={billboard.id}
+                />
+              ))
+          : null}
         {title === "Products" &&
           data?.map((product) => {
             return (
@@ -134,22 +151,34 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
         })}
       <div className="w-full flex gap-2 justify-end">
         <button
-          disabled={page === 1}
-          onClick={() =>
-            setPage((prevState: number) => {
-              return prevState - 1;
-            })
-          }
+          disabled={isSearch ? searchPage === 1 : page === 1}
+          onClick={() => {
+            isSearch
+              ? setSearchPage((prevState: number) => {
+                  return prevState - 1;
+                })
+              : setPage((prevState: number) => {
+                  return prevState - 1;
+                });
+          }}
         >
           <BsArrowLeftSquareFill />
         </button>
         <button
-          disabled={page * itemsPerPage >= count}
-          onClick={() =>
-            setPage((prevState: number) => {
-              return prevState + 1;
-            })
+          disabled={
+            isSearch
+              ? searchPage * itemsPerPage >= searchCount
+              : page * itemsPerPage >= count
           }
+          onClick={() => {
+            isSearch
+              ? setSearchPage((prevState: number) => {
+                  return prevState + 1;
+                })
+              : setPage((prevState: number) => {
+                  return prevState + 1;
+                });
+          }}
         >
           <BsArrowRightSquareFill />
         </button>
