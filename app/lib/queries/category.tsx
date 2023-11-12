@@ -4,16 +4,11 @@ import {
   validateCategoryPayload,
 } from "../validators/category";
 
-export const useGetCategories = () => {
-  const {
-    data: categories,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
+export const useGetCategories = (page: number) => {
+  const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await fetch(`/api/category`, {
+      const response = await fetch(`/api/category?page=${page}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -21,7 +16,10 @@ export const useGetCategories = () => {
     },
   });
 
-  return { categories, isError, refetch, isLoading };
+  const categories = data?.allCategories;
+  const count = data?.count;
+
+  return { categories, count, isError, refetch, isLoading };
 };
 
 export const useAddCategory = () => {

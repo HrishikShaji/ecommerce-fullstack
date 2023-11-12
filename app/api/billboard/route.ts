@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
+import { itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -32,18 +33,26 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
-  console.log("page is", page);
   try {
+    if (page === 0) {
+      const billboards = await prisma.billBoard.findMany({});
+
+      if (!billboards) {
+        return new Response(JSON.stringify("No data"), { status: 400 });
+      }
+      return new Response(JSON.stringify(billboards), { status: 200 });
+    }
+
+    const count = await prisma.billBoard.count();
     const billboards = await prisma.billBoard.findMany({
-      take: 2,
-      skip: 2 * (page === 0 ? 1 : page - 1),
+      take: itemsPerPage,
+      skip: itemsPerPage * (page - 1),
     });
 
     if (!billboards) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-
-    return new Response(JSON.stringify(billboards), { status: 200 });
+    return new Response(JSON.stringify({ count, billboards }), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });

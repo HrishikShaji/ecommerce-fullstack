@@ -1,16 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProductPayload, validateProductPayload } from "../validators/Product";
 
-export const useGetProducts = () => {
-  const {
-    data: products,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
+export const useGetProducts = (page: number) => {
+  const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const response = await fetch(`/api/product`, {
+      const response = await fetch(`/api/product?page=${page}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -18,7 +13,10 @@ export const useGetProducts = () => {
     },
   });
 
-  return { products, isError, refetch, isLoading };
+  const products = data?.products;
+  const count = data?.count;
+
+  return { products, count, isError, refetch, isLoading };
 };
 
 export const useAddProduct = () => {

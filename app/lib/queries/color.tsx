@@ -1,28 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  BillboardPayload,
-  validateBillboardPayload,
-} from "../validators/Billboard";
 import { ColorPayload, validateColorPayload } from "../validators/color";
 
-export const useGetColors = () => {
-  const {
-    data: colors,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
+export const useGetColors = (page: number) => {
+  const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["colors"],
     queryFn: async () => {
-      const response = await fetch(`/api/color`, {
+      const response = await fetch(`/api/color?page=${page}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
       return response.json();
     },
   });
+  const colors = data?.colors;
+  const count = data?.count;
 
-  return { colors, isError, refetch, isLoading };
+  return { colors, count, isError, refetch, isLoading };
 };
 
 export const useAddColors = () => {

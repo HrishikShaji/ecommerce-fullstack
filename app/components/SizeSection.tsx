@@ -1,15 +1,19 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddSize, useGetSizes } from "../lib/queries/size";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
 
 export const SizeSection = () => {
   const [size, setSize] = useState("");
-  const { sizes, isLoading, isError } = useGetSizes();
+  const [page, setPage] = useState(1);
+  const { sizes, isLoading, isError, refetch, count } = useGetSizes(page);
   const { addSize, isPending } = useAddSize();
-  const [page, setPage] = useState(0);
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
   const values: InputItem[] = [
     {
       label: "Size",
@@ -36,6 +40,7 @@ export const SizeSection = () => {
             data={sizes}
             setPage={setPage}
             page={page}
+            count={count}
           />
         )}
       </div>

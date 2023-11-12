@@ -5,13 +5,7 @@ import {
 } from "../validators/Billboard";
 
 export const useGetBillboards = (page: number) => {
-  console.log(page);
-  const {
-    data: billboards,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
+  const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["billboards"],
     queryFn: async () => {
       const response = await fetch(`/api/billboard?page=${page}`, {
@@ -22,7 +16,9 @@ export const useGetBillboards = (page: number) => {
     },
   });
 
-  return { billboards, isError, refetch, isLoading };
+  const billboards = data?.billboards;
+  const count = data?.count;
+  return { count, billboards, isError, refetch, isLoading };
 };
 
 export const useAddBillboard = () => {

@@ -13,6 +13,7 @@ import { CategoryChild, ProductChild } from "@/types/types";
 import { Size } from "./Size";
 import { Color } from "./Color";
 import { Category } from "./Category";
+import { itemsPerPage } from "../lib/utils";
 
 interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
@@ -20,6 +21,7 @@ interface SectionContainerProps {
   data: BillboardType[] | ProductChild[] | SizeType[] | ColorType[];
   setPage: Dispatch<SetStateAction<number>>;
   page: number;
+  count: number;
 }
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
@@ -28,10 +30,9 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   data,
   setPage,
   page,
+  count,
 }) => {
   const [isSortOpen, setIsSortOpen] = useState(false);
-  const hasPrev = page <= 0;
-  const hasNext = page < data.length - 1;
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
@@ -89,7 +90,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
             return <Color color={color as ColorType} key={color.id} />;
           })}
         {title === "Categories" &&
-          data.map((categories) => {
+          data?.map((categories) => {
             return (
               <Category
                 category={categories as CategoryChild}
@@ -100,7 +101,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
       </table>
       <div className="w-full flex gap-2 justify-end">
         <button
-          disabled={hasPrev}
+          disabled={page === 1}
           onClick={() =>
             setPage((prevState: number) => {
               return prevState - 1;
@@ -110,7 +111,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
           <BsArrowLeftSquareFill />
         </button>
         <button
-          disabled={!hasNext}
+          disabled={page * itemsPerPage >= count}
           onClick={() =>
             setPage((prevState: number) => {
               return prevState + 1;

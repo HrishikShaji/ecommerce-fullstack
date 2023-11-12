@@ -1,15 +1,19 @@
 "use client";
 import { Spinner } from "../components/Spinner";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddColors, useGetColors } from "../lib/queries/color";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
 
 export const ColorSection = () => {
   const [color, setColor] = useState("");
-  const [page, setPage] = useState(0);
-  const { colors, isError, isLoading } = useGetColors();
+  const [page, setPage] = useState(1);
+  const { colors, isError, isLoading, refetch, count } = useGetColors(page);
   const { addColor, isPending } = useAddColors();
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
 
   const values: InputItem[] = [
     {
@@ -37,6 +41,7 @@ export const ColorSection = () => {
             data={colors}
             setPage={setPage}
             page={page}
+            count={count}
           />
         )}
       </div>

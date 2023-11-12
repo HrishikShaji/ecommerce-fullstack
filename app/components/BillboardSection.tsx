@@ -7,10 +7,14 @@ import { Form, InputItem } from "./Form";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
-  const [page, setPage] = useState(0);
-  console.log(page);
-  const { billboards, isLoading, isError } = useGetBillboards(page);
+  const [page, setPage] = useState(1);
+  const { refetch, billboards, count, isLoading, isError } =
+    useGetBillboards(page);
   const { addBillboard, isPending } = useAddBillboard();
+
+  useEffect(() => {
+    refetch();
+  }, [page]);
   const values: InputItem[] = [
     {
       label: "Billboard",
@@ -41,6 +45,7 @@ export const BillboardSection = () => {
           data={billboards}
           setPage={setPage}
           page={page}
+          count={count}
         />
       )}
     </div>

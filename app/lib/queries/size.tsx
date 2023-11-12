@@ -1,24 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SizePayload, validateSizePayload } from "../validators/size";
 
-export const useGetSizes = () => {
-  const {
-    data: sizes,
-    isError,
-    refetch,
-    isLoading,
-  } = useQuery({
+export const useGetSizes = (page: number) => {
+  const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["sizes"],
     queryFn: async () => {
-      const response = await fetch(`/api/size`, {
+      const response = await fetch(`/api/size?page=${page}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
       return response.json();
     },
   });
+  const sizes = data?.sizes;
+  const count = data?.count;
 
-  return { sizes, isError, refetch, isLoading };
+  return { sizes, count, isError, refetch, isLoading };
 };
 
 export const useAddSize = () => {
