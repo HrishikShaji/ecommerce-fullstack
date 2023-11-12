@@ -1,7 +1,6 @@
 "use client";
 import { Spinner } from "../components/Spinner";
 import { useEffect, useState } from "react";
-import { DropDown } from "./DropDown";
 import { useAddProduct, useGetProducts } from "../lib/queries/product";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
@@ -110,6 +109,7 @@ export const ProductSection = () => {
             setPage={setPage}
             page={page}
             data={products}
+            section="product"
           />
         )}
       </div>

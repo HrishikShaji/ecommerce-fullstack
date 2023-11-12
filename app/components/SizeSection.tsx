@@ -41,6 +41,7 @@ export const SizeSection = () => {
             setPage={setPage}
             page={page}
             count={count}
+            section="size"
           />
         )}
       </div>
