@@ -10,7 +10,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 import { ImSearch } from "react-icons/im";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
 import { Billboard } from "./Billboard";
@@ -19,10 +18,36 @@ import { CategoryChild, ProductChild } from "@/types/types";
 import { Size } from "./Size";
 import { Color } from "./Color";
 import { Category } from "./Category";
-import { itemsPerPage } from "../lib/utils";
 import { useSearch } from "../lib/queries/search";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Spinner } from "./Spinner";
+import { Pagination } from "./Pagination";
+
+const lookup = {
+  Billboards: Billboard,
+  Categories: Category,
+  Products: Product,
+  Sizes: Size,
+  Colors: Color,
+};
+
+interface renderSectionsProps {
+  title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
+  isSearching: boolean;
+  data: any[];
+}
+
+const RenderSections: React.FC<renderSectionsProps> = ({
+  title,
+  isSearching,
+  data,
+}) => {
+  const Component = lookup[title];
+
+  if (isSearching) return <Spinner />;
+
+  return <>{data?.map((item) => <Component data={item} key={item.id} />)}</>;
+};
 
 interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
@@ -126,91 +151,21 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
               ))}
           </tr>
         </thead>
-        {title === "Billboards" &&
-          (isSearching ? (
-            <Spinner />
-          ) : (
-            finalData?.map((billboard: BillboardType) => (
-              <Billboard
-                billboard={billboard as BillboardType}
-                key={billboard.id}
-              />
-            ))
-          ))}
-        {title === "Products" &&
-          (isSearching ? (
-            <Spinner />
-          ) : (
-            finalData?.map((product: ProductChild) => {
-              return (
-                <Product product={product as ProductChild} key={product.id} />
-              );
-            })
-          ))}
-        {title === "Sizes" &&
-          (isSearching ? (
-            <Spinner />
-          ) : (
-            finalData?.map((size: SizeType) => {
-              return <Size size={size as SizeType} key={size.id} />;
-            })
-          ))}
-        {title === "Colors" &&
-          (isSearching ? (
-            <Spinner />
-          ) : (
-            finalData?.map((color: ColorType) => {
-              return <Color color={color as ColorType} key={color.id} />;
-            })
-          ))}
+        <RenderSections
+          data={finalData}
+          title={title}
+          isSearching={isSearching}
+        />
       </table>
-      {title === "Categories" &&
-        (isSearching ? (
-          <Spinner />
-        ) : (
-          finalData?.map((categories: CategoryChild) => {
-            return (
-              <Category
-                category={categories as CategoryChild}
-                key={categories.id}
-              />
-            );
-          })
-        ))}
-      <div className="w-full flex gap-2 justify-end">
-        <button
-          disabled={isSearch ? searchPage === 1 : page === 1}
-          onClick={() => {
-            isSearch
-              ? setSearchPage((prevState: number) => {
-                  return prevState - 1;
-                })
-              : setPage((prevState: number) => {
-                  return prevState - 1;
-                });
-          }}
-        >
-          <BsArrowLeftSquareFill />
-        </button>
-        <button
-          disabled={
-            isSearch
-              ? searchPage * itemsPerPage >= searchCount
-              : page * itemsPerPage >= count
-          }
-          onClick={() => {
-            isSearch
-              ? setSearchPage((prevState: number) => {
-                  return prevState + 1;
-                })
-              : setPage((prevState: number) => {
-                  return prevState + 1;
-                });
-          }}
-        >
-          <BsArrowRightSquareFill />
-        </button>
-      </div>
+      {isSearch ? (
+        <Pagination
+          page={searchPage}
+          count={searchCount}
+          setPage={setSearchPage}
+        />
+      ) : (
+        <Pagination page={page} count={count} setPage={setPage} />
+      )}
     </div>
   );
 };

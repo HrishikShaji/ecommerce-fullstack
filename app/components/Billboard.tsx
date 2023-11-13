@@ -8,30 +8,28 @@ import { BillBoard } from "@prisma/client";
 import { useDeleteBillboard } from "../lib/queries/billboard";
 
 interface BillboardProps {
-  billboard: BillBoard;
+  data: BillBoard;
 }
 
-export const Billboard: React.FC<BillboardProps> = ({ billboard }) => {
+export const Billboard: React.FC<BillboardProps> = ({ data }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { deleteBillboard, isDeleting } = useDeleteBillboard();
 
   return (
     <tbody>
-      <tr key={billboard.id} className="border-b-2 border-neutral-700">
-        <td className="py-1">{billboard.name}</td>
-        <td>{billboard.id}</td>
+      <tr key={data.id} className="border-b-2 border-neutral-700">
+        <td className="py-1">{data.name}</td>
+        <td>{data.id}</td>
         <td className="flex items-center w-full justify-end pt-2 gap-2">
           <button
-            onClick={() =>
-              dispatch(onOpen({ mode: "billboard", data: billboard }))
-            }
+            onClick={() => dispatch(onOpen({ mode: "billboard", data: data }))}
             className="cursor-pointer"
           >
             <MdEdit />
           </button>
           <button
             className="cursor-pointer"
-            onClick={() => deleteBillboard(billboard.id)}
+            onClick={() => deleteBillboard(data.id)}
           >
             {isDeleting ? <Spinner /> : <MdDelete />}
           </button>

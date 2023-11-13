@@ -12,10 +12,10 @@ import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 
 interface CategoryProps {
-  category: CategoryChild;
+  data: CategoryChild;
 }
 
-export const Category: React.FC<CategoryProps> = ({ category }) => {
+export const Category: React.FC<CategoryProps> = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubOpen, setIsSubOpen] = useState(false);
   const [subCategory, setSubCategory] = useState("");
@@ -29,7 +29,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
     <div>
       <div
         className={`flex justify-between items-center border-neutral-700 border-b-2 pl-0 p-1 ${
-          category.parentId === null ? "bg-neutral-800" : "bg-neutral-800"
+          data.parentId === null ? "bg-neutral-800" : "bg-neutral-800"
         } `}
       >
         <div className="flex items-center gap-4">
@@ -40,20 +40,18 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
               <IoMdArrowDropdownCircle />
             )}
           </button>
-          <h1>{category.name}</h1>
+          <h1>{data.name}</h1>
         </div>
         <div className="flex gap-2">
           <button
-            onClick={() =>
-              dispatch(onOpen({ mode: "category", data: category }))
-            }
+            onClick={() => dispatch(onOpen({ mode: "category", data: data }))}
           >
             <MdEdit />
           </button>
           <button onClick={() => setIsOpen(!isOpen)}>
             <IoAddCircle />
           </button>
-          <button onClick={() => deleteCategory(category.id)}>
+          <button onClick={() => deleteCategory(data.id)}>
             {isDeleting ? <Spinner /> : <MdDelete />}
           </button>
         </div>
@@ -63,7 +61,7 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
           className="flex gap-2 mt-1 w-full "
           onSubmit={(e) => {
             e.preventDefault();
-            addCategory({ parentId: category.id, name: subCategory });
+            addCategory({ parentId: data.id, name: subCategory });
             setSubCategory("");
           }}
         >
@@ -80,10 +78,10 @@ export const Category: React.FC<CategoryProps> = ({ category }) => {
       )}
       {isSubOpen && (
         <div className="pl-10">
-          {category.children.length > 0 &&
-            (category.children as CategoryChild[]).map(
+          {data.children.length > 0 &&
+            (data.children as CategoryChild[]).map(
               (category: CategoryChild) => (
-                <Category category={category} key={category.id} />
+                <Category data={category} key={category.id} />
               ),
             )}
         </div>
