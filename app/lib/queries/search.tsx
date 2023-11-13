@@ -11,7 +11,7 @@ export const useSearch = ({
 }) => {
   console.log(page, section, searchString);
   const { data, isError, refetch, isLoading } = useQuery({
-    queryKey: [""],
+    queryKey: [`${section}Search`],
     queryFn: async () => {
       const response = await fetch(
         `/api/search?page=${page}&section=${section}&searchString=${searchString}`,
