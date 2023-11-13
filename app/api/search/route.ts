@@ -1,21 +1,32 @@
 import prisma from "@/app/lib/connect";
 import { itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { getCategories } from "../category/route";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
   const section = searchParams.get("section");
   const searchString = searchParams.get("searchString");
+  console.log("searchPage is", page);
   try {
     let results: any[] = [];
     if (section === "billBoard") {
       results = await prisma.billBoard.findMany({});
     }
     if (section === "category") {
-      results = await prisma.category.findMany({});
+      const allResults = await prisma.category.findMany({});
+      results = getCategories(allResults);
     }
     if (section === "product") {
-      results = await prisma.product.findMany({});
+      results = await prisma.product.findMany({
+        include: {
+          category: true,
+          billboard: true,
+          user: true,
+          size: true,
+          color: true,
+        },
+      });
     }
     if (section === "color") {
       results = await prisma.color.findMany({});

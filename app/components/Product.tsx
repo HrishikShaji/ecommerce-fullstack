@@ -8,33 +8,33 @@ import { onOpen } from "@/redux/slices/modalSlice";
 import { useDeleteProduct } from "../lib/queries/product";
 
 interface ProductProps {
-  product: ProductChild;
+  data: ProductChild;
 }
 
-export const Product: React.FC<ProductProps> = ({ product }) => {
+export const Product: React.FC<ProductProps> = ({ data }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { deleteProduct, isDeleting } = useDeleteProduct();
-
+  console.log(data);
   return (
     <tbody>
-      <tr key={product.id} className="border-b-2 border-neutral-700 ">
-        <td className="py-1">{product.name}</td>
-        <td>{product.category.name}</td>
-        <td>{product.billboard.name}</td>
-        <td>{product.size.name}</td>
-        <td>{product.color.name}</td>
-        <td>{product.user.name}</td>
+      <tr key={data.id} className="border-b-2 border-neutral-700 ">
+        <td className="py-1">{data.name}</td>
+        <td>{data.category.name}</td>
+        <td>{data.billboard.name}</td>
+        <td>{data.size.name}</td>
+        <td>{data.color.name}</td>
+        <td>{data.user.name}</td>
         <td className="flex items-center w-full justify-end  pt-2  gap-2">
           <button
-            onClick={() => dispatch(onOpen({ mode: "product", data: product }))}
+            onClick={() => dispatch(onOpen({ mode: "product", data: data }))}
             className="cursor-pointer"
           >
             <MdEdit />
           </button>
           <button
             className="cursor-pointer"
-            onClick={() => deleteProduct(product.id)}
+            onClick={() => deleteProduct(data.id)}
           >
             {isDeleting ? <Spinner /> : <MdDelete />}
           </button>
