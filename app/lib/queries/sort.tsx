@@ -1,7 +1,7 @@
 import { SortType } from "@/app/components/SectionContainer";
 import { useQuery } from "@tanstack/react-query";
 
-export const useSearch = ({
+export const useSort = ({
   page,
   section,
   searchString,
