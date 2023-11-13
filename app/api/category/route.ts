@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   }
 }
 
-const getCategories = (
+export const getCategories = (
   categories: Category[],
   parentId: string | null = null,
 ) => {

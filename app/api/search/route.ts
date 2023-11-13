@@ -1,5 +1,6 @@
 import prisma from "@/app/lib/connect";
 import { itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { getCategories } from "../category/route";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -13,10 +14,19 @@ export async function GET(request: Request) {
       results = await prisma.billBoard.findMany({});
     }
     if (section === "category") {
-      results = await prisma.category.findMany({});
+      const allResults = await prisma.category.findMany({});
+      results = getCategories(allResults);
     }
     if (section === "product") {
-      results = await prisma.product.findMany({});
+      results = await prisma.product.findMany({
+        include: {
+          category: true,
+          billboard: true,
+          user: true,
+          size: true,
+          color: true,
+        },
+      });
     }
     if (section === "color") {
       results = await prisma.color.findMany({});

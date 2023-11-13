@@ -71,6 +71,9 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
     setSearchQuery(searchQuery);
     refetch();
   };
+
+  const finalData = isSearch ? results : data;
+  console.log(finalData);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
@@ -123,51 +126,57 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
               ))}
           </tr>
         </thead>
-        {title === "Billboards" ? (
-          isSearch ? (
-            isSearching ? (
-              <Spinner />
-            ) : (
-              results?.map((billboard: BillboardType) => (
-                <Billboard
-                  billboard={billboard as BillboardType}
-                  key={billboard.id}
-                />
-              ))
-            )
+        {title === "Billboards" &&
+          (isSearching ? (
+            <Spinner />
           ) : (
-            data?.map((billboard) => (
+            finalData?.map((billboard: BillboardType) => (
               <Billboard
                 billboard={billboard as BillboardType}
                 key={billboard.id}
               />
             ))
-          )
-        ) : null}
+          ))}
         {title === "Products" &&
-          data?.map((product) => {
-            return (
-              <Product product={product as ProductChild} key={product.id} />
-            );
-          })}
+          (isSearching ? (
+            <Spinner />
+          ) : (
+            finalData?.map((product: ProductChild) => {
+              return (
+                <Product product={product as ProductChild} key={product.id} />
+              );
+            })
+          ))}
         {title === "Sizes" &&
-          data?.map((size) => {
-            return <Size size={size as SizeType} key={size.id} />;
-          })}
+          (isSearching ? (
+            <Spinner />
+          ) : (
+            finalData?.map((size: SizeType) => {
+              return <Size size={size as SizeType} key={size.id} />;
+            })
+          ))}
         {title === "Colors" &&
-          data?.map((color) => {
-            return <Color color={color as ColorType} key={color.id} />;
-          })}
+          (isSearching ? (
+            <Spinner />
+          ) : (
+            finalData?.map((color: ColorType) => {
+              return <Color color={color as ColorType} key={color.id} />;
+            })
+          ))}
       </table>
       {title === "Categories" &&
-        data?.map((categories) => {
-          return (
-            <Category
-              category={categories as CategoryChild}
-              key={categories.id}
-            />
-          );
-        })}
+        (isSearching ? (
+          <Spinner />
+        ) : (
+          finalData?.map((categories: CategoryChild) => {
+            return (
+              <Category
+                category={categories as CategoryChild}
+                key={categories.id}
+              />
+            );
+          })
+        ))}
       <div className="w-full flex gap-2 justify-end">
         <button
           disabled={isSearch ? searchPage === 1 : page === 1}
