@@ -110,6 +110,7 @@ export const ProductSection = () => {
             setPage={setPage}
             page={page}
             data={products}
+            section="product"
           />
         )}
       </div>

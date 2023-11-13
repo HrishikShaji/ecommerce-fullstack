@@ -22,6 +22,7 @@ import { Category } from "./Category";
 import { itemsPerPage } from "../lib/utils";
 import { useSearch } from "../lib/queries/search";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { Spinner } from "./Spinner";
 
 interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
@@ -47,47 +48,59 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   const [searchPage, setSearchPage] = useState(1);
   const [isSearch, setIsSearch] = useState(false);
 
-  useEffect(() => {}, [searchPage, section, searchQuery]);
   const {
     results,
     refetch,
     count: searchCount,
+    isLoading: isSearching,
   } = useSearch({
     page: searchPage,
     section: section,
     searchString: searchQuery,
   });
+  useEffect(() => {
+    if (isSearch) {
+      refetch();
+    }
+  }, [searchPage, isSearch]);
+
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    console.log(searchQuery);
+    setIsSearch(true);
+    setSearchPage(1);
     setSearchQuery(searchQuery);
     refetch();
-    if (isSearch) {
-      setSearchQuery("");
-    }
   };
-  console.log(results, searchCount);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
         <h1>{title}</h1>
         <div className="flex gap-2 items-center">
           <form
-            onSubmit={(e) => {
-              setIsSearch(!isSearch);
-              handleSearch(e);
-            }}
+            onSubmit={handleSearch}
             className="relative text-black flex items-center "
           >
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="rounded-md p-1"
+              placeholder="Search..."
             />
             <button className="absolute right-2 ">
-              {isSearch ? <AiFillCloseCircle /> : <ImSearch color="black" />}
+              <ImSearch color="black" />
             </button>
           </form>
+          {isSearch && (
+            <div
+              className="p-2 cursor-pointer bg-neutral-700 rounded-md"
+              onClick={() => {
+                setIsSearch(false);
+                setSearchQuery("");
+              }}
+            >
+              <AiFillCloseCircle />
+            </div>
+          )}
           <div className="relative flex gap-2 bg-neutral-700 py-1 px-2 items-center rounded-md">
             <h1>Sort</h1>
             <button onClick={() => setIsSortOpen(!isSortOpen)}>
@@ -110,21 +123,27 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
               ))}
           </tr>
         </thead>
-        {title === "Billboards"
-          ? isSearch
-            ? results?.map((billboard: BillboardType) => (
+        {title === "Billboards" ? (
+          isSearch ? (
+            isSearching ? (
+              <Spinner />
+            ) : (
+              results?.map((billboard: BillboardType) => (
                 <Billboard
                   billboard={billboard as BillboardType}
                   key={billboard.id}
                 />
               ))
-            : data?.map((billboard) => (
-                <Billboard
-                  billboard={billboard as BillboardType}
-                  key={billboard.id}
-                />
-              ))
-          : null}
+            )
+          ) : (
+            data?.map((billboard) => (
+              <Billboard
+                billboard={billboard as BillboardType}
+                key={billboard.id}
+              />
+            ))
+          )
+        ) : null}
         {title === "Products" &&
           data?.map((product) => {
             return (

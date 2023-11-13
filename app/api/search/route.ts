@@ -6,6 +6,7 @@ export async function GET(request: Request) {
   const page = Number(searchParams.get("page"));
   const section = searchParams.get("section");
   const searchString = searchParams.get("searchString");
+  console.log("searchPage is", page);
   try {
     let results: any[] = [];
     if (section === "billBoard") {

@@ -42,6 +42,7 @@ export const ColorSection = () => {
             setPage={setPage}
             page={page}
             count={count}
+            section="color"
           />
         )}
       </div>

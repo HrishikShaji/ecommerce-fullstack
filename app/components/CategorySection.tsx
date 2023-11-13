@@ -43,6 +43,7 @@ export const CategorySection = () => {
             page={page}
             data={categories}
             count={count}
+            section="category"
           />
         )}
       </div>

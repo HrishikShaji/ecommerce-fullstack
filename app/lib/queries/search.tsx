@@ -22,6 +22,7 @@ export const useSearch = ({
       );
       return response.json();
     },
+    enabled: false,
   });
 
   const results = data?.searchResults;
