@@ -23,6 +23,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { Spinner } from "./Spinner";
 import { Pagination } from "./Pagination";
 import { SearchBar } from "./SearchBar";
+import { Sort } from "./Sort";
 
 const lookup = {
   Billboards: Billboard,
@@ -60,6 +61,11 @@ interface SectionContainerProps {
   count: number;
 }
 
+export enum SortType {
+  LATEST,
+  OLDEST,
+}
+
 export const SectionContainer: React.FC<SectionContainerProps> = ({
   title,
   headings,
@@ -69,10 +75,10 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   count,
   section,
 }) => {
-  const [isSortOpen, setIsSortOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchPage, setSearchPage] = useState(1);
   const [isSearch, setIsSearch] = useState(false);
+  const [sort, setSort] = useState<SortType>(SortType.LATEST);
 
   const {
     results,
@@ -83,6 +89,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
     page: searchPage,
     section: section,
     searchString: searchQuery,
+    sort: sort,
   });
   useEffect(() => {
     if (isSearch) {
@@ -112,15 +119,7 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
             isSearch={isSearch}
             handleSearch={handleSearch}
           />
-          <div className="relative flex gap-2 bg-neutral-700 py-1 px-2 items-center rounded-md">
-            <h1>Sort</h1>
-            <button onClick={() => setIsSortOpen(!isSortOpen)}>
-              <IoMdArrowDropdownCircle />
-            </button>
-            {isSortOpen && (
-              <div className="absolute w-[200px] h-[200px] top-10 right-0 rounded-md bg-white"></div>
-            )}
-          </div>
+          <Sort setSort={setSort} />
         </div>
       </div>
       <table className="w-full">
