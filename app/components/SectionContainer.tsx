@@ -22,6 +22,7 @@ import { useSearch } from "../lib/queries/search";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Spinner } from "./Spinner";
 import { Pagination } from "./Pagination";
+import { SearchBar } from "./SearchBar";
 
 const lookup = {
   Billboards: Billboard,
@@ -104,31 +105,13 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
         <h1>{title}</h1>
         <div className="flex gap-2 items-center">
-          <form
-            onSubmit={handleSearch}
-            className="relative text-black flex items-center "
-          >
-            <input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="rounded-md p-1"
-              placeholder="Search..."
-            />
-            <button className="absolute right-2 ">
-              <ImSearch color="black" />
-            </button>
-          </form>
-          {isSearch && (
-            <div
-              className="p-2 cursor-pointer bg-neutral-700 rounded-md"
-              onClick={() => {
-                setIsSearch(false);
-                setSearchQuery("");
-              }}
-            >
-              <AiFillCloseCircle />
-            </div>
-          )}
+          <SearchBar
+            setIsSearch={setIsSearch}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            isSearch={isSearch}
+            handleSearch={handleSearch}
+          />
           <div className="relative flex gap-2 bg-neutral-700 py-1 px-2 items-center rounded-md">
             <h1>Sort</h1>
             <button onClick={() => setIsSortOpen(!isSortOpen)}>
