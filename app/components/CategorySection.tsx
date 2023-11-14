@@ -38,6 +38,7 @@ export const CategorySection = () => {
           <Spinner />
         ) : (
           <SectionContainer
+            headings={[""]}
             title="Categories"
             setPage={setPage}
             page={page}
