@@ -21,7 +21,7 @@ export const RowActions: React.FC<RowActionProps> = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   return (
-    <td className="flex items-center w-full justify-end pt-2 gap-2">
+    <div className="flex items-center w-full justify-end pt-2 gap-2">
       {mode === "category" && (
         <button
           onClick={() => dispatch(onOpen({ mode: "subCategory", data: data }))}
@@ -38,6 +38,6 @@ export const RowActions: React.FC<RowActionProps> = ({
       <button className="cursor-pointer" onClick={() => deleteAction(data.id)}>
         {isDeleting ? <Spinner /> : <MdDelete />}
       </button>
-    </td>
+    </div>
   );
 };
