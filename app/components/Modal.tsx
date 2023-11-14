@@ -9,6 +9,7 @@ import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
 import { CategoryUpdateForm } from "./CategoryUpdateForm";
 import { SizeUpdateForm } from "./SizeUpdateForm";
 import { ColorUpdateForm } from "./ColorUpdateForm";
+import { SubCategoryAddForm } from "./SubCategoryAddForm";
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
@@ -53,6 +54,12 @@ export const Modal = () => {
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Color</h1>
             <ColorUpdateForm color={data as Color} />
+          </div>
+        )}
+        {title === "subCategory" && (
+          <div className="flex flex-col gap-5 items-center">
+            <h1 className="text-xl font-semibold">Add SubCategory</h1>
+            <SubCategoryAddForm category={data as Category} />
           </div>
         )}
       </div>

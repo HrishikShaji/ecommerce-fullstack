@@ -1,3 +1,4 @@
+import { CategoryChild } from "@/types/types";
 import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -5,17 +6,16 @@ type InitialState = {
   value: ModalState;
 };
 
-enum Mode {
-  "product",
-  "category",
-  "size",
-  "color",
-  "billboard",
-}
-
 type ModalState = {
   isOpen: boolean;
-  mode: "product" | "category" | "size" | "color" | "billboard" | "";
+  mode:
+    | "product"
+    | "category"
+    | "size"
+    | "color"
+    | "billboard"
+    | "subCategory"
+    | "";
   data: Product | BillBoard | Size | Color | Category;
 };
 
@@ -28,8 +28,15 @@ const initialState = {
 } as InitialState;
 
 type OpenPayload = {
-  data: Product | BillBoard | Size | Color;
-  mode: "product" | "category" | "size" | "color" | "billboard" | "";
+  data: Product | BillBoard | Size | Color | CategoryChild;
+  mode:
+    | "product"
+    | "category"
+    | "size"
+    | "color"
+    | "billboard"
+    | "subCategory"
+    | "";
 };
 
 export const modal = createSlice({
