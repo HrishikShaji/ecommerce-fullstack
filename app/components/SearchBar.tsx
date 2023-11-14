@@ -8,22 +8,61 @@ import {
 import { useSearch } from "../lib/queries/search";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { ImSearch } from "react-icons/im";
+import { SearchType, SortType } from "./SectionContainer";
 
 interface SearchBarProps {
-  handleSearch: (e: FormEvent) => void;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
-  searchQuery: string;
   isSearch: boolean;
   setIsSearch: Dispatch<SetStateAction<boolean>>;
+  setIsSearching: Dispatch<SetStateAction<boolean>>;
+  setSearchCount: Dispatch<SetStateAction<number>>;
+  setSearchPage: Dispatch<SetStateAction<number>>;
+  setSearchResults: Dispatch<SetStateAction<SearchType[] | []>>;
+  searchPage: number;
+  section: string;
+  sort: SortType;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  handleSearch,
-  setSearchQuery,
-  searchQuery,
+  searchPage,
+  section,
+  sort,
   isSearch,
+  setSearchPage,
+  setSearchResults,
   setIsSearch,
+  setIsSearching,
+  setSearchCount,
 }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const {
+    results,
+    refetch,
+    count: searchCount,
+    isLoading: isSearching,
+  } = useSearch({
+    page: searchPage,
+    section: section,
+    searchString: searchQuery,
+    sort: sort,
+  });
+  useEffect(() => {
+    if (isSearch) {
+      refetch();
+    }
+  }, [searchPage, isSearch]);
+
+  useEffect(() => {
+    setSearchResults(results);
+    setSearchCount(searchCount);
+    setIsSearching(isSearching);
+  }, [results, searchCount, isSearching]);
+
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    setIsSearch(true);
+    setSearchPage(1);
+    refetch();
+  };
   return (
     <div className="flex gap-2 items-center">
       <form
