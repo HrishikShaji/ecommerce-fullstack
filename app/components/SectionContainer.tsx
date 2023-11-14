@@ -14,7 +14,6 @@ import { Spinner } from "./Spinner";
 import { Pagination } from "./Pagination";
 import { SearchBar } from "./SearchBar";
 import { Sort } from "./Sort";
-import { Record } from "@prisma/client/runtime/library";
 
 export type SearchType =
   | BillBoardType
@@ -22,6 +21,10 @@ export type SearchType =
   | ProductChild
   | SizeType
   | ColorType;
+
+interface ComponentProps {
+  data: SearchType;
+}
 
 const lookup = {
   Billboards: Billboard,
@@ -35,32 +38,42 @@ interface renderSectionsProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   isSearching: boolean;
   data: SearchType[];
+  headings: string[];
 }
 
 const RenderSections: React.FC<renderSectionsProps> = ({
   title,
   isSearching,
   data,
+  headings,
 }) => {
-  const Component = lookup[title] as React.FC<{ data: SearchType }>;
+  const Component = lookup[title] as React.FC<ComponentProps>;
 
   if (isSearching) return <Spinner />;
   if (!Array.isArray(data) || data.length === 0) {
     return <div>No data available</div>;
   }
   return (
-    <>
-      {data?.map((item) => (
-        <Component data={item as SearchType} key={item.id} />
-      ))}
-    </>
+    <table className="w-full">
+      <thead>
+        <tr className="text-left border-b-2 border-neutral-700 ">
+          {headings &&
+            headings.map((heading, i) => (
+              <th className="py-2" key={i}>
+                {heading}
+              </th>
+            ))}
+        </tr>
+      </thead>
+      {data?.map((item) => <Component data={item} key={item.id} />)}
+    </table>
   );
 };
 
 interface SectionContainerProps {
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   section: "billBoard" | "color" | "size" | "product" | "category";
-  headings?: string[];
+  headings: string[];
   data: SearchType[];
   setPage: Dispatch<SetStateAction<number>>;
   page: number;
@@ -81,7 +94,6 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   count,
   section,
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchPage, setSearchPage] = useState(1);
   const [isSearch, setIsSearch] = useState(false);
   const [searchCount, setSearchCount] = useState(0);
@@ -90,7 +102,6 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   const [searchResults, setSearchResults] = useState<SearchType[] | []>([]);
 
   const finalData = isSearch ? searchResults : data;
-  console.log("finalData is", finalData);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">
@@ -110,23 +121,12 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
           <Sort setSort={setSort} />
         </div>
       </div>
-      <table className="w-full">
-        <thead>
-          <tr className="text-left border-b-2 border-neutral-700 ">
-            {headings &&
-              headings.map((heading, i) => (
-                <th className="py-2" key={i}>
-                  {heading}
-                </th>
-              ))}
-          </tr>
-        </thead>
-        <RenderSections
-          data={finalData}
-          title={title}
-          isSearching={isSearching}
-        />
-      </table>
+      <RenderSections
+        data={finalData}
+        title={title}
+        isSearching={isSearching}
+        headings={headings}
+      />
       {isSearch ? (
         <Pagination
           page={searchPage}
