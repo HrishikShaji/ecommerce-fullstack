@@ -12,7 +12,6 @@ export const useSearch = ({
   searchString: string;
   sort: SortType;
 }) => {
-  console.log(page, section, searchString, sort);
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: [`${section}Search`],
     queryFn: async () => {
@@ -29,7 +28,6 @@ export const useSearch = ({
   });
 
   const results = data?.searchResults;
-  console.log("searchResults are", data?.searchResults);
   const count = data?.count;
   return { count, results, isError, refetch, isLoading };
 };

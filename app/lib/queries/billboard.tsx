@@ -3,12 +3,14 @@ import {
   BillboardPayload,
   validateBillboardPayload,
 } from "../validators/Billboard";
+import { SortType } from "@/app/components/SectionContainer";
 
-export const useGetBillboards = (page: number) => {
+export const useGetBillboards = (page: number, sort: SortType) => {
+  console.log(page, sort, "its here");
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["billboards"],
     queryFn: async () => {
-      const response = await fetch(`/api/billboard?page=${page}`, {
+      const response = await fetch(`/api/billboard?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
