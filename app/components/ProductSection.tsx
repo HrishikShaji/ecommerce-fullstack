@@ -5,6 +5,7 @@ import { DropDown } from "./DropDown";
 import { useAddProduct, useGetProducts } from "../lib/queries/product";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 type Item = {
   name: string;
@@ -14,6 +15,7 @@ type Item = {
 export const ProductSection = () => {
   const [product, setProduct] = useState("");
   const [page, setPage] = useState(1);
+  const [sort, setSort] = useState<SortType>("LATEST");
   const [selectedBillboardItem, setSelectedBillboardItem] = useState<Item>({
     name: "",
     id: "",
@@ -75,10 +77,13 @@ export const ProductSection = () => {
       onChange: setProduct,
     },
   ];
-  const { products, refetch, count, isError, isLoading } = useGetProducts(page);
+  const { products, refetch, count, isError, isLoading } = useGetProducts(
+    page,
+    sort,
+  );
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, [page, sort]);
   const { addProduct, isPending } = useAddProduct();
   if (isError) return null;
   return (
@@ -97,6 +102,8 @@ export const ProductSection = () => {
           <Spinner />
         ) : (
           <SectionContainer
+            sort={sort}
+            setSort={setSort}
             count={count}
             title="Products"
             headings={[

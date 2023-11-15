@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ColorPayload, validateColorPayload } from "../validators/color";
+import { SortType } from "@/types/types";
 
-export const useGetColors = (page: number) => {
+export const useGetColors = (page: number, sort: SortType) => {
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["colors"],
     queryFn: async () => {
-      const response = await fetch(`/api/color?page=${page}`, {
+      const response = await fetch(`/api/color?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });

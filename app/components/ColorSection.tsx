@@ -4,16 +4,21 @@ import { useEffect, useState } from "react";
 import { useAddColors, useGetColors } from "../lib/queries/color";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 export const ColorSection = () => {
   const [color, setColor] = useState("");
   const [page, setPage] = useState(1);
-  const { colors, isError, isLoading, refetch, count } = useGetColors(page);
+  const [sort, setSort] = useState<SortType>("LATEST");
+  const { colors, isError, isLoading, refetch, count } = useGetColors(
+    page,
+    sort,
+  );
   const { addColor, isPending } = useAddColors();
 
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, [page, sort]);
 
   const values: InputItem[] = [
     {
@@ -43,6 +48,8 @@ export const ColorSection = () => {
             page={page}
             count={count}
             section="color"
+            sort={sort}
+            setSort={setSort}
           />
         )}
       </div>

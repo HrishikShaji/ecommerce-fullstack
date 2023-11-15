@@ -4,16 +4,18 @@ import { useEffect, useState } from "react";
 import { useAddSize, useGetSizes } from "../lib/queries/size";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 export const SizeSection = () => {
   const [size, setSize] = useState("");
   const [page, setPage] = useState(1);
-  const { sizes, isLoading, isError, refetch, count } = useGetSizes(page);
+  const [sort, setSort] = useState<SortType>("LATEST");
+  const { sizes, isLoading, isError, refetch, count } = useGetSizes(page, sort);
   const { addSize, isPending } = useAddSize();
 
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, [page, sort]);
   const values: InputItem[] = [
     {
       label: "Size",
@@ -42,6 +44,8 @@ export const SizeSection = () => {
             page={page}
             count={count}
             section="size"
+            sort={sort}
+            setSort={setSort}
           />
         )}
       </div>

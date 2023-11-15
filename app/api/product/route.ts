@@ -1,7 +1,7 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
-import { itemsPerPage } from "@/app/lib/utils";
+import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -81,6 +81,7 @@ export async function PATCH(request: Request) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
+  const order = getSortOrder(request);
   try {
     const count = await prisma.product.count();
     const products = await prisma.product.findMany({
@@ -93,6 +94,9 @@ export async function GET(request: Request) {
       },
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),
+      orderBy: {
+        createdAt: order,
+      },
     });
 
     if (!products) {

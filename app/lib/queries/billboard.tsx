@@ -3,10 +3,9 @@ import {
   BillboardPayload,
   validateBillboardPayload,
 } from "../validators/Billboard";
-import { SortType } from "@/app/components/SectionContainer";
+import { SortType } from "@/types/types";
 
 export const useGetBillboards = (page: number, sort: SortType) => {
-  console.log(page, sort, "its here");
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["billboards"],
     queryFn: async () => {

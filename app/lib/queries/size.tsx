@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SizePayload, validateSizePayload } from "../validators/size";
+import { SortType } from "@/types/types";
 
-export const useGetSizes = (page: number) => {
+export const useGetSizes = (page: number, sort: SortType) => {
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["sizes"],
     queryFn: async () => {
-      const response = await fetch(`/api/size?page=${page}`, {
+      const response = await fetch(`/api/size?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });

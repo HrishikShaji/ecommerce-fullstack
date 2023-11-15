@@ -18,3 +18,5 @@ export type ProductChild = Product & {
   billboard: BillBoard;
   user: User;
 };
+
+export type SortType = "LATEST" | "OLDEST";

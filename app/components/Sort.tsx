@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
-import { SortType } from "./SectionContainer";
+import { SortType } from "@/types/types";
 
 interface SortProps {
   setSort: Dispatch<SetStateAction<SortType>>;

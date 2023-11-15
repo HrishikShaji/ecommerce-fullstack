@@ -1,8 +1,7 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
-import { itemsPerPage } from "@/app/lib/utils";
-import { SortType } from "@/app/components/SectionContainer";
+import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -34,9 +33,7 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
-  const sort = searchParams.get("sort");
-  console.log(sort, "in the backend");
-  const order = sort === "LATEST" ? "desc" : "asc";
+  const order = getSortOrder(request);
   try {
     if (page === 0) {
       const billboards = await prisma.billBoard.findMany({});

@@ -1,5 +1,5 @@
 import prisma from "@/app/lib/connect";
-import { itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { getSortOrder, itemsPerPage, paginateArray } from "@/app/lib/utils";
 import { getCategories } from "../category/route";
 
 export async function GET(request: Request) {
@@ -8,13 +8,18 @@ export async function GET(request: Request) {
   const section = searchParams.get("section");
   const searchString = searchParams.get("searchString");
   console.log("searchPage is", page);
+  const order = getSortOrder(request);
   try {
     let results: any[] = [];
     if (section === "billBoard") {
-      results = await prisma.billBoard.findMany({});
+      results = await prisma.billBoard.findMany({
+        orderBy: { createdAt: order },
+      });
     }
     if (section === "category") {
-      const allResults = await prisma.category.findMany({});
+      const allResults = await prisma.category.findMany({
+        orderBy: { createdAt: order },
+      });
       results = getCategories(allResults);
     }
     if (section === "product") {
@@ -26,13 +31,16 @@ export async function GET(request: Request) {
           size: true,
           color: true,
         },
+        orderBy: {
+          createdAt: order,
+        },
       });
     }
     if (section === "color") {
-      results = await prisma.color.findMany({});
+      results = await prisma.color.findMany({ orderBy: { createdAt: order } });
     }
     if (section === "size") {
-      results = await prisma.size.findMany({});
+      results = await prisma.size.findMany({ orderBy: { createdAt: order } });
     }
 
     if (!results) {

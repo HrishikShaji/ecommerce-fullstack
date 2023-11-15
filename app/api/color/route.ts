@@ -1,7 +1,7 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
-import { itemsPerPage } from "@/app/lib/utils";
+import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -32,10 +32,14 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
-  console.log("page:", page);
+  const order = getSortOrder(request);
   try {
     if (page === 0) {
-      const colors = await prisma.color.findMany({});
+      const colors = await prisma.color.findMany({
+        orderBy: {
+          createdAt: order,
+        },
+      });
 
       if (!colors) {
         return new Response(JSON.stringify("No data"), { status: 400 });
@@ -47,6 +51,9 @@ export async function GET(request: Request) {
     const colors = await prisma.color.findMany({
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),
+      orderBy: {
+        createdAt: order,
+      },
     });
 
     if (!colors) {

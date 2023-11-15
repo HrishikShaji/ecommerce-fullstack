@@ -6,7 +6,7 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import { Billboard } from "./Billboard";
 import { Product } from "./Product";
-import { CategoryChild, ProductChild } from "@/types/types";
+import { CategoryChild, ProductChild, SortType } from "@/types/types";
 import { Size } from "./Size";
 import { Color } from "./Color";
 import { Category } from "./Category";
@@ -82,8 +82,6 @@ interface SectionContainerProps {
   setSort: Dispatch<SetStateAction<SortType>>;
   sort: SortType;
 }
-
-export type SortType = "LATEST" | "OLDEST";
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
   title,

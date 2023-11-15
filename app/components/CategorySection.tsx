@@ -4,17 +4,21 @@ import { useEffect, useState } from "react";
 import { useAddCategory, useGetCategories } from "../lib/queries/category";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
-  const { categories, isError, isLoading, refetch, count } =
-    useGetCategories(page);
+  const [sort, setSort] = useState<SortType>("LATEST");
+  const { categories, isError, isLoading, refetch, count } = useGetCategories(
+    page,
+    sort,
+  );
   const { addCategory, isPending } = useAddCategory();
 
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, [page, sort]);
   const values: InputItem[] = [
     {
       label: "Category",
@@ -37,6 +41,8 @@ export const CategorySection = () => {
           <Spinner />
         ) : (
           <SectionContainer
+            sort={sort}
+            setSort={setSort}
             title="Categories"
             headings={["Category"]}
             setPage={setPage}

@@ -3,12 +3,13 @@ import {
   CategoryPayload,
   validateCategoryPayload,
 } from "../validators/category";
+import { SortType } from "@/types/types";
 
-export const useGetCategories = (page: number) => {
+export const useGetCategories = (page: number, sort: SortType) => {
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await fetch(`/api/category?page=${page}`, {
+      const response = await fetch(`/api/category?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });

@@ -2,8 +2,9 @@
 import { Spinner } from "../components/Spinner";
 import { useEffect, useState } from "react";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
-import { SectionContainer, SortType } from "./SectionContainer";
+import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
@@ -14,7 +15,6 @@ export const BillboardSection = () => {
     sort,
   );
   const { addBillboard, isPending } = useAddBillboard();
-  console.log(sort);
 
   useEffect(() => {
     refetch();
