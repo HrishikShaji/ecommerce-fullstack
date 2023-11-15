@@ -3,13 +3,18 @@ import { BillBoard } from "@prisma/client";
 import { useDeleteBillboard } from "../lib/queries/billboard";
 import { RowActions } from "./RowActions";
 import { format } from "date-fns";
+import { useDeleteQuery } from "../lib/queries/customQuery";
 
 interface BillboardProps {
   data: BillBoard;
 }
 
 export const Billboard: React.FC<BillboardProps> = ({ data }) => {
-  const { deleteBillboard, isDeleting } = useDeleteBillboard();
+  const { deleteBillboard, isDeleting: is } = useDeleteBillboard();
+  const { remove, isDeleting } = useDeleteQuery({
+    queryKey: "billboards",
+    endpoint: "billboard",
+  });
 
   return (
     <div
@@ -21,7 +26,7 @@ export const Billboard: React.FC<BillboardProps> = ({ data }) => {
       <RowActions
         mode="billboard"
         data={data}
-        deleteAction={deleteBillboard}
+        deleteAction={remove}
         isDeleting={isDeleting}
       />
     </div>
