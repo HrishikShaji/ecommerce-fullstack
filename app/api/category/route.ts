@@ -3,7 +3,7 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
-import { itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { getSortOrder, itemsPerPage, paginateArray } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
@@ -74,9 +74,13 @@ export const getCategories = (
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
+  const order = getSortOrder(request);
+
   try {
     if (page === 0) {
-      const categories = await prisma.category.findMany({});
+      const categories = await prisma.category.findMany({
+        orderBy: { createdAt: order },
+      });
 
       if (!categories) {
         return new Response(JSON.stringify("No data"), { status: 400 });
@@ -87,7 +91,9 @@ export async function GET(request: Request) {
       });
     }
 
-    const categories = await prisma.category.findMany({});
+    const categories = await prisma.category.findMany({
+      orderBy: { createdAt: order },
+    });
 
     if (!categories) {
       return new Response(JSON.stringify("No data"), { status: 400 });

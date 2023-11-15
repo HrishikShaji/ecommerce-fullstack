@@ -6,7 +6,7 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import { Billboard } from "./Billboard";
 import { Product } from "./Product";
-import { CategoryChild, ProductChild } from "@/types/types";
+import { CategoryChild, ProductChild, SortType } from "@/types/types";
 import { Size } from "./Size";
 import { Color } from "./Color";
 import { Category } from "./Category";
@@ -53,20 +53,21 @@ const RenderSections: React.FC<renderSectionsProps> = ({
   if (!Array.isArray(data) || data.length === 0) {
     return <div>No data available</div>;
   }
+  const size = headings.length + 1;
   return (
-    <table className="w-full">
-      <thead>
-        <tr className="text-left border-b-2 border-neutral-700 ">
-          {headings &&
-            headings.map((heading, i) => (
-              <th className="py-2" key={i}>
-                {heading}
-              </th>
-            ))}
-        </tr>
-      </thead>
+    <div className="w-full">
+      <div
+        className={`text-left border-b-2 grid grid-cols-${size} border-neutral-700 `}
+      >
+        {headings &&
+          headings.map((heading, i) => (
+            <div className="py-2" key={i}>
+              {heading}
+            </div>
+          ))}
+      </div>
       {data?.map((item) => <Component data={item} key={item.id} />)}
-    </table>
+    </div>
   );
 };
 
@@ -78,11 +79,8 @@ interface SectionContainerProps {
   setPage: Dispatch<SetStateAction<number>>;
   page: number;
   count: number;
-}
-
-export enum SortType {
-  LATEST,
-  OLDEST,
+  setSort: Dispatch<SetStateAction<SortType>>;
+  sort: SortType;
 }
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({
@@ -93,15 +91,17 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   page,
   count,
   section,
+  setSort,
+  sort,
 }) => {
   const [searchPage, setSearchPage] = useState(1);
   const [isSearch, setIsSearch] = useState(false);
   const [searchCount, setSearchCount] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
-  const [sort, setSort] = useState<SortType>(SortType.LATEST);
   const [searchResults, setSearchResults] = useState<SearchType[] | []>([]);
 
   const finalData = isSearch ? searchResults : data;
+  console.log(sort);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">

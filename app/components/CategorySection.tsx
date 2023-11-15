@@ -4,18 +4,21 @@ import { useEffect, useState } from "react";
 import { useAddCategory, useGetCategories } from "../lib/queries/category";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 export const CategorySection = () => {
   const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
-  const { categories, isError, isLoading, refetch, count } =
-    useGetCategories(page);
-  const { addCategory, isPending } = useAddCategory();
+  const [sort, setSort] = useState<SortType>("LATEST");
+  const { data, isError, isLoading, refetch, count } = useGetCategories(
+    page,
+    sort,
+  );
+  const { mutate, isPending } = useAddCategory();
 
   useEffect(() => {
     refetch();
-  }, [page]);
-  console.log(categories);
+  }, [page, sort]);
   const values: InputItem[] = [
     {
       label: "Category",
@@ -30,7 +33,7 @@ export const CategorySection = () => {
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Add Categories</h1>
-        <Form values={values} isPending={isPending} apiFunction={addCategory} />
+        <Form values={values} isPending={isPending} apiFunction={mutate} />
       </div>
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-semibold">Categories</h1>
@@ -38,11 +41,13 @@ export const CategorySection = () => {
           <Spinner />
         ) : (
           <SectionContainer
-            headings={[""]}
+            sort={sort}
+            setSort={setSort}
             title="Categories"
+            headings={["Category"]}
             setPage={setPage}
             page={page}
-            data={categories}
+            data={data}
             count={count}
             section="category"
           />

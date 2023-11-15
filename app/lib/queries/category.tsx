@@ -3,12 +3,18 @@ import {
   CategoryPayload,
   validateCategoryPayload,
 } from "../validators/category";
+import { SortType } from "@/types/types";
 
-export const useGetCategories = (page: number) => {
-  const { data, isError, refetch, isLoading } = useQuery({
+export const useGetCategories = (page: number, sort: SortType) => {
+  const {
+    data: response,
+    isError,
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      const response = await fetch(`/api/category?page=${page}`, {
+      const response = await fetch(`/api/category?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -16,15 +22,15 @@ export const useGetCategories = (page: number) => {
     },
   });
 
-  const categories = data?.allCategories;
-  const count = data?.count;
+  const data = response?.allCategories;
+  const count = response?.count;
 
-  return { categories, count, isError, refetch, isLoading };
+  return { data, count, isError, refetch, isLoading };
 };
 
 export const useAddCategory = () => {
   const queryClient = useQueryClient();
-  const { mutate: addCategory, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (payload: CategoryPayload) => {
       const isValidPayload = validateCategoryPayload(payload);
 
@@ -43,7 +49,7 @@ export const useAddCategory = () => {
     },
   });
 
-  return { addCategory, isPending };
+  return { mutate, isPending };
 };
 
 export const useDeleteCategory = () => {

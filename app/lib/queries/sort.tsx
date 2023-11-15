@@ -1,4 +1,4 @@
-import { SortType } from "@/app/components/SectionContainer";
+import { SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 
 export const useSort = ({
@@ -17,7 +17,7 @@ export const useSort = ({
     queryKey: [`${section}Search`],
     queryFn: async () => {
       const response = await fetch(
-        `/api/search?page=${page}&section=${section}&searchString=${searchString}`,
+        `/api/search?page=${page}&section=${section}&searchString=${searchString}&sort=${sort}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },

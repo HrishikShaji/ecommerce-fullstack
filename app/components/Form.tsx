@@ -63,7 +63,7 @@ export const Form: React.FC<FormProps> = ({
   }, [dropdownValues]);
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-
+    console.log(formData);
     apiFunction(formData);
     values.forEach((item: InputItem) => {
       item.onChange("");

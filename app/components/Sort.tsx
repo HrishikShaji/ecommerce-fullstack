@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
-import { SortType } from "./SectionContainer";
+import { SortType } from "@/types/types";
 
 interface SortProps {
   setSort: Dispatch<SetStateAction<SortType>>;
@@ -17,13 +17,13 @@ export const Sort: React.FC<SortProps> = ({ setSort }) => {
       {isSortOpen && (
         <div className="absolute px-1 py-2 w-[100px]  top-10 right-0 rounded-md bg-neutral-700">
           <button
-            onClick={() => setSort(SortType.LATEST)}
+            onClick={() => setSort("LATEST")}
             className="w-full py-1 border-b-2 border-neutral-800 hover:bg-neutral-800 rounded-md"
           >
             Latest
           </button>
           <button
-            onClick={() => setSort(SortType.OLDEST)}
+            onClick={() => setSort("OLDEST")}
             className="w-full py-1 border-b-2 border-neutral-800 hover:bg-neutral-800 rounded-md"
           >
             Oldest

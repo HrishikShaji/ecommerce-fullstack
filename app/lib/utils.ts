@@ -6,3 +6,12 @@ export function paginateArray({ array, page }: { array: any[]; page: number }) {
 
   return array.slice(startIndex, endIndex);
 }
+
+export function getSortOrder(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const sort = searchParams.get("sort");
+  console.log(sort, "in the backend");
+  const order = sort === "LATEST" ? "desc" : "asc";
+
+  return order;
+}

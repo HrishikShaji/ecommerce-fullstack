@@ -3,12 +3,18 @@ import {
   BillboardPayload,
   validateBillboardPayload,
 } from "../validators/Billboard";
+import { SortType } from "@/types/types";
 
-export const useGetBillboards = (page: number) => {
-  const { data, isError, refetch, isLoading } = useQuery({
+export const useGetBillboards = (page: number, sort: SortType) => {
+  const {
+    data: response,
+    isError,
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["billboards"],
     queryFn: async () => {
-      const response = await fetch(`/api/billboard?page=${page}`, {
+      const response = await fetch(`/api/billboard?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -16,17 +22,18 @@ export const useGetBillboards = (page: number) => {
     },
   });
 
-  const billboards = data?.billboards;
-  const count = data?.count;
-  return { count, billboards, isError, refetch, isLoading };
+  const data = response?.billboards;
+  const count = response?.count;
+  return { count, data, isError, refetch, isLoading };
 };
 
 export const useAddBillboard = () => {
   const queryClient = useQueryClient();
-  const { mutate: addBillboard, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (payload: BillboardPayload) => {
+      console.log(payload);
       const isValidPayload = validateBillboardPayload(payload);
-
+      console.log(isValidPayload);
       const response = await fetch("/api/billboard", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,7 +49,7 @@ export const useAddBillboard = () => {
     },
   });
 
-  return { addBillboard, isPending };
+  return { mutate, isPending };
 };
 
 export const useDeleteBillboard = () => {

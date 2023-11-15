@@ -4,17 +4,21 @@ import { useEffect, useState } from "react";
 import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
+import { SortType } from "@/types/types";
 
 export const BillboardSection = () => {
   const [billboard, setBillboard] = useState("");
   const [page, setPage] = useState(1);
-  const { refetch, billboards, count, isLoading, isError } =
-    useGetBillboards(page);
+  const [sort, setSort] = useState<SortType>("LATEST");
+  const { refetch, billboards, count, isLoading, isError } = useGetBillboards(
+    page,
+    sort,
+  );
   const { addBillboard, isPending } = useAddBillboard();
 
   useEffect(() => {
     refetch();
-  }, [page]);
+  }, [page, sort]);
   const values: InputItem[] = [
     {
       label: "Billboard",
@@ -41,12 +45,14 @@ export const BillboardSection = () => {
       ) : (
         <SectionContainer
           title="Billboards"
-          headings={["Bill", "Cat"]}
+          headings={["Billboard", "Date"]}
           data={billboards}
           setPage={setPage}
           page={page}
           count={count}
           section="billBoard"
+          setSort={setSort}
+          sort={sort}
         />
       )}
     </div>

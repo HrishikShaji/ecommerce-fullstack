@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ProductPayload, validateProductPayload } from "../validators/Product";
+import { SortType } from "@/types/types";
 
-export const useGetProducts = (page: number) => {
+export const useGetProducts = (page: number, sort: SortType) => {
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: ["products"],
     queryFn: async () => {
-      const response = await fetch(`/api/product?page=${page}`, {
+      const response = await fetch(`/api/product?page=${page}&sort=${sort}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
