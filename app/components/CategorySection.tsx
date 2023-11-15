@@ -15,7 +15,6 @@ export const CategorySection = () => {
   useEffect(() => {
     refetch();
   }, [page]);
-  console.log(categories);
   const values: InputItem[] = [
     {
       label: "Category",
@@ -39,6 +38,7 @@ export const CategorySection = () => {
         ) : (
           <SectionContainer
             title="Categories"
+            headings={["Category"]}
             setPage={setPage}
             page={page}
             data={categories}

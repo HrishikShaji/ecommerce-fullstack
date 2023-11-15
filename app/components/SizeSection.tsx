@@ -36,7 +36,7 @@ export const SizeSection = () => {
         ) : (
           <SectionContainer
             title="Sizes"
-            headings={["Size", "Category", "Date"]}
+            headings={["Size", "Category"]}
             data={sizes}
             setPage={setPage}
             page={page}

@@ -37,7 +37,7 @@ export const ColorSection = () => {
         ) : (
           <SectionContainer
             title="Colors"
-            headings={["Color", "Category", "Date"]}
+            headings={["Color", "Category"]}
             data={colors}
             setPage={setPage}
             page={page}

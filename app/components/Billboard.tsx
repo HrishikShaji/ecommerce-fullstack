@@ -11,17 +11,18 @@ export const Billboard: React.FC<BillboardProps> = ({ data }) => {
   const { deleteBillboard, isDeleting } = useDeleteBillboard();
 
   return (
-    <tbody>
-      <tr key={data.id} className="border-b-2 border-neutral-700">
-        <td className="py-1">{data.name}</td>
-        <td>{data.id}</td>
-        <RowActions
-          mode="billboard"
-          data={data}
-          deleteAction={deleteBillboard}
-          isDeleting={isDeleting}
-        />
-      </tr>
-    </tbody>
+    <div
+      key={data.id}
+      className="border-b-2 w-full grid grid-cols-3 justify-between border-neutral-700"
+    >
+      <div className="py-1 ">{data.name}</div>
+      <div className="">{data.id}</div>
+      <RowActions
+        mode="billboard"
+        data={data}
+        deleteAction={deleteBillboard}
+        isDeleting={isDeleting}
+      />
+    </div>
   );
 };

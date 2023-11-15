@@ -53,20 +53,22 @@ const RenderSections: React.FC<renderSectionsProps> = ({
   if (!Array.isArray(data) || data.length === 0) {
     return <div>No data available</div>;
   }
+  const size = headings.length + 1;
+  console.log(size);
   return (
-    <table className="w-full">
-      <thead>
-        <tr className="text-left border-b-2 border-neutral-700 ">
-          {headings &&
-            headings.map((heading, i) => (
-              <th className="py-2" key={i}>
-                {heading}
-              </th>
-            ))}
-        </tr>
-      </thead>
+    <div className="w-full">
+      <div
+        className={`text-left border-b-2 grid grid-cols-${size} border-neutral-700 `}
+      >
+        {headings &&
+          headings.map((heading, i) => (
+            <div className="py-2" key={i}>
+              {heading}
+            </div>
+          ))}
+      </div>
       {data?.map((item) => <Component data={item} key={item.id} />)}
-    </table>
+    </div>
   );
 };
 
