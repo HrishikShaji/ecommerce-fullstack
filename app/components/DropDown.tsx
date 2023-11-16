@@ -61,6 +61,7 @@ export const DropDown: React.FC<DropDownProps> = ({
   });
 
   if (isError) return null;
+  console.log(data, "data");
 
   return (
     <div className="flex flex-col bg-neutral-800 rounded-md ">
@@ -79,7 +80,7 @@ export const DropDown: React.FC<DropDownProps> = ({
           <div className="origin-top-right absolute right-0 top-2 p-1 pb-2 bg-neutral-600 w-full  rounded-md shadow-lg  ring-1 ring-black z-30 ring-opacity-5">
             <div className="">
               <ul className="">
-                {data.map((category: CategoryChild) => (
+                {data.data.map((category: CategoryChild) => (
                   <MenuItem
                     key={category.id}
                     category={category}

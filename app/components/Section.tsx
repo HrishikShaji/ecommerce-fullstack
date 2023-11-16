@@ -12,6 +12,10 @@ import {
 } from "../lib/queries/customQuery";
 import { UseMutateFunction } from "@tanstack/react-query";
 
+type Item = {
+  name: string;
+  id: string;
+};
 interface SectionProps {
   endpoint: string;
   heading: string;
@@ -54,6 +58,57 @@ export const Section: React.FC<SectionProps> = ({
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
+  const [selectedBillboardItem, setSelectedBillboardItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
+  const [selectedItem, setSelectedItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
+  const [selectedSizeItem, setSelectedSizeItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
+  const [selectedColorItem, setSelectedColorItem] = useState<Item>({
+    name: "",
+    id: "",
+  });
+
+  const dropDownValues = [
+    {
+      label: "Category",
+      selectedItem: selectedItem,
+      setSelectedItem: setSelectedItem,
+      url: "category",
+      query: "categories",
+      name: "categoryId",
+    },
+    {
+      label: "Billboard",
+      selectedItem: selectedBillboardItem,
+      setSelectedItem: setSelectedBillboardItem,
+      url: "billboard",
+      query: "billboards",
+      name: "billboardId",
+    },
+    {
+      label: "Size",
+      selectedItem: selectedSizeItem,
+      setSelectedItem: setSelectedSizeItem,
+      url: "size",
+      query: "sizes",
+      name: "sizeId",
+    },
+    {
+      label: "Color",
+      selectedItem: selectedColorItem,
+      setSelectedItem: setSelectedColorItem,
+      url: "color",
+      query: "colors",
+      name: "colorId",
+    },
+  ];
   const { refetch, data, count, isLoading, isError } = customGetHook({
     page: page,
     sort: sort,
@@ -83,8 +138,16 @@ export const Section: React.FC<SectionProps> = ({
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
-
-        <Form values={values} apiFunction={add} isPending={isPending} />
+        {section === "product" ? (
+          <Form
+            values={values}
+            dropdownValues={dropDownValues}
+            apiFunction={add}
+            isPending={isPending}
+          />
+        ) : (
+          <Form values={values} apiFunction={add} isPending={isPending} />
+        )}
       </div>
       {isLoading ? (
         <Spinner />

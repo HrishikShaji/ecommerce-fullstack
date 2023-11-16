@@ -46,7 +46,7 @@ export const useGetQuery = ({
     },
   });
 
-  const data = response?.billboards;
+  const data = response?.data;
   const count = response?.count;
   return { count, data, isError, refetch, isLoading };
 };
@@ -58,7 +58,7 @@ export type AddPayload =
   | SizePayload
   | ColorPayload;
 
-export type Validator = (inputs: AddPayload) => Record<string, any>;
+export type Validator = (inputs: AddPayload) => AddPayload;
 
 export type AddQueryProps = {
   validator: Validator;

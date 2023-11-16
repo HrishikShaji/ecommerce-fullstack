@@ -88,6 +88,7 @@ interface DropdownItemProps {
 }
 
 const DropdownItem: React.FC<DropdownItemProps> = ({ value }) => {
+  console.log("value is ", value);
   return (
     <div className="flex flex-col gap-2 w-full">
       <label>{value.label}</label>

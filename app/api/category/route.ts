@@ -75,7 +75,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
   const order = getSortOrder(request);
-
+  console.log("it s=i shere");
   try {
     if (page === 0) {
       const categories = await prisma.category.findMany({
@@ -85,8 +85,9 @@ export async function GET(request: Request) {
       if (!categories) {
         return new Response(JSON.stringify("No data"), { status: 400 });
       }
-      const allCategories = getCategories(categories);
-      return new Response(JSON.stringify(allCategories), {
+      const data = getCategories(categories);
+      const count = data.length;
+      return new Response(JSON.stringify({ count, data }), {
         status: 200,
       });
     }
@@ -100,11 +101,12 @@ export async function GET(request: Request) {
     }
     const withSubCategories = getCategories(categories);
     const count = withSubCategories.length;
-    const allCategories = paginateArray({
+    const data = paginateArray({
       array: withSubCategories,
       page: page,
     });
-    return new Response(JSON.stringify({ count, allCategories }), {
+    console.log(data);
+    return new Response(JSON.stringify({ count, data }), {
       status: 200,
     });
   } catch (error) {

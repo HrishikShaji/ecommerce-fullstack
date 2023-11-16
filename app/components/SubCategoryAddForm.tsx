@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Spinner } from "./Spinner";
 import { useAddCategory } from "../lib/queries/category";
 import { Category } from "./Category";
+import { useAddQuery } from "../lib/queries/customQuery";
+import { validateCategoryPayload } from "../lib/validators/category";
 
 interface SubCategoryAddFormProps {
   category: CategoryType;
@@ -15,13 +17,17 @@ export const SubCategoryAddForm: React.FC<SubCategoryAddFormProps> = ({
 }) => {
   const [name, setName] = useState("");
 
-  const { addCategory, isPending } = useAddCategory();
+  const { add, isPending } = useAddQuery({
+    endpoint: "category",
+    queryKey: "categories",
+    validator: validateCategoryPayload,
+  });
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        addCategory({ name: name, parentId: category.id });
+        add({ name: name, parentId: category.id });
       }}
     >
       <input

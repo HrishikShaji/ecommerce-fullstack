@@ -2,13 +2,18 @@
 import { Color as ColorType } from "@prisma/client";
 import { useDeleteColor } from "../lib/queries/color";
 import { RowActions } from "./RowActions";
+import { useDeleteQuery } from "../lib/queries/customQuery";
 
 interface ColorProps {
   data: ColorType;
 }
 
 export const Color: React.FC<ColorProps> = ({ data }) => {
-  const { deleteColor, isDeleting } = useDeleteColor();
+  const { deleteColor, isDeleting: is } = useDeleteColor();
+  const { remove, isDeleting } = useDeleteQuery({
+    endpoint: "color",
+    queryKey: "colors",
+  });
   return (
     <div
       key={data.id}
@@ -19,7 +24,7 @@ export const Color: React.FC<ColorProps> = ({ data }) => {
       <RowActions
         data={data}
         mode="color"
-        deleteAction={deleteColor}
+        deleteAction={remove}
         isDeleting={isDeleting}
       />
     </div>
