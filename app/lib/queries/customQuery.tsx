@@ -14,6 +14,13 @@ export type QueryKey =
   | "sizes"
   | "colors";
 
+export type ValidateTypePayload =
+  | BillboardPayload
+  | ProductPayload
+  | CategoryPayload
+  | SizePayload
+  | ColorPayload;
+
 export type GetQueryProps = {
   page: number;
   sort: SortType;

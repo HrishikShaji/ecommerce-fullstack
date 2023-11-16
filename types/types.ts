@@ -20,3 +20,15 @@ export type ProductChild = Product & {
 };
 
 export type SortType = "LATEST" | "OLDEST";
+export type TitleType =
+  | "Billboards"
+  | "Categories"
+  | "Products"
+  | "Sizes"
+  | "Colors";
+export type SectionType =
+  | "billBoard"
+  | "color"
+  | "size"
+  | "product"
+  | "category";
