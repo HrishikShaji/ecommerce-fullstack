@@ -1,20 +1,18 @@
 import { Spinner } from "../components/Spinner";
 import { useEffect, useState } from "react";
 import { SectionContainer } from "./SectionContainer";
-import { Form, InputItem } from "./Form";
-import { SortType } from "@/types/types";
+import { Form } from "./Form";
 import {
   AddQueryProps,
   GetQueryProps,
+  InputItem,
   QueryKey,
+  SelectItem,
+  SortType,
   Validator,
-} from "../lib/queries/customQuery";
+} from "@/types/types";
 import { UseMutateFunction } from "@tanstack/react-query";
 
-type Item = {
-  name: string;
-  id: string;
-};
 interface SectionProps<T> {
   endpoint: string;
   heading: string;
@@ -57,19 +55,20 @@ export const Section = <T,>({
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
-  const [selectedBillboardItem, setSelectedBillboardItem] = useState<Item>({
+  const [selectedBillboardItem, setSelectedBillboardItem] =
+    useState<SelectItem>({
+      name: "",
+      id: "",
+    });
+  const [selectedItem, setSelectedItem] = useState<SelectItem>({
     name: "",
     id: "",
   });
-  const [selectedItem, setSelectedItem] = useState<Item>({
+  const [selectedSizeItem, setSelectedSizeItem] = useState<SelectItem>({
     name: "",
     id: "",
   });
-  const [selectedSizeItem, setSelectedSizeItem] = useState<Item>({
-    name: "",
-    id: "",
-  });
-  const [selectedColorItem, setSelectedColorItem] = useState<Item>({
+  const [selectedColorItem, setSelectedColorItem] = useState<SelectItem>({
     name: "",
     id: "",
   });

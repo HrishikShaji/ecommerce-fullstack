@@ -1,12 +1,7 @@
-import {
-  BillBoard as BillBoardType,
-  Size as SizeType,
-  Color as ColorType,
-} from "@prisma/client";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Billboard } from "./Billboard";
 import { Product } from "./Product";
-import { CategoryChild, ProductChild, SortType } from "@/types/types";
+import { SearchType, SortType } from "@/types/types";
 import { Size } from "./Size";
 import { Color } from "./Color";
 import { Category } from "./Category";
@@ -14,13 +9,6 @@ import { Spinner } from "./Spinner";
 import { Pagination } from "./Pagination";
 import { SearchBar } from "./SearchBar";
 import { Sort } from "./Sort";
-
-export type SearchType =
-  | BillBoardType
-  | CategoryChild
-  | ProductChild
-  | SizeType
-  | ColorType;
 
 interface ComponentProps {
   data: SearchType;
@@ -101,7 +89,6 @@ export const SectionContainer: React.FC<SectionContainerProps> = ({
   const [searchResults, setSearchResults] = useState<SearchType[] | []>([]);
 
   const finalData = isSearch ? searchResults : data;
-  console.log(sort);
   return (
     <div className="bg-neutral-800 p-3 rounded-md flex flex-col gap-2">
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-0  justify-between  sm:items-center ">

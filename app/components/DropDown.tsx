@@ -1,4 +1,4 @@
-import { CategoryChild } from "@/types/types";
+import { CategoryChild, SelectItem } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import {
   Dispatch,
@@ -10,14 +10,9 @@ import {
 } from "react";
 import { BiDownArrow } from "react-icons/bi";
 
-type Item = {
-  name: string;
-  id: string;
-};
-
 interface DropDownProps {
-  selectedItem: Item;
-  setSelectedItem: Dispatch<SetStateAction<Item>>;
+  selectedItem: SelectItem;
+  setSelectedItem: Dispatch<SetStateAction<SelectItem>>;
   url: string;
   query: string;
 }
@@ -61,7 +56,6 @@ export const DropDown: React.FC<DropDownProps> = ({
   });
 
   if (isError) return null;
-  console.log(data, "data");
 
   return (
     <div className="flex flex-col bg-neutral-800 rounded-md ">
@@ -99,7 +93,7 @@ export const DropDown: React.FC<DropDownProps> = ({
 
 interface MenuItemProps {
   category: CategoryChild;
-  setSelectedItem: Dispatch<SetStateAction<Item>>;
+  setSelectedItem: Dispatch<SetStateAction<SelectItem>>;
   setIsOpen: (value: boolean) => void;
 }
 
@@ -118,7 +112,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
     e.stopPropagation();
     toggleSubMenu();
   };
-  const handleSelect = (category: Item) => {
+  const handleSelect = (category: SelectItem) => {
     setSelectedItem(category);
     setIsOpen(false);
   };

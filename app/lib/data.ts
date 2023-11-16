@@ -1,17 +1,9 @@
-import {
-  QueryKey,
-  ValidateTypePayload,
-  Validator,
-  useAddQuery,
-  useGetQuery,
-} from "../lib/queries/customQuery";
+import { useAddQuery, useGetQuery } from "../lib/queries/customQuery";
 import { validateBillboardPayload } from "../lib/validators/Billboard";
 import { validateCategoryPayload } from "../lib/validators/category";
 import { validateProductPayload } from "../lib/validators/Product";
 import { validateSizePayload } from "../lib/validators/size";
 import { validateColorPayload } from "../lib/validators/color";
-import { useState } from "react";
-import { SectionType, TitleType } from "@/types/types";
 
 export const sectionsData = [
   {

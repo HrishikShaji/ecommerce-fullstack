@@ -8,8 +8,7 @@ import {
 import { useSearch } from "../lib/queries/search";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { ImSearch } from "react-icons/im";
-import { SearchType } from "./SectionContainer";
-import { SortType } from "@/types/types";
+import { SearchType, SortType } from "@/types/types";
 
 interface SearchBarProps {
   isSearch: boolean;

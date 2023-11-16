@@ -1,32 +1,11 @@
+import {
+  AddQueryProps,
+  DeleteQueryProps,
+  GetQueryProps,
+  UpdatePayload,
+  UpdateQueryProps,
+} from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BillboardPayload } from "../validators/Billboard";
-import { SortType } from "@/types/types";
-import { ProductPayload } from "../validators/Product";
-import { CategoryPayload } from "../validators/category";
-import { SizePayload } from "../validators/size";
-import { ColorPayload } from "../validators/color";
-
-export type QueryKey =
-  | "billboards"
-  | "products"
-  | "categories"
-  | "search"
-  | "sizes"
-  | "colors";
-
-export type ValidateTypePayload =
-  | BillboardPayload
-  | ProductPayload
-  | CategoryPayload
-  | SizePayload
-  | ColorPayload;
-
-export type GetQueryProps = {
-  page: number;
-  sort: SortType;
-  endpoint: string;
-  queryKey: QueryKey;
-};
 
 export const useGetQuery = ({
   page,
@@ -56,14 +35,6 @@ export const useGetQuery = ({
   const data = response?.data;
   const count = response?.count;
   return { count, data, isError, refetch, isLoading };
-};
-
-export type Validator<T> = (inputs: T) => T;
-
-export type AddQueryProps<T> = {
-  validator: Validator<T>;
-  endpoint: string;
-  queryKey: QueryKey;
 };
 
 export const useAddQuery = <T,>({
@@ -100,13 +71,7 @@ export const useAddQuery = <T,>({
   return { add, isPending, isError };
 };
 
-export const useDeleteQuery = ({
-  endpoint,
-  queryKey,
-}: {
-  endpoint: string;
-  queryKey: QueryKey;
-}) => {
+export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
   const queryClient = useQueryClient();
   const { mutate: remove, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => {
@@ -125,21 +90,10 @@ export const useDeleteQuery = ({
   return { remove, isDeleting };
 };
 
-export type Payload = {
-  name: string;
-  id: string;
-};
-
-export const useUpdateQuery = ({
-  endpoint,
-  queryKey,
-}: {
-  endpoint: string;
-  queryKey: QueryKey;
-}) => {
+export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
   const queryClient = useQueryClient();
   const { mutate: update, isPending } = useMutation({
-    mutationFn: async (payload: Payload) => {
+    mutationFn: async (payload: UpdatePayload) => {
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
