@@ -4,26 +4,26 @@ import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
 import { SortType } from "@/types/types";
 import {
-  AddPayload,
   AddQueryProps,
   GetQueryProps,
   QueryKey,
   Validator,
 } from "../lib/queries/customQuery";
 import { UseMutateFunction } from "@tanstack/react-query";
+import { ProductPayload } from "../lib/validators/Product";
 
 type Item = {
   name: string;
   id: string;
 };
-interface SectionProps {
+interface SectionProps<T> {
   endpoint: string;
   heading: string;
   label: string;
   placeholder: string;
   name: string;
   queryKey: QueryKey;
-  validator: Validator;
+  validator: Validator<T>;
   customGetHook: (values: GetQueryProps) => {
     count: number;
     data: any[];
@@ -31,8 +31,8 @@ interface SectionProps {
     isLoading: boolean;
     refetch: () => void;
   };
-  customAddHook: (values: AddQueryProps) => {
-    add: UseMutateFunction<Response, Error, AddPayload, unknown>;
+  customAddHook: (values: AddQueryProps<T>) => {
+    add: UseMutateFunction<Response, Error, T, unknown>;
     isPending: boolean;
     isError: boolean;
   };
@@ -41,7 +41,7 @@ interface SectionProps {
   headings: string[];
 }
 
-export const Section: React.FC<SectionProps> = ({
+export const Section = <T,>({
   label,
   queryKey,
   placeholder,
@@ -54,7 +54,7 @@ export const Section: React.FC<SectionProps> = ({
   customAddHook,
   heading,
   endpoint,
-}) => {
+}: SectionProps<T>) => {
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");

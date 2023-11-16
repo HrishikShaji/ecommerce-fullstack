@@ -51,33 +51,26 @@ export const useGetQuery = ({
   return { count, data, isError, refetch, isLoading };
 };
 
-export type AddPayload =
-  | BillboardPayload
-  | ProductPayload
-  | CategoryPayload
-  | SizePayload
-  | ColorPayload;
+export type Validator<T> = (inputs: T) => T;
 
-export type Validator = (inputs: AddPayload) => AddPayload;
-
-export type AddQueryProps = {
-  validator: Validator;
+export type AddQueryProps<T> = {
+  validator: Validator<T>;
   endpoint: string;
   queryKey: QueryKey;
 };
 
-export const useAddQuery = ({
+export const useAddQuery = <T,>({
   validator,
   endpoint,
   queryKey,
-}: AddQueryProps) => {
+}: AddQueryProps<T>) => {
   const queryClient = useQueryClient();
   const {
     mutate: add,
     isPending,
     isError,
   } = useMutation({
-    mutationFn: async (payload: AddPayload) => {
+    mutationFn: async (payload: T) => {
       const isValidPayload = validator(payload);
       const response = await fetch(`/api/${endpoint}`, {
         method: "POST",

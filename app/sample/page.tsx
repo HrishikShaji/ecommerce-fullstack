@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { Form } from "../components/Form";
 import { Section } from "../components/Section";
-import { useAddBillboard, useGetBillboards } from "../lib/queries/billboard";
 import { useAddQuery, useGetQuery } from "../lib/queries/customQuery";
 import { validateBillboardPayload } from "../lib/validators/Billboard";
 import { validateCategoryPayload } from "../lib/validators/category";
