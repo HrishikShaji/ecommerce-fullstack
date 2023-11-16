@@ -5,10 +5,11 @@ import { Section } from "../components/Section";
 import { sectionsData } from "../lib/data";
 import {
   QueryKey,
+  SectionType,
+  TitleType,
   ValidateTypePayload,
   Validator,
-} from "../lib/queries/customQuery";
-import { SectionType, TitleType } from "@/types/types";
+} from "@/types/types";
 
 const Page = () => {
   const [showSection, setShowSection] = useState(
