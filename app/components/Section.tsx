@@ -3,14 +3,35 @@ import { useEffect, useState } from "react";
 import { SectionContainer } from "./SectionContainer";
 import { Form, InputItem } from "./Form";
 import { SortType } from "@/types/types";
+import {
+  AddPayload,
+  AddQueryProps,
+  GetQueryProps,
+  QueryKey,
+  Validator,
+} from "../lib/queries/customQuery";
+import { UseMutateFunction } from "@tanstack/react-query";
 
 interface SectionProps {
+  endpoint: string;
   heading: string;
   label: string;
   placeholder: string;
   name: string;
-  customGetHook: () => any;
-  customAddHook: (page: number, sort: string) => any;
+  queryKey: QueryKey;
+  validator: Validator;
+  customGetHook: (values: GetQueryProps) => {
+    count: number;
+    data: any[];
+    isError: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  };
+  customAddHook: (values: AddQueryProps) => {
+    add: UseMutateFunction<Response, Error, AddPayload, unknown>;
+    isPending: boolean;
+    isError: boolean;
+  };
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   section: "billBoard" | "color" | "size" | "product" | "category";
   headings: string[];
@@ -18,23 +39,32 @@ interface SectionProps {
 
 export const Section: React.FC<SectionProps> = ({
   label,
+  queryKey,
   placeholder,
   name,
   customGetHook,
   title,
   section,
   headings,
+  validator,
   customAddHook,
   heading,
+  endpoint,
 }) => {
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
-  const { refetch, data, count, isLoading, isError } = customGetHook(
-    page,
-    sort,
-  );
-  const { mutate, isPending } = customAddHook();
+  const { refetch, data, count, isLoading, isError } = customGetHook({
+    page: page,
+    sort: sort,
+    endpoint: endpoint,
+    queryKey: queryKey,
+  });
+  const { add, isPending } = customAddHook({
+    endpoint: endpoint,
+    validator: validator,
+    queryKey: queryKey,
+  });
 
   useEffect(() => {
     refetch();
@@ -54,7 +84,7 @@ export const Section: React.FC<SectionProps> = ({
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
 
-        <Form values={values} apiFunction={mutate} isPending={isPending} />
+        <Form values={values} apiFunction={add} isPending={isPending} />
       </div>
       {isLoading ? (
         <Spinner />
