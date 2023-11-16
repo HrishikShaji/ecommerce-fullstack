@@ -35,20 +35,21 @@ export async function GET(request: Request) {
   const order = getSortOrder(request);
   try {
     if (page === 0) {
-      const colors = await prisma.color.findMany({
+      const data = await prisma.color.findMany({
         orderBy: {
           createdAt: order,
         },
       });
+      const count = data.length;
 
-      if (!colors) {
+      if (!data) {
         return new Response(JSON.stringify("No data"), { status: 400 });
       }
 
-      return new Response(JSON.stringify(colors), { status: 200 });
+      return new Response(JSON.stringify({ count, data }), { status: 200 });
     }
     const count = await prisma.color.count();
-    const colors = await prisma.color.findMany({
+    const data = await prisma.color.findMany({
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),
       orderBy: {
@@ -56,11 +57,11 @@ export async function GET(request: Request) {
       },
     });
 
-    if (!colors) {
+    if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
 
-    return new Response(JSON.stringify({ count, colors }), { status: 200 });
+    return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });

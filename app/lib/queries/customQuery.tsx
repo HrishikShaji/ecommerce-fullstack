@@ -1,33 +1,18 @@
 import {
-  MutateFunction,
-  MutationFunction,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
-import {
-  BillboardPayload,
-  validateBillboardPayload,
-} from "../validators/Billboard";
-import { SortType } from "@/types/types";
-import { ProductPayload } from "../validators/Product";
-import { CategoryPayload } from "../validators/category";
-import { SizePayload } from "../validators/size";
-import { ColorPayload } from "../validators/color";
+  AddQueryProps,
+  DeleteQueryProps,
+  GetQueryProps,
+  UpdatePayload,
+  UpdateQueryProps,
+} from "@/types/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-type QueryKey =
-  | "billboards"
-  | "products"
-  | "categories"
-  | "search"
-  | "sizes"
-  | "colors";
-export const useGetQuery = (
-  page: number,
-  sort: SortType,
-  endpoint: string,
-  queryKey: QueryKey,
-) => {
+export const useGetQuery = ({
+  page,
+  sort,
+  endpoint,
+  queryKey,
+}: GetQueryProps) => {
   const {
     data: response,
     isError,
@@ -47,32 +32,23 @@ export const useGetQuery = (
     },
   });
 
-  const data = response?.billboards;
+  const data = response?.data;
   const count = response?.count;
   return { count, data, isError, refetch, isLoading };
 };
 
-type AddPayload =
-  | BillboardPayload
-  | ProductPayload
-  | CategoryPayload
-  | SizePayload
-  | ColorPayload;
-
-type Validator = (inputs: AddPayload) => boolean;
-
-export const useAddQuery = (
-  validator: Validator,
-  endpoint: string,
-  queryKey: QueryKey,
-) => {
+export const useAddQuery = <T,>({
+  validator,
+  endpoint,
+  queryKey,
+}: AddQueryProps<T>) => {
   const queryClient = useQueryClient();
-  const { mutate, isPending, isError } = useMutation<
-    Response,
-    Error,
-    AddPayload
-  >({
-    mutationFn: async (payload: AddPayload) => {
+  const {
+    mutate: add,
+    isPending,
+    isError,
+  } = useMutation({
+    mutationFn: async (payload: T) => {
       const isValidPayload = validator(payload);
       const response = await fetch(`/api/${endpoint}`, {
         method: "POST",
@@ -92,16 +68,10 @@ export const useAddQuery = (
     },
   });
 
-  return { mutate, isPending, isError };
+  return { add, isPending, isError };
 };
 
-export const useDeleteQuery = ({
-  endpoint,
-  queryKey,
-}: {
-  endpoint: string;
-  queryKey: QueryKey;
-}) => {
+export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
   const queryClient = useQueryClient();
   const { mutate: remove, isPending: isDeleting } = useMutation({
     mutationFn: async (id: string) => {
@@ -120,21 +90,10 @@ export const useDeleteQuery = ({
   return { remove, isDeleting };
 };
 
-type Payload = {
-  name: string;
-  id: string;
-};
-
-export const useUpdateQuery = ({
-  endpoint,
-  queryKey,
-}: {
-  endpoint: string;
-  queryKey: QueryKey;
-}) => {
+export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
   const queryClient = useQueryClient();
   const { mutate: update, isPending } = useMutation({
-    mutationFn: async (payload: Payload) => {
+    mutationFn: async (payload: UpdatePayload) => {
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

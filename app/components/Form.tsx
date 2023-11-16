@@ -1,35 +1,7 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Button } from "./Button";
 import { DropDown } from "./DropDown";
-
-export type InputItem = {
-  label: string;
-  name: string;
-  value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
-};
-
-type Item = {
-  name: string;
-  id: string;
-};
-
-type DropdownInputItem = {
-  selectedItem: Item;
-  setSelectedItem: Dispatch<SetStateAction<Item>>;
-  url: string;
-  query: string;
-  name: string;
-  label: string;
-};
+import { DropdownInputItem, InputItem } from "@/types/types";
 
 interface FormProps {
   values: InputItem[];
@@ -63,7 +35,6 @@ export const Form: React.FC<FormProps> = ({
   }, [dropdownValues]);
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
     apiFunction(formData);
     values.forEach((item: InputItem) => {
       item.onChange("");

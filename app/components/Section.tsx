@@ -1,40 +1,123 @@
 import { Spinner } from "../components/Spinner";
 import { useEffect, useState } from "react";
 import { SectionContainer } from "./SectionContainer";
-import { Form, InputItem } from "./Form";
-import { SortType } from "@/types/types";
+import { Form } from "./Form";
+import {
+  AddQueryProps,
+  GetQueryProps,
+  InputItem,
+  QueryKey,
+  SelectItem,
+  SortType,
+  Validator,
+} from "@/types/types";
+import { UseMutateFunction } from "@tanstack/react-query";
 
-interface SectionProps {
+interface SectionProps<T> {
+  endpoint: string;
   heading: string;
   label: string;
   placeholder: string;
   name: string;
-  customGetHook: () => any;
-  customAddHook: (page: number, sort: string) => any;
+  queryKey: QueryKey;
+  validator: Validator<T>;
+  customGetHook: (values: GetQueryProps) => {
+    count: number;
+    data: any[];
+    isError: boolean;
+    isLoading: boolean;
+    refetch: () => void;
+  };
+  customAddHook: (values: AddQueryProps<T>) => {
+    add: UseMutateFunction<Response, Error, T, unknown>;
+    isPending: boolean;
+    isError: boolean;
+  };
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   section: "billBoard" | "color" | "size" | "product" | "category";
   headings: string[];
 }
 
-export const Section: React.FC<SectionProps> = ({
+export const Section = <T,>({
   label,
+  queryKey,
   placeholder,
   name,
   customGetHook,
   title,
   section,
   headings,
+  validator,
   customAddHook,
   heading,
-}) => {
+  endpoint,
+}: SectionProps<T>) => {
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
-  const { refetch, data, count, isLoading, isError } = customGetHook(
-    page,
-    sort,
-  );
-  const { mutate, isPending } = customAddHook();
+  const [selectedBillboardItem, setSelectedBillboardItem] =
+    useState<SelectItem>({
+      name: "",
+      id: "",
+    });
+  const [selectedItem, setSelectedItem] = useState<SelectItem>({
+    name: "",
+    id: "",
+  });
+  const [selectedSizeItem, setSelectedSizeItem] = useState<SelectItem>({
+    name: "",
+    id: "",
+  });
+  const [selectedColorItem, setSelectedColorItem] = useState<SelectItem>({
+    name: "",
+    id: "",
+  });
+
+  const dropDownValues = [
+    {
+      label: "Category",
+      selectedItem: selectedItem,
+      setSelectedItem: setSelectedItem,
+      url: "category",
+      query: "categories",
+      name: "categoryId",
+    },
+    {
+      label: "Billboard",
+      selectedItem: selectedBillboardItem,
+      setSelectedItem: setSelectedBillboardItem,
+      url: "billboard",
+      query: "billboards",
+      name: "billboardId",
+    },
+    {
+      label: "Size",
+      selectedItem: selectedSizeItem,
+      setSelectedItem: setSelectedSizeItem,
+      url: "size",
+      query: "sizes",
+      name: "sizeId",
+    },
+    {
+      label: "Color",
+      selectedItem: selectedColorItem,
+      setSelectedItem: setSelectedColorItem,
+      url: "color",
+      query: "colors",
+      name: "colorId",
+    },
+  ];
+  const { refetch, data, count, isLoading, isError } = customGetHook({
+    page: page,
+    sort: sort,
+    endpoint: endpoint,
+    queryKey: queryKey,
+  });
+  const { add, isPending } = customAddHook({
+    endpoint: endpoint,
+    validator: validator,
+    queryKey: queryKey,
+  });
 
   useEffect(() => {
     refetch();
@@ -53,8 +136,16 @@ export const Section: React.FC<SectionProps> = ({
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
-
-        <Form values={values} apiFunction={mutate} isPending={isPending} />
+        {section === "product" ? (
+          <Form
+            values={values}
+            dropdownValues={dropDownValues}
+            apiFunction={add}
+            isPending={isPending}
+          />
+        ) : (
+          <Form values={values} apiFunction={add} isPending={isPending} />
+        )}
       </div>
       {isLoading ? (
         <Spinner />

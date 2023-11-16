@@ -3,7 +3,7 @@
 import { Category } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateCategory } from "../lib/queries/category";
+import { useUpdateQuery } from "../lib/queries/customQuery";
 
 interface CategoryUpdateFormProps {
   category: Category;
@@ -14,13 +14,16 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = ({
 }) => {
   const [name, setName] = useState(category.name || "");
 
-  const { updateCategory, isPending } = useUpdateCategory();
+  const { update, isPending } = useUpdateQuery({
+    endpoint: "category",
+    queryKey: "categories",
+  });
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        updateCategory({ name: name, id: category.id });
+        update({ name: name, id: category.id });
       }}
     >
       <input

@@ -36,25 +36,25 @@ export async function GET(request: Request) {
   const order = getSortOrder(request);
   try {
     if (page === 0) {
-      const billboards = await prisma.billBoard.findMany({});
-
-      if (!billboards) {
+      const data = await prisma.billBoard.findMany({});
+      const count = data.length;
+      if (!data) {
         return new Response(JSON.stringify("No data"), { status: 400 });
       }
-      return new Response(JSON.stringify(billboards), { status: 200 });
+      return new Response(JSON.stringify({ count, data }), { status: 200 });
     }
 
     const count = await prisma.billBoard.count();
-    const billboards = await prisma.billBoard.findMany({
+    const data = await prisma.billBoard.findMany({
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),
       orderBy: { createdAt: order },
     });
 
-    if (!billboards) {
+    if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    return new Response(JSON.stringify({ count, billboards }), { status: 200 });
+    return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });

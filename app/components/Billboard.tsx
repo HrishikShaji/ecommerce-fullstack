@@ -1,6 +1,5 @@
 "use client";
 import { BillBoard } from "@prisma/client";
-import { useDeleteBillboard } from "../lib/queries/billboard";
 import { RowActions } from "./RowActions";
 import { format } from "date-fns";
 import { useDeleteQuery } from "../lib/queries/customQuery";
@@ -10,7 +9,6 @@ interface BillboardProps {
 }
 
 export const Billboard: React.FC<BillboardProps> = ({ data }) => {
-  const { deleteBillboard, isDeleting: is } = useDeleteBillboard();
   const { remove, isDeleting } = useDeleteQuery({
     queryKey: "billboards",
     endpoint: "billboard",

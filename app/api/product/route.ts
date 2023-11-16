@@ -84,7 +84,7 @@ export async function GET(request: Request) {
   const order = getSortOrder(request);
   try {
     const count = await prisma.product.count();
-    const products = await prisma.product.findMany({
+    const data = await prisma.product.findMany({
       include: {
         user: true,
         category: true,
@@ -99,11 +99,10 @@ export async function GET(request: Request) {
       },
     });
 
-    if (!products) {
+    if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    console.log(products);
-    return new Response(JSON.stringify({ count, products }), { status: 200 });
+    return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });

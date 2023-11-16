@@ -1,14 +1,17 @@
 "use client";
 import { Size as SizeType } from "@prisma/client";
-import { useDeleteSize } from "../lib/queries/size";
 import { RowActions } from "./RowActions";
+import { useDeleteQuery } from "../lib/queries/customQuery";
 
 interface SizeProps {
   data: SizeType;
 }
 
 export const Size: React.FC<SizeProps> = ({ data }) => {
-  const { deleteSize, isDeleting } = useDeleteSize();
+  const { remove, isDeleting } = useDeleteQuery({
+    endpoint: "size",
+    queryKey: "sizes",
+  });
   return (
     <div
       key={data.id}
@@ -17,7 +20,7 @@ export const Size: React.FC<SizeProps> = ({ data }) => {
       <div className="py-1">{data.name}</div>
       <div>{data.id}</div>
       <RowActions
-        deleteAction={deleteSize}
+        deleteAction={remove}
         isDeleting={isDeleting}
         data={data}
         mode="size"

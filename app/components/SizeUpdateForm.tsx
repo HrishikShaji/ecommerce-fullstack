@@ -3,7 +3,7 @@
 import { Size } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateSize } from "../lib/queries/size";
+import { useUpdateQuery } from "../lib/queries/customQuery";
 
 interface SizeUpdateFormProps {
   size: Size;
@@ -12,13 +12,16 @@ interface SizeUpdateFormProps {
 export const SizeUpdateForm: React.FC<SizeUpdateFormProps> = ({ size }) => {
   const [name, setName] = useState(size.name || "");
 
-  const { updateSize, isPending } = useUpdateSize();
+  const { update, isPending } = useUpdateQuery({
+    endpoint: "size",
+    queryKey: "sizes",
+  });
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        updateSize({ name: name, id: size.id });
+        update({ name: name, id: size.id });
       }}
     >
       <input
