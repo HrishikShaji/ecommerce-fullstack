@@ -3,7 +3,7 @@
 import { Product } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateProduct } from "../lib/queries/product";
+import { useUpdateQuery } from "../lib/queries/customQuery";
 
 interface ProductUpdateFormProps {
   product: Product;
@@ -14,13 +14,16 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = ({
 }) => {
   const [name, setName] = useState(product.name || "");
 
-  const { updateProduct, isPending } = useUpdateProduct();
+  const { update, isPending } = useUpdateQuery({
+    endpoint: "product",
+    queryKey: "products",
+  });
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        updateProduct({ name: name, id: product.id });
+        update({ name: name, id: product.id });
       }}
     >
       <input

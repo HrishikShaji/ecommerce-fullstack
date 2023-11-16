@@ -3,7 +3,6 @@
 import { BillBoard } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateBillboard } from "../lib/queries/billboard";
 import { useUpdateQuery } from "../lib/queries/customQuery";
 
 interface BillBoardUpdateFormProps {
@@ -15,7 +14,6 @@ export const BillBoardUpdateForm: React.FC<BillBoardUpdateFormProps> = ({
 }) => {
   const [name, setName] = useState(billboard.name || "");
 
-  const { updateBillboard, isPending: is } = useUpdateBillboard();
   const { update, isPending } = useUpdateQuery({
     endpoint: "billboard",
     queryKey: "billboards",

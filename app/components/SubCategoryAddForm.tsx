@@ -3,8 +3,6 @@
 import { Category as CategoryType, Product } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useAddCategory } from "../lib/queries/category";
-import { Category } from "./Category";
 import { useAddQuery } from "../lib/queries/customQuery";
 import { validateCategoryPayload } from "../lib/validators/category";
 

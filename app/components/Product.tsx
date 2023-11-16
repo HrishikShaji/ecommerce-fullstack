@@ -1,6 +1,5 @@
 "use client";
 import { ProductChild } from "@/types/types";
-import { useDeleteProduct } from "../lib/queries/product";
 import { RowActions } from "./RowActions";
 import { useDeleteQuery } from "../lib/queries/customQuery";
 
@@ -9,7 +8,6 @@ interface ProductProps {
 }
 
 export const Product: React.FC<ProductProps> = ({ data }) => {
-  const { deleteProduct, isDeleting: is } = useDeleteProduct();
   const { remove, isDeleting } = useDeleteQuery({
     endpoint: "product",
     queryKey: "products",

@@ -1,41 +1,22 @@
 "use client";
-import { useState } from "react";
-import { CategorySection } from "../components/CategorySection";
-import { ProductSection } from "../components/ProductSection";
-import { BillboardSection } from "../components/BillboardSection";
-import { SizeSection } from "../components/SizeSection";
-import { ColorSection } from "../components/ColorSection";
 
-const sections = [
-  {
-    title: "Billboard",
-    component: <BillboardSection />,
-  },
-  {
-    title: "Category",
-    component: <CategorySection />,
-  },
-  {
-    title: "Product",
-    component: <ProductSection />,
-  },
-  {
-    title: "Size",
-    component: <SizeSection />,
-  },
-  {
-    title: "Color",
-    component: <ColorSection />,
-  },
-];
+import { useState } from "react";
+import { Section } from "../components/Section";
+import { sectionsData } from "../lib/data";
+import {
+  QueryKey,
+  ValidateTypePayload,
+  Validator,
+} from "../lib/queries/customQuery";
+import { SectionType, TitleType } from "@/types/types";
 
 const Page = () => {
   const [showSection, setShowSection] = useState(
-    Array(sections.length).fill(false),
+    Array(sectionsData.length).fill(false),
   );
   return (
     <div className="text-white p-10 flex flex-col gap-4">
-      {sections.map((section, i) => {
+      {sectionsData.map((section, i) => {
         return (
           <div key={i}>
             <div
@@ -48,7 +29,22 @@ const Page = () => {
             >
               {section.title}
             </div>
-            {showSection[i] && section.component}
+            {showSection[i] && (
+              <Section
+                endpoint={section.endpoint}
+                queryKey={section.queryKey as QueryKey}
+                validator={section.validator as Validator<ValidateTypePayload>}
+                heading={section.heading}
+                label={section.label}
+                placeholder={section.placeholder}
+                name={section.name}
+                headings={section.headings}
+                customAddHook={section.customAddHook}
+                customGetHook={section.customGetHook}
+                title={section.title as TitleType}
+                section={section.section as SectionType}
+              />
+            )}
           </div>
         );
       })}

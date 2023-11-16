@@ -10,7 +10,6 @@ import {
   Validator,
 } from "../lib/queries/customQuery";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { ProductPayload } from "../lib/validators/Product";
 
 type Item = {
   name: string;

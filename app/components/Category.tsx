@@ -3,7 +3,6 @@ import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import { useState } from "react";
 import { CategoryChild } from "@/types/types";
 import { RowActions } from "./RowActions";
-import { useDeleteCategory } from "../lib/queries/category";
 import { useDeleteQuery } from "../lib/queries/customQuery";
 
 interface CategoryProps {
@@ -13,7 +12,6 @@ interface CategoryProps {
 export const Category: React.FC<CategoryProps> = ({ data }) => {
   const [isSubOpen, setIsSubOpen] = useState(false);
 
-  const { deleteCategory, isDeleting: is } = useDeleteCategory();
   const { remove, isDeleting } = useDeleteQuery({
     endpoint: "category",
     queryKey: "categories",

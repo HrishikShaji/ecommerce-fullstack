@@ -1,6 +1,5 @@
 "use client";
 import { Color as ColorType } from "@prisma/client";
-import { useDeleteColor } from "../lib/queries/color";
 import { RowActions } from "./RowActions";
 import { useDeleteQuery } from "../lib/queries/customQuery";
 
@@ -9,7 +8,6 @@ interface ColorProps {
 }
 
 export const Color: React.FC<ColorProps> = ({ data }) => {
-  const { deleteColor, isDeleting: is } = useDeleteColor();
   const { remove, isDeleting } = useDeleteQuery({
     endpoint: "color",
     queryKey: "colors",

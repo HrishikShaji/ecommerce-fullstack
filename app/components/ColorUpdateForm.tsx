@@ -3,7 +3,7 @@
 import { Color } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
-import { useUpdateColor } from "../lib/queries/color";
+import { useUpdateQuery } from "../lib/queries/customQuery";
 
 interface ColorUpdateFormProps {
   color: Color;
@@ -12,13 +12,16 @@ interface ColorUpdateFormProps {
 export const ColorUpdateForm: React.FC<ColorUpdateFormProps> = ({ color }) => {
   const [name, setName] = useState(color.name || "");
 
-  const { updateColor, isPending } = useUpdateColor();
+  const { update, isPending } = useUpdateQuery({
+    endpoint: "color",
+    queryKey: "colors",
+  });
   return (
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
         e.preventDefault();
-        updateColor({ name: name, id: color.id });
+        update({ name: name, id: color.id });
       }}
     >
       <input
