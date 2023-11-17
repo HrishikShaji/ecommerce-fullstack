@@ -49,19 +49,23 @@ export const useAddQuery = <T,>({
     isError,
   } = useMutation({
     mutationFn: async (payload: T) => {
-      const isValidPayload = validator(payload);
-      const response = await fetch(`/api/${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(isValidPayload),
-      });
-      if (!response.ok) {
-        throw new Error("failed");
+      try {
+        const isValidPayload = validator(payload);
+        const response = await fetch(`/api/${endpoint}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(isValidPayload),
+        });
+        if (!response.ok) {
+          throw new Error("failed");
+        }
+        return response;
+      } catch (error) {
+        throw Error("feoh");
       }
-      return response;
     },
-    onError: () => {
-      return <div>{`Error adding ${endpoint}`}</div>;
+    onError: (error) => {
+      return <div>{`Error adding ${error.message}`}</div>;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey] });

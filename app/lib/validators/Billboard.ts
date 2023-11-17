@@ -14,8 +14,8 @@ export const validateBillboardPayload = (inputs: BillboardPayload) => {
     return isValidData;
   } catch (error) {
     if (error instanceof ZodError) {
-      if (Object.keys(error.errors).length) {
-        for (const [_key, value] of Object.entries(error.errors)) {
+      if (error.errors.length) {
+        for (const value of error.errors) {
           throw new Error((value as { message: string }).message);
         }
       }
