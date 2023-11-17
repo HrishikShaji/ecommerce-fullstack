@@ -10,6 +10,43 @@ import { CategoryUpdateForm } from "./CategoryUpdateForm";
 import { SizeUpdateForm } from "./SizeUpdateForm";
 import { ColorUpdateForm } from "./ColorUpdateForm";
 import { SubCategoryAddForm } from "./SubCategoryAddForm";
+import { ModalForm } from "./ModalForm";
+import { EndpointType } from "@/types/types";
+import { QueryKey } from "@/types/types";
+
+type LookupItem = {
+  endpoint: EndpointType;
+  queryKey: QueryKey;
+  action: "Update" | "Add";
+};
+
+const lookup: Record<string, LookupItem> = {
+  product: {
+    endpoint: "product",
+    queryKey: "products",
+    action: "Update",
+  },
+  category: {
+    endpoint: "category",
+    queryKey: "categories",
+    action: "Update",
+  },
+  billboard: {
+    endpoint: "billboard",
+    queryKey: "billboards",
+    action: "Update",
+  },
+  color: {
+    endpoint: "color",
+    queryKey: "colors",
+    action: "Update",
+  },
+  size: {
+    endpoint: "size",
+    queryKey: "sizes",
+    action: "Update",
+  },
+};
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
@@ -26,34 +63,12 @@ export const Modal = () => {
         >
           <AiFillCloseCircle />
         </button>
-        {title === "product" && (
+        {lookup[title as EndpointType] && (
           <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">Update Product</h1>
-            <ProductUpdateForm product={data as Product} />
-          </div>
-        )}
-        {title === "billboard" && (
-          <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">Update Billboard</h1>
-            <BillBoardUpdateForm billboard={data as BillBoard} />
-          </div>
-        )}
-        {title === "category" && (
-          <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">Update Category</h1>
-            <CategoryUpdateForm category={data as Category} />
-          </div>
-        )}
-        {title === "size" && (
-          <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">Update Size</h1>
-            <SizeUpdateForm size={data as Size} />
-          </div>
-        )}
-        {title === "color" && (
-          <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">Update Color</h1>
-            <ColorUpdateForm color={data as Color} />
+            <h1 className="text-xl font-semibold">{`Update ${
+              lookup[title as EndpointType].endpoint
+            }`}</h1>
+            <ModalForm data={data} {...lookup[title as EndpointType]} />
           </div>
         )}
         {title === "subCategory" && (
