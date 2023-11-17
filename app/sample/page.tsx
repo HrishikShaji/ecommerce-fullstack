@@ -11,23 +11,38 @@ export type Item = {
 
 export type InputType = {
   name: string;
-  placeholder: string;
-  value: string;
+  placeholder?: string;
+  value?: string;
+  dropDownValue?: string;
   label: string;
+  type: "Input" | "DropDown";
+  dropDownValues?: Item[];
 };
 export type FormDataType = {
   name: string;
   age: string;
   birth: string;
-  dropdown: Item;
+  dropOne: Item;
+  dropTwo: Item;
 };
 
+const dropOneValues = [
+  { id: "123", name: "loki" },
+  { id: "456", name: "thor" },
+  { id: "789", name: "odin" },
+];
+const dropTwoValues = [
+  { id: "001", name: "cap" },
+  { id: "002", name: "tony" },
+  { id: "003", name: "hulk" },
+];
 const Page = () => {
   const [formData, setFormData] = useState<FormDataType>({
     name: "",
     age: "",
     birth: "",
-    dropdown: { id: "", name: "" },
+    dropOne: { id: "", name: "" },
+    dropTwo: { id: "", name: "" },
   });
   const inputValues: InputType[] = [
     {
@@ -35,18 +50,37 @@ const Page = () => {
       placeholder: "name...",
       value: formData.name,
       label: "Name",
+      type: "Input",
     },
     {
       name: "age",
       placeholder: "age...",
       value: formData.age,
       label: "Age",
+      type: "Input",
     },
     {
       name: "birth",
       placeholder: "birth...",
       value: formData.birth,
       label: "Birthday",
+      type: "Input",
+    },
+    {
+      name: "dropyyy",
+      placeholder: "age...",
+      dropDownValue: "dropOne",
+      label: "dropyyy",
+      type: "DropDown",
+      dropDownValues: dropOneValues,
+    },
+    {
+      name: "dropuuuu",
+      placeholder: "drop...",
+      dropDownValue: "dropTwo",
+      label: "Birthday",
+      type: "DropDown",
+      dropDownValues: dropTwoValues,
     },
   ];
 
