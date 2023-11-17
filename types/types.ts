@@ -39,6 +39,12 @@ export type SectionType =
   | "product"
   | "category";
 
+export type EndpointType =
+  | "billboard"
+  | "color"
+  | "size"
+  | "product"
+  | "category";
 export type QueryKey =
   | "billboards"
   | "products"

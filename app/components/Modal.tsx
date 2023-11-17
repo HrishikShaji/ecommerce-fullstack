@@ -10,6 +10,7 @@ import { CategoryUpdateForm } from "./CategoryUpdateForm";
 import { SizeUpdateForm } from "./SizeUpdateForm";
 import { ColorUpdateForm } from "./ColorUpdateForm";
 import { SubCategoryAddForm } from "./SubCategoryAddForm";
+import { ModalForm } from "./ModalForm";
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
@@ -29,31 +30,56 @@ export const Modal = () => {
         {title === "product" && (
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Product</h1>
-            <ProductUpdateForm product={data as Product} />
+            <ModalForm
+              data={data}
+              endpoint="product"
+              queryKey="products"
+              action="Update"
+            />
           </div>
         )}
         {title === "billboard" && (
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Billboard</h1>
-            <BillBoardUpdateForm billboard={data as BillBoard} />
+            <ModalForm
+              data={data}
+              endpoint="billboard"
+              queryKey="billboards"
+              action="Update"
+            />
           </div>
         )}
         {title === "category" && (
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Category</h1>
-            <CategoryUpdateForm category={data as Category} />
+            <ModalForm
+              data={data}
+              endpoint="category"
+              queryKey="categories"
+              action="Update"
+            />
           </div>
         )}
         {title === "size" && (
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Size</h1>
-            <SizeUpdateForm size={data as Size} />
+            <ModalForm
+              data={data}
+              endpoint="size"
+              queryKey="sizes"
+              action="Update"
+            />
           </div>
         )}
         {title === "color" && (
           <div className="flex flex-col gap-5 items-center">
             <h1 className="text-xl font-semibold">Update Color</h1>
-            <ColorUpdateForm color={data as Color} />
+            <ModalForm
+              data={data}
+              endpoint="color"
+              queryKey="colors"
+              action="Update"
+            />
           </div>
         )}
         {title === "subCategory" && (
