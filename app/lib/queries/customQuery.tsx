@@ -50,6 +50,7 @@ export const useAddQuery = <T,>({
   } = useMutation({
     mutationFn: async (payload: T) => {
       try {
+        console.log(payload);
         const isValidPayload = validator(payload);
         const response = await fetch(`/api/${endpoint}`, {
           method: "POST",

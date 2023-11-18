@@ -1,26 +1,36 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useState,
-} from "react";
-import { FormDataType, InputType, Item } from "../sample/page";
+import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
+import { EndpointType, QueryKey, SearchType } from "@/types/types";
+import { CustomDropDown } from "./CustomDropDown";
+import { FinalInputType, productInputInitialObj } from "../lib/data";
 
 interface CustomFormProps {
-  inputValues: InputType[];
-  setFormData: Dispatch<SetStateAction<FormDataType>>;
-  formData: FormDataType;
+  inputValues: FinalInputType[];
+  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
+  formData: Record<string, any>;
+  refetch: () => void;
+  apiFunction: (values: any) => void;
 }
 
 export const CustomForm: React.FC<CustomFormProps> = ({
   inputValues,
   setFormData,
   formData,
+  refetch,
+  apiFunction,
 }) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      console.log(formData);
+      const response = apiFunction(formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      refetch();
+      setFormData(productInputInitialObj);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +39,6 @@ export const CustomForm: React.FC<CustomFormProps> = ({
       [e.target.name]: e.target.value,
     }));
   };
-  const dropDownChange = () => {};
 
   return (
     <form className="p-10 bg-gray-500 h-[50vh]" onSubmit={handleSubmit}>
@@ -40,9 +49,11 @@ export const CustomForm: React.FC<CustomFormProps> = ({
           ) : (
             <CustomDropDown
               key={i}
+              refetch={refetch}
               setFormData={setFormData}
-              value={input.dropDownValue}
-              dropdownValues={input.dropDownValues}
+              value={input.value}
+              endpoint={input.endpoint as EndpointType}
+              queryKey={input.queryKey as QueryKey}
             />
           ),
         )}
@@ -55,7 +66,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
 };
 
 interface InputItemProps {
-  inputItem: InputType;
+  inputItem: FinalInputType;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -69,55 +80,6 @@ const InputItem: React.FC<InputItemProps> = ({ inputItem, handleChange }) => {
         {...inputProps}
         onChange={(e) => handleChange(e)}
       />
-    </div>
-  );
-};
-
-interface CustomDropDownProps {
-  setFormData: Dispatch<SetStateAction<FormDataType>>;
-  value?: string;
-  dropdownValues: Item[];
-}
-
-const CustomDropDown: React.FC<CustomDropDownProps> = ({
-  setFormData,
-  value,
-  dropdownValues,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleSelect = (item: Item) => {
-    setFormData((formData) => ({
-      ...formData,
-      [value]: { id: item.id, name: item.name },
-    }));
-  };
-  return (
-    <div className="relative">
-      <div className="flex gap-2 bg-gray-300 p-1 rounded-md flex justify-between">
-        <h1>Select</h1>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="p-1 bg-neutral-500 rounded-md"
-        >
-          click here
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="absolute w-full top-12 rounded-md bg-neutral-400 p-1">
-          {dropdownValues.map((item, i) => (
-            <div
-              className="p-1 rounded-md hover:bg-neutral-500 cursor-pointer"
-              key={i}
-            >
-              <h1 onClick={() => handleSelect(item)} key={i}>
-                {item.name}
-              </h1>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 };

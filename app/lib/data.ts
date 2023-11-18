@@ -4,6 +4,8 @@ import { validateCategoryPayload } from "../lib/validators/category";
 import { validateProductPayload } from "../lib/validators/Product";
 import { validateSizePayload } from "../lib/validators/size";
 import { validateColorPayload } from "../lib/validators/color";
+import { EndpointType } from "@/types/types";
+import { QueryKey } from "@/types/types";
 
 export const sectionsData = [
   {
@@ -75,5 +77,96 @@ export const sectionsData = [
     customGetHook: useGetQuery,
     title: "Colors",
     section: "color",
+  },
+];
+
+export type InputValuesDataType = {
+  name: string;
+  placeholder?: string;
+  label?: string;
+  type: "DropDown" | "Input";
+  endpoint?: EndpointType;
+  queryKey?: QueryKey;
+};
+
+export const inputValuesData: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+  {
+    name: "age",
+    placeholder: "age...",
+    label: "Age",
+    type: "Input",
+  },
+  {
+    name: "birth",
+    placeholder: "birth...",
+    label: "Birthday",
+    type: "Input",
+  },
+  {
+    name: "billboard",
+    placeholder: "age...",
+    label: "dropyyy",
+    type: "DropDown",
+    endpoint: "billboard",
+    queryKey: "billboards",
+  },
+  {
+    name: "category",
+    placeholder: "drop...",
+    label: "Birthday",
+    type: "DropDown",
+    endpoint: "category",
+    queryKey: "categories",
+  },
+];
+
+export const productInputInitialObj = {
+  name: "",
+};
+
+export type FinalInputType = InputValuesDataType & {
+  value: string;
+};
+
+export const productInputValues: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+  {
+    label: "Category",
+    endpoint: "category",
+    queryKey: "categories",
+    name: "categoryId",
+    type: "DropDown",
+  },
+  {
+    label: "Billboard",
+    endpoint: "billboard",
+    queryKey: "billboards",
+    name: "billboardId",
+    type: "DropDown",
+  },
+  {
+    label: "Size",
+    endpoint: "size",
+    queryKey: "sizes",
+    name: "sizeId",
+    type: "DropDown",
+  },
+  {
+    label: "Color",
+    endpoint: "color",
+    queryKey: "colors",
+    name: "colorId",
+    type: "DropDown",
   },
 ];
