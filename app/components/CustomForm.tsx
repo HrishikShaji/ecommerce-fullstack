@@ -5,9 +5,10 @@ import {
   SetStateAction,
   useState,
 } from "react";
-import { EndpointType, QueryKey, SearchType } from "@/types/types";
+import { EndpointType, QueryKey } from "@/types/types";
 import { CustomDropDown } from "./CustomDropDown";
 import { FinalInputType, productInputInitialObj } from "../lib/data";
+import { Button } from "./Button";
 
 interface CustomFormProps {
   inputValues: FinalInputType[];
@@ -15,6 +16,7 @@ interface CustomFormProps {
   formData: Record<string, any>;
   refetch: () => void;
   apiFunction: (values: any) => void;
+  isPending: boolean;
 }
 
 export const CustomForm: React.FC<CustomFormProps> = ({
@@ -23,6 +25,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   formData,
   refetch,
   apiFunction,
+  isPending,
 }) => {
   const [resetClick, setResetClick] = useState(0);
   const handleSubmit = (e: FormEvent) => {
@@ -57,7 +60,6 @@ export const CustomForm: React.FC<CustomFormProps> = ({
           ) : (
             <CustomDropDown
               key={i}
-              refetch={refetch}
               setFormData={setFormData}
               value={input.value}
               resetClick={resetClick}
@@ -67,9 +69,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
             />
           ),
         )}
-        <button type="submit" className="p-2 rounded-md bg-neutral-700">
-          Submit
-        </button>
+        <Button isPending={isPending} />
       </div>
     </form>
   );
@@ -86,7 +86,7 @@ const InputItem: React.FC<InputItemProps> = ({ inputItem, handleChange }) => {
     <div className="flex flex-col gap-2">
       <label>{inputItem.label}</label>
       <input
-        className="p-2 rounded-md"
+        className="p-2 rounded-md text-black"
         {...inputProps}
         onChange={(e) => handleChange(e)}
       />

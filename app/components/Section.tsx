@@ -1,24 +1,16 @@
 import { Spinner } from "../components/Spinner";
 import { useEffect, useState } from "react";
 import { SectionContainer } from "./SectionContainer";
-import { Form } from "./Form";
 import {
   AddQueryProps,
   GetQueryProps,
-  InputItem,
   QueryKey,
-  SelectItem,
   SortType,
   Validator,
 } from "@/types/types";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { CustomForm } from "./CustomForm";
-import {
-  FinalInputType,
-  InputValuesDataType,
-  productInputInitialObj,
-  productInputValues,
-} from "../lib/data";
+import { FinalInputType, InputValuesDataType } from "../lib/data";
 
 interface SectionProps<T> {
   endpoint: string;
@@ -101,6 +93,7 @@ export const Section = <T,>({
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
         <CustomForm
+          isPending={isPending}
           formData={formData}
           setFormData={setFormData}
           inputValues={newData as FinalInputType[]}

@@ -3,7 +3,6 @@ import {
   EndpointType,
   QueryKey,
   SearchType,
-  SelectItem,
 } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -22,7 +21,6 @@ interface CustomDropDownProps {
   value: string;
   endpoint: EndpointType;
   queryKey: QueryKey;
-  refetch: () => void;
   resetClick: number;
   label: string;
 }
@@ -32,7 +30,6 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
   value,
   endpoint,
   queryKey,
-  refetch,
   resetClick,
   label,
 }) => {
