@@ -1,4 +1,10 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from "react";
 import { EndpointType, QueryKey, SearchType } from "@/types/types";
 import { CustomDropDown } from "./CustomDropDown";
 import { FinalInputType, productInputInitialObj } from "../lib/data";
@@ -18,6 +24,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   refetch,
   apiFunction,
 }) => {
+  const [resetClick, setResetClick] = useState(0);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -30,6 +37,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
     } finally {
       refetch();
       setFormData(productInputInitialObj);
+      setResetClick((prev) => prev + 1);
     }
   };
 
@@ -52,6 +60,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
               refetch={refetch}
               setFormData={setFormData}
               value={input.value}
+              resetClick={resetClick}
               endpoint={input.endpoint as EndpointType}
               queryKey={input.queryKey as QueryKey}
             />

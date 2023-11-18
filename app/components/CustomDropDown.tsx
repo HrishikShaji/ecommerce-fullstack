@@ -23,6 +23,7 @@ interface CustomDropDownProps {
   endpoint: EndpointType;
   queryKey: QueryKey;
   refetch: () => void;
+  resetClick: number;
 }
 
 export const CustomDropDown: React.FC<CustomDropDownProps> = ({
@@ -31,6 +32,7 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
   endpoint,
   queryKey,
   refetch,
+  resetClick,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +42,7 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
   useEffect(() => {
     console.log("refetch ran");
     setSelectedItem("");
-  }, [refetch]);
+  }, [resetClick]);
 
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
