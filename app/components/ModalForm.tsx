@@ -4,7 +4,6 @@ import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
 import { useState } from "react";
 import { Spinner } from "./Spinner";
 import { useUpdateQuery } from "../lib/queries/customQuery";
-import { UseMutateFunction } from "@tanstack/react-query";
 import { EndpointType, QueryKey } from "@/types/types";
 
 interface ModalFormProps {

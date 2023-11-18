@@ -1,7 +1,14 @@
-import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
-import { EndpointType, QueryKey, SearchType } from "@/types/types";
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from "react";
+import { EndpointType, QueryKey } from "@/types/types";
 import { CustomDropDown } from "./CustomDropDown";
 import { FinalInputType, productInputInitialObj } from "../lib/data";
+import { Button } from "./Button";
 
 interface CustomFormProps {
   inputValues: FinalInputType[];
@@ -9,6 +16,7 @@ interface CustomFormProps {
   formData: Record<string, any>;
   refetch: () => void;
   apiFunction: (values: any) => void;
+  isPending: boolean;
 }
 
 export const CustomForm: React.FC<CustomFormProps> = ({
@@ -17,7 +25,9 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   formData,
   refetch,
   apiFunction,
+  isPending,
 }) => {
+  const [resetClick, setResetClick] = useState(0);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
@@ -30,6 +40,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
     } finally {
       refetch();
       setFormData(productInputInitialObj);
+      setResetClick((prev) => prev + 1);
     }
   };
 
@@ -41,7 +52,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   };
 
   return (
-    <form className="p-10 bg-gray-500 h-[50vh]" onSubmit={handleSubmit}>
+    <form className=" " onSubmit={handleSubmit}>
       <div className="grid grid-cols-3 gap-4">
         {inputValues.map((input, i) =>
           input.type === "Input" ? (
@@ -49,17 +60,16 @@ export const CustomForm: React.FC<CustomFormProps> = ({
           ) : (
             <CustomDropDown
               key={i}
-              refetch={refetch}
               setFormData={setFormData}
               value={input.value}
+              resetClick={resetClick}
               endpoint={input.endpoint as EndpointType}
               queryKey={input.queryKey as QueryKey}
+              label={input.label as string}
             />
           ),
         )}
-        <button type="submit" className="p-2 rounded-md bg-neutral-700">
-          Submit
-        </button>
+        <Button isPending={isPending} />
       </div>
     </form>
   );
@@ -76,7 +86,7 @@ const InputItem: React.FC<InputItemProps> = ({ inputItem, handleChange }) => {
     <div className="flex flex-col gap-2">
       <label>{inputItem.label}</label>
       <input
-        className="p-2 rounded-md"
+        className="p-2 rounded-md text-black"
         {...inputProps}
         onChange={(e) => handleChange(e)}
       />
