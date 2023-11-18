@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   try {
     const { name, categoryId, billboardId, sizeId, colorId } =
       await request.json();
-
+    console.log(name, categoryId, billboardId, sizeId, colorId);
     const user = (await getServerSession(authOptions)) as Session;
 
     if (!name) {

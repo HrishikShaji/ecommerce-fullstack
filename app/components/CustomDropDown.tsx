@@ -22,6 +22,7 @@ interface CustomDropDownProps {
   value: string;
   endpoint: EndpointType;
   queryKey: QueryKey;
+  refetch: () => void;
 }
 
 export const CustomDropDown: React.FC<CustomDropDownProps> = ({
@@ -29,11 +30,17 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
   value,
   endpoint,
   queryKey,
+  refetch,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const [selectedItem, setSelectedItem] = useState("");
+
+  useEffect(() => {
+    console.log("refetch ran");
+    setSelectedItem("");
+  }, [refetch]);
 
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
@@ -129,7 +136,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
     setSelectedItem(item.name as string);
     setFormData((formData) => ({
       ...formData,
-      [value]: { id: item.id, name: item.name },
+      [value]: item.id,
     }));
   };
 

@@ -12,6 +12,12 @@ import {
   Validator,
 } from "@/types/types";
 import { UseMutateFunction } from "@tanstack/react-query";
+import { CustomForm } from "./CustomForm";
+import {
+  FinalInputType,
+  productInputInitialObj,
+  productInputValues,
+} from "../lib/data";
 
 interface SectionProps<T> {
   endpoint: string;
@@ -55,6 +61,9 @@ export const Section = <T,>({
   const [value, setValue] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
+  const [formData, setFormData] = useState<Record<string, any>>(
+    productInputInitialObj,
+  );
   const [selectedBillboardItem, setSelectedBillboardItem] =
     useState<SelectItem>({
       name: "",
@@ -119,6 +128,18 @@ export const Section = <T,>({
     queryKey: queryKey,
   });
 
+  const newData = productInputValues.map((input) => {
+    if (input.type === "Input") {
+      const newObj = { ...input, value: formData[input.name] };
+      return newObj;
+    }
+    if (input.type === "DropDown") {
+      const newObj = { ...input, value: input.name };
+      return newObj;
+    }
+
+    return input;
+  });
   useEffect(() => {
     refetch();
   }, [page, sort]);
@@ -136,6 +157,15 @@ export const Section = <T,>({
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
+        {section === "product" && (
+          <CustomForm
+            formData={formData}
+            setFormData={setFormData}
+            inputValues={newData as FinalInputType[]}
+            refetch={refetch}
+            apiFunction={add}
+          />
+        )}
         {section === "product" ? (
           <Form
             values={values}

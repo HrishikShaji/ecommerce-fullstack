@@ -1,22 +1,36 @@
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
 import { EndpointType, QueryKey, SearchType } from "@/types/types";
 import { CustomDropDown } from "./CustomDropDown";
-import { FinalInputType } from "../lib/data";
+import { FinalInputType, productInputInitialObj } from "../lib/data";
 
 interface CustomFormProps {
   inputValues: FinalInputType[];
   setFormData: Dispatch<SetStateAction<Record<string, any>>>;
   formData: Record<string, any>;
+  refetch: () => void;
+  apiFunction: (values: any) => void;
 }
 
 export const CustomForm: React.FC<CustomFormProps> = ({
   inputValues,
   setFormData,
   formData,
+  refetch,
+  apiFunction,
 }) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      console.log(formData);
+      const response = apiFunction(formData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      refetch();
+      setFormData(productInputInitialObj);
+    }
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +49,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
           ) : (
             <CustomDropDown
               key={i}
+              refetch={refetch}
               setFormData={setFormData}
               value={input.value}
               endpoint={input.endpoint as EndpointType}
