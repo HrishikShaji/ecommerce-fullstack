@@ -7,6 +7,96 @@ import { validateColorPayload } from "../lib/validators/color";
 import { EndpointType } from "@/types/types";
 import { QueryKey } from "@/types/types";
 
+export type FinalInputType = InputValuesDataType & {
+  value: string;
+};
+export const billboardInputInitialObj = {
+  name: "",
+};
+
+export const billboardInputValues: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+];
+export const categoryInputInitialObj = {
+  name: "",
+};
+
+export const categoryInputValues: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+];
+export const sizeInputInitialObj = {
+  name: "",
+};
+
+export const sizeInputValues: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+];
+export const colorInputInitialObj = {
+  name: "",
+};
+
+export const colorInputValues: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+];
+export const productInputInitialObj = {
+  name: "",
+};
+export const productInputValues: InputValuesDataType[] = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+  {
+    label: "Category",
+    endpoint: "category",
+    queryKey: "categories",
+    name: "categoryId",
+    type: "DropDown",
+  },
+  {
+    label: "Billboard",
+    endpoint: "billboard",
+    queryKey: "billboards",
+    name: "billboardId",
+    type: "DropDown",
+  },
+  {
+    label: "Size",
+    endpoint: "size",
+    queryKey: "sizes",
+    name: "sizeId",
+    type: "DropDown",
+  },
+  {
+    label: "Color",
+    endpoint: "color",
+    queryKey: "colors",
+    name: "colorId",
+    type: "DropDown",
+  },
+];
 export const sectionsData = [
   {
     endpoint: "billboard",
@@ -21,6 +111,8 @@ export const sectionsData = [
     customGetHook: useGetQuery,
     title: "Billboards",
     section: "billBoard",
+    inputValues: billboardInputValues,
+    inputInitialObj: billboardInputInitialObj,
   },
   {
     endpoint: "category",
@@ -35,6 +127,8 @@ export const sectionsData = [
     customGetHook: useGetQuery,
     title: "Categories",
     section: "category",
+    inputValues: categoryInputValues,
+    inputInitialObj: categoryInputInitialObj,
   },
   {
     endpoint: "product",
@@ -49,6 +143,8 @@ export const sectionsData = [
     customGetHook: useGetQuery,
     title: "Products",
     section: "product",
+    inputValues: productInputValues,
+    inputInitialObj: productInputInitialObj,
   },
   {
     endpoint: "size",
@@ -63,6 +159,8 @@ export const sectionsData = [
     customGetHook: useGetQuery,
     title: "Sizes",
     section: "size",
+    inputValues: sizeInputValues,
+    inputInitialObj: sizeInputInitialObj,
   },
   {
     endpoint: "color",
@@ -77,6 +175,8 @@ export const sectionsData = [
     customGetHook: useGetQuery,
     title: "Colors",
     section: "color",
+    inputValues: colorInputValues,
+    inputInitialObj: colorInputInitialObj,
   },
 ];
 
@@ -123,50 +223,5 @@ export const inputValuesData: InputValuesDataType[] = [
     type: "DropDown",
     endpoint: "category",
     queryKey: "categories",
-  },
-];
-
-export const productInputInitialObj = {
-  name: "",
-};
-
-export type FinalInputType = InputValuesDataType & {
-  value: string;
-};
-
-export const productInputValues: InputValuesDataType[] = [
-  {
-    name: "name",
-    placeholder: "name...",
-    label: "Name",
-    type: "Input",
-  },
-  {
-    label: "Category",
-    endpoint: "category",
-    queryKey: "categories",
-    name: "categoryId",
-    type: "DropDown",
-  },
-  {
-    label: "Billboard",
-    endpoint: "billboard",
-    queryKey: "billboards",
-    name: "billboardId",
-    type: "DropDown",
-  },
-  {
-    label: "Size",
-    endpoint: "size",
-    queryKey: "sizes",
-    name: "sizeId",
-    type: "DropDown",
-  },
-  {
-    label: "Color",
-    endpoint: "color",
-    queryKey: "colors",
-    name: "colorId",
-    type: "DropDown",
   },
 ];

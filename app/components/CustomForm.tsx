@@ -49,7 +49,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   };
 
   return (
-    <form className="p-10 bg-gray-500 h-[50vh]" onSubmit={handleSubmit}>
+    <form className=" " onSubmit={handleSubmit}>
       <div className="grid grid-cols-3 gap-4">
         {inputValues.map((input, i) =>
           input.type === "Input" ? (
@@ -63,6 +63,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
               resetClick={resetClick}
               endpoint={input.endpoint as EndpointType}
               queryKey={input.queryKey as QueryKey}
+              label={input.label as string}
             />
           ),
         )}

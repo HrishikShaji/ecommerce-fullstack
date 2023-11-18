@@ -44,6 +44,8 @@ const Page = () => {
                 customGetHook={section.customGetHook}
                 title={section.title as TitleType}
                 section={section.section as SectionType}
+                inputInitialObj={section.inputInitialObj}
+                inputValues={section.inputValues}
               />
             )}
           </div>
