@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { CustomForm } from "../components/CustomForm";
-import { Record } from "@prisma/client/runtime/library";
+import { EndpointType, QueryKey } from "@/types/types";
+import { inputValuesData } from "../lib/data";
 
 export type Item = {
   id: string;
@@ -12,11 +13,12 @@ export type Item = {
 export type InputType = {
   name: string;
   placeholder?: string;
-  value?: string;
+  value: string;
   dropDownValue?: string;
   label: string;
   type: "Input" | "DropDown";
-  dropDownValues?: Item[];
+  endpoint?: EndpointType;
+  queryKey?: QueryKey;
 };
 export type FormDataType = {
   name: string;
@@ -26,70 +28,33 @@ export type FormDataType = {
   dropTwo: Item;
 };
 
-const dropOneValues = [
-  { id: "123", name: "loki" },
-  { id: "456", name: "thor" },
-  { id: "789", name: "odin" },
-];
-const dropTwoValues = [
-  { id: "001", name: "cap" },
-  { id: "002", name: "tony" },
-  { id: "003", name: "hulk" },
-];
+const initialFormObject = {
+  name: "",
+  age: "",
+  birth: "",
+};
+
 const Page = () => {
-  const [formData, setFormData] = useState<FormDataType>({
-    name: "",
-    age: "",
-    birth: "",
-    dropOne: { id: "", name: "" },
-    dropTwo: { id: "", name: "" },
+  const [formData, setFormData] = useState<FormDataType>(initialFormObject);
+  const data = inputValuesData.map((input) => {
+    if (input.type === "Input") {
+      const newObj = { ...input, value: formData[input.name] };
+      return newObj;
+    }
+    if (input.type === "DropDown") {
+      const newObj = { ...input, value: input.name };
+      return newObj;
+    }
+
+    return input;
   });
-  const inputValues: InputType[] = [
-    {
-      name: "name",
-      placeholder: "name...",
-      value: formData.name,
-      label: "Name",
-      type: "Input",
-    },
-    {
-      name: "age",
-      placeholder: "age...",
-      value: formData.age,
-      label: "Age",
-      type: "Input",
-    },
-    {
-      name: "birth",
-      placeholder: "birth...",
-      value: formData.birth,
-      label: "Birthday",
-      type: "Input",
-    },
-    {
-      name: "dropyyy",
-      placeholder: "age...",
-      dropDownValue: "dropOne",
-      label: "dropyyy",
-      type: "DropDown",
-      dropDownValues: dropOneValues,
-    },
-    {
-      name: "dropuuuu",
-      placeholder: "drop...",
-      dropDownValue: "dropTwo",
-      label: "Birthday",
-      type: "DropDown",
-      dropDownValues: dropTwoValues,
-    },
-  ];
 
   return (
     <div className="h-screen w-full flex items-center justify-center">
       <CustomForm
         formData={formData}
         setFormData={setFormData}
-        inputValues={inputValues}
+        inputValues={data}
       />
     </div>
   );

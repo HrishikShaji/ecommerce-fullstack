@@ -77,3 +77,40 @@ export const sectionsData = [
     section: "color",
   },
 ];
+
+export const inputValuesData = [
+  {
+    name: "name",
+    placeholder: "name...",
+    label: "Name",
+    type: "Input",
+  },
+  {
+    name: "age",
+    placeholder: "age...",
+    label: "Age",
+    type: "Input",
+  },
+  {
+    name: "birth",
+    placeholder: "birth...",
+    label: "Birthday",
+    type: "Input",
+  },
+  {
+    name: "billboard",
+    placeholder: "age...",
+    label: "dropyyy",
+    type: "DropDown",
+    endpoint: "billboard",
+    queryKey: "billboards",
+  },
+  {
+    name: "color",
+    placeholder: "drop...",
+    label: "Birthday",
+    type: "DropDown",
+    endpoint: "color",
+    queryKey: "colors",
+  },
+];

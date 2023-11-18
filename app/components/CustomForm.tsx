@@ -6,6 +6,8 @@ import {
   useState,
 } from "react";
 import { FormDataType, InputType, Item } from "../sample/page";
+import { useQuery } from "@tanstack/react-query";
+import { EndpointType, QueryKey, SearchType } from "@/types/types";
 
 interface CustomFormProps {
   inputValues: InputType[];
@@ -24,6 +26,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    console.log(formData);
     setFormData((formData) => ({
       ...formData,
       [e.target.name]: e.target.value,
@@ -41,8 +44,9 @@ export const CustomForm: React.FC<CustomFormProps> = ({
             <CustomDropDown
               key={i}
               setFormData={setFormData}
-              value={input.dropDownValue}
-              dropdownValues={input.dropDownValues}
+              value={input.value}
+              endpoint={input.endpoint as EndpointType}
+              queryKey={input.queryKey as QueryKey}
             />
           ),
         )}
@@ -61,6 +65,7 @@ interface InputItemProps {
 
 const InputItem: React.FC<InputItemProps> = ({ inputItem, handleChange }) => {
   const { label, ...inputProps } = inputItem;
+  console.log(inputItem.value);
   return (
     <div className="flex flex-col gap-2">
       <label>{inputItem.label}</label>
@@ -75,18 +80,32 @@ const InputItem: React.FC<InputItemProps> = ({ inputItem, handleChange }) => {
 
 interface CustomDropDownProps {
   setFormData: Dispatch<SetStateAction<FormDataType>>;
-  value?: string;
-  dropdownValues: Item[];
+  value: string;
+  endpoint: EndpointType;
+  queryKey: QueryKey;
 }
 
 const CustomDropDown: React.FC<CustomDropDownProps> = ({
   setFormData,
   value,
-  dropdownValues,
+  endpoint,
+  queryKey,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSelect = (item: Item) => {
+  const { data, isError, isSuccess } = useQuery({
+    queryKey: [`dropdown${queryKey}`],
+    queryFn: async () => {
+      const response = await fetch(`/api/${endpoint}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      return response.json();
+    },
+  });
+
+  if (isError) return null;
+  const handleSelect = (item: SearchType) => {
     setFormData((formData) => ({
       ...formData,
       [value]: { id: item.id, name: item.name },
@@ -94,7 +113,7 @@ const CustomDropDown: React.FC<CustomDropDownProps> = ({
   };
   return (
     <div className="relative">
-      <div className="flex gap-2 bg-gray-300 p-1 rounded-md flex justify-between">
+      <div className=" gap-2 bg-gray-300 p-1 rounded-md flex justify-between">
         <h1>Select</h1>
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -106,7 +125,7 @@ const CustomDropDown: React.FC<CustomDropDownProps> = ({
 
       {isOpen && (
         <div className="absolute w-full top-12 rounded-md bg-neutral-400 p-1">
-          {dropdownValues.map((item, i) => (
+          {data.data.map((item: SearchType, i: number) => (
             <div
               className="p-1 rounded-md hover:bg-neutral-500 cursor-pointer"
               key={i}
