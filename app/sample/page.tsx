@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { CustomForm } from "../components/CustomForm";
 import { EndpointType, QueryKey } from "@/types/types";
-import { inputValuesData } from "../lib/data";
+import {
+  FinalInputType,
+  inputValuesData,
+  productInputInitialObj,
+  productInputValues,
+} from "../lib/data";
 
 export type Item = {
   id: string;
@@ -28,15 +33,11 @@ export type FormDataType = {
   dropTwo: Item;
 };
 
-const initialFormObject = {
-  name: "",
-  age: "",
-  birth: "",
-};
-
 const Page = () => {
-  const [formData, setFormData] = useState<FormDataType>(initialFormObject);
-  const data = inputValuesData.map((input) => {
+  const [formData, setFormData] = useState<Record<string, any>>(
+    productInputInitialObj,
+  );
+  const data = productInputValues.map((input) => {
     if (input.type === "Input") {
       const newObj = { ...input, value: formData[input.name] };
       return newObj;
@@ -54,7 +55,7 @@ const Page = () => {
       <CustomForm
         formData={formData}
         setFormData={setFormData}
-        inputValues={data}
+        inputValues={data as FinalInputType[]}
       />
     </div>
   );

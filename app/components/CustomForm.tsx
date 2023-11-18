@@ -1,12 +1,12 @@
 import { ChangeEvent, Dispatch, FormEvent, SetStateAction } from "react";
-import { FormDataType, InputType, Item } from "../sample/page";
 import { EndpointType, QueryKey, SearchType } from "@/types/types";
 import { CustomDropDown } from "./CustomDropDown";
+import { FinalInputType } from "../lib/data";
 
 interface CustomFormProps {
-  inputValues: InputType[];
-  setFormData: Dispatch<SetStateAction<FormDataType>>;
-  formData: FormDataType;
+  inputValues: FinalInputType[];
+  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
+  formData: Record<string, any>;
 }
 
 export const CustomForm: React.FC<CustomFormProps> = ({
@@ -51,7 +51,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
 };
 
 interface InputItemProps {
-  inputItem: InputType;
+  inputItem: FinalInputType;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
