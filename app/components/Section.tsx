@@ -11,13 +11,11 @@ import {
 import { UseMutateFunction } from "@tanstack/react-query";
 import { CustomForm } from "./CustomForm";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
+import { getInputValues } from "../lib/utils";
 
 interface SectionProps<T> {
   endpoint: string;
   heading: string;
-  label: string;
-  placeholder: string;
-  name: string;
   queryKey: QueryKey;
   validator: Validator<T>;
   customGetHook: (values: GetQueryProps) => {
@@ -31,6 +29,7 @@ interface SectionProps<T> {
     add: UseMutateFunction<Response, Error, T, unknown>;
     isPending: boolean;
     isError: boolean;
+    error: Error;
   };
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   section: "billBoard" | "color" | "size" | "product" | "category";
@@ -40,10 +39,7 @@ interface SectionProps<T> {
 }
 
 export const Section = <T,>({
-  label,
   queryKey,
-  placeholder,
-  name,
   customGetHook,
   title,
   section,
@@ -66,24 +62,22 @@ export const Section = <T,>({
     endpoint: endpoint,
     queryKey: queryKey,
   });
-  const { add, isPending } = customAddHook({
+  const {
+    add,
+    isPending,
+    isError: errorAdd,
+    error,
+  } = customAddHook({
     endpoint: endpoint,
     validator: validator,
     queryKey: queryKey,
   });
 
-  const newData = inputValues.map((input) => {
-    if (input.type === "Input") {
-      const newObj = { ...input, value: formData[input.name] };
-      return newObj;
-    }
-    if (input.type === "DropDown") {
-      const newObj = { ...input, value: input.name };
-      return newObj;
-    }
-
-    return input;
+  const inputValuesData = getInputValues({
+    inputs: inputValues,
+    formData: formData,
   });
+
   useEffect(() => {
     refetch();
   }, [page, sort]);
@@ -93,10 +87,12 @@ export const Section = <T,>({
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
         <CustomForm
+          isError={errorAdd}
+          error={error}
           isPending={isPending}
           formData={formData}
           setFormData={setFormData}
-          inputValues={newData as FinalInputType[]}
+          inputValues={inputValuesData as FinalInputType[]}
           refetch={refetch}
           apiFunction={add}
         />

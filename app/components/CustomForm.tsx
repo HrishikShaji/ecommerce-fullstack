@@ -3,6 +3,7 @@ import {
   Dispatch,
   FormEvent,
   SetStateAction,
+  useEffect,
   useState,
 } from "react";
 import { EndpointType, QueryKey } from "@/types/types";
@@ -17,6 +18,8 @@ interface CustomFormProps {
   refetch: () => void;
   apiFunction: (values: any) => void;
   isPending: boolean;
+  isError: boolean;
+  error: Error;
 }
 
 export const CustomForm: React.FC<CustomFormProps> = ({
@@ -26,22 +29,23 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   refetch,
   apiFunction,
   isPending,
+  isError,
+  error,
 }) => {
   const [resetClick, setResetClick] = useState(0);
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
 
-    try {
-      console.log(formData);
-      const response = apiFunction(formData);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      refetch();
+  useEffect(() => {
+    if (!isError) {
       setFormData(productInputInitialObj);
       setResetClick((prev) => prev + 1);
     }
+  }, [isError]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    apiFunction(formData);
+    refetch();
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,7 +56,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   };
 
   return (
-    <form className=" " onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-2 items-start " onSubmit={handleSubmit}>
       <div className="grid grid-cols-3 gap-4">
         {inputValues.map((input, i) =>
           input.type === "Input" ? (
@@ -69,8 +73,9 @@ export const CustomForm: React.FC<CustomFormProps> = ({
             />
           ),
         )}
-        <Button isPending={isPending} />
       </div>
+      {isError && <h1 className="text-red-500">{error.message}</h1>}
+      <Button isPending={isPending} />
     </form>
   );
 };
