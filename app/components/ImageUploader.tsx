@@ -1,49 +1,47 @@
 "use client";
-import type { FileWithPath } from "@uploadthing/react";
-import { useDropzone } from "@uploadthing/react/hooks";
-import { generateClientDropzoneAccept } from "uploadthing/client";
 
 import { useUploadThing } from "../lib/uploadthing";
-import { useCallback, useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { Spinner } from "./Spinner";
 
 export const ImageUploader = () => {
   const [files, setFiles] = useState<File[]>([]);
-  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-    setFiles(acceptedFiles);
-  }, []);
+  const [loading, setLoading] = useState(false);
 
-  const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
+  const { startUpload } = useUploadThing("imageUploader", {
     onClientUploadComplete: () => {
+      setLoading(false);
       alert("uploaded successfully!");
     },
     onUploadError: () => {
       alert("error occurred while uploading");
     },
     onUploadBegin: () => {
+      setLoading(true);
       alert("upload has begun");
     },
   });
 
-  const fileTypes = permittedFileInfo?.config
-    ? Object.keys(permittedFileInfo?.config)
-    : [];
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
-  });
-
+  const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const images = Array.from(e.target.files || []);
+    setFiles(images);
+  };
   return (
-    <div className="p-10 bg-white" {...getRootProps()}>
-      <input {...getInputProps()} />
+    <div className="p-10 bg-white">
+      <input type="file" multiple onChange={(e) => handleSelect(e)} />
       <div>
         {files.length > 0 && (
-          <button onClick={() => startUpload(files)}>
-            Upload {files.length} files
-          </button>
+          <>
+            <button
+              onClick={() => startUpload(files)}
+              className="p-2 bg-neutral-500 rounded-md"
+            >
+              Upload {files.length} files
+              {loading && <Spinner />}
+            </button>
+          </>
         )}
       </div>
-      Drop files here!
     </div>
   );
 };
