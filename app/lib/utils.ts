@@ -1,3 +1,5 @@
+import { InputValuesDataType } from "./data";
+
 export const itemsPerPage = 3;
 
 export function paginateArray({ array, page }: { array: any[]; page: number }) {
@@ -14,4 +16,26 @@ export function getSortOrder(request: Request) {
   const order = sort === "LATEST" ? "desc" : "asc";
 
   return order;
+}
+
+export function getInputValues({
+  inputs,
+  formData,
+}: {
+  inputs: InputValuesDataType[];
+  formData: Record<string, any>;
+}) {
+  const data = inputs.map((input) => {
+    if (input.type === "Input") {
+      const newObj = { ...input, value: formData[input.name] };
+      return newObj;
+    }
+    if (input.type === "DropDown") {
+      const newObj = { ...input, value: input.name };
+      return newObj;
+    }
+
+    return input;
+  });
+  return data;
 }

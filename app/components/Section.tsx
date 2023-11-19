@@ -11,13 +11,11 @@ import {
 import { UseMutateFunction } from "@tanstack/react-query";
 import { CustomForm } from "./CustomForm";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
+import { getInputValues } from "../lib/utils";
 
 interface SectionProps<T> {
   endpoint: string;
   heading: string;
-  label: string;
-  placeholder: string;
-  name: string;
   queryKey: QueryKey;
   validator: Validator<T>;
   customGetHook: (values: GetQueryProps) => {
@@ -41,10 +39,7 @@ interface SectionProps<T> {
 }
 
 export const Section = <T,>({
-  label,
   queryKey,
-  placeholder,
-  name,
   customGetHook,
   title,
   section,
@@ -77,20 +72,12 @@ export const Section = <T,>({
     validator: validator,
     queryKey: queryKey,
   });
-  console.log(error?.message);
 
-  const newData = inputValues.map((input) => {
-    if (input.type === "Input") {
-      const newObj = { ...input, value: formData[input.name] };
-      return newObj;
-    }
-    if (input.type === "DropDown") {
-      const newObj = { ...input, value: input.name };
-      return newObj;
-    }
-
-    return input;
+  const inputValuesData = getInputValues({
+    inputs: inputValues,
+    formData: formData,
   });
+
   useEffect(() => {
     refetch();
   }, [page, sort]);
@@ -105,7 +92,7 @@ export const Section = <T,>({
           isPending={isPending}
           formData={formData}
           setFormData={setFormData}
-          inputValues={newData as FinalInputType[]}
+          inputValues={inputValuesData as FinalInputType[]}
           refetch={refetch}
           apiFunction={add}
         />
