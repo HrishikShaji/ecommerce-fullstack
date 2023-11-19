@@ -74,7 +74,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
           ),
         )}
       </div>
-      {isError && <h1>{error.message}</h1>}
+      {isError && <h1 className="text-red-500">{error.message}</h1>}
       <Button isPending={isPending} />
     </form>
   );
