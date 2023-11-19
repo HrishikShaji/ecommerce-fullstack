@@ -31,6 +31,7 @@ interface SectionProps<T> {
     add: UseMutateFunction<Response, Error, T, unknown>;
     isPending: boolean;
     isError: boolean;
+    error: Error;
   };
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   section: "billBoard" | "color" | "size" | "product" | "category";
@@ -66,11 +67,17 @@ export const Section = <T,>({
     endpoint: endpoint,
     queryKey: queryKey,
   });
-  const { add, isPending } = customAddHook({
+  const {
+    add,
+    isPending,
+    isError: errorAdd,
+    error,
+  } = customAddHook({
     endpoint: endpoint,
     validator: validator,
     queryKey: queryKey,
   });
+  console.log(error?.message);
 
   const newData = inputValues.map((input) => {
     if (input.type === "Input") {
@@ -93,6 +100,8 @@ export const Section = <T,>({
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
         <CustomForm
+          isError={errorAdd}
+          error={error}
           isPending={isPending}
           formData={formData}
           setFormData={setFormData}

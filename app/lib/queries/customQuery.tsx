@@ -47,33 +47,29 @@ export const useAddQuery = <T,>({
     mutate: add,
     isPending,
     isError,
+    error,
   } = useMutation({
     mutationFn: async (payload: T) => {
-      try {
-        console.log(payload);
-        const isValidPayload = validator(payload);
-        const response = await fetch(`/api/${endpoint}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(isValidPayload),
-        });
-        if (!response.ok) {
-          throw new Error("failed");
-        }
-        return response;
-      } catch (error) {
-        throw Error("feoh");
+      const isValidPayload = validator(payload);
+      const response = await fetch(`/api/${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(isValidPayload),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to Fetch Data");
       }
+      return response;
     },
     onError: (error) => {
-      return <div>{`Error adding ${error.message}`}</div>;
+      throw error;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
   });
 
-  return { add, isPending, isError };
+  return { add, isPending, isError, error };
 };
 
 export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
