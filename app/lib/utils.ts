@@ -34,6 +34,10 @@ export function getInputValues({
       const newObj = { ...input, value: input.name };
       return newObj;
     }
+    if (input.type === "Image") {
+      const newObj = { ...input, value: input.name };
+      return newObj;
+    }
 
     return input;
   });

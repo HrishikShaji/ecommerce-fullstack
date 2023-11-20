@@ -5,11 +5,14 @@ import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
 
 export async function POST(request: Request) {
   try {
-    const { name } = await request.json();
+    const { name, image } = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
     if (!name) {
+      return new Response(JSON.stringify("Wrong input"), { status: 400 });
+    }
+    if (!image) {
       return new Response(JSON.stringify("Wrong input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
@@ -20,6 +23,7 @@ export async function POST(request: Request) {
       data: {
         name: name,
         userId: user.user.id,
+        images: image,
       },
     });
 

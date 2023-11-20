@@ -14,10 +14,9 @@ import {
   useState,
 } from "react";
 import { BiDownArrow } from "react-icons/bi";
-import { FormDataType } from "../sample/page";
 
 interface CustomDropDownProps {
-  setFormData: Dispatch<SetStateAction<FormDataType>>;
+  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
   value: string;
   endpoint: EndpointType;
   queryKey: QueryKey;
@@ -116,7 +115,7 @@ export const CustomDropDown: React.FC<CustomDropDownProps> = ({
 interface MenuItemProps {
   category: CategoryChild;
   setIsOpen: (value: boolean) => void;
-  setFormData: Dispatch<SetStateAction<FormDataType>>;
+  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
   value: string;
   item: SearchType;
   setSelectedItem: Dispatch<SetStateAction<string>>;

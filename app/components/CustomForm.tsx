@@ -10,6 +10,7 @@ import { EndpointType, QueryKey } from "@/types/types";
 import { CustomDropDown } from "./CustomDropDown";
 import { FinalInputType, productInputInitialObj } from "../lib/data";
 import { Button } from "./Button";
+import { ImageUploader } from "./ImageUploader";
 
 interface CustomFormProps {
   inputValues: FinalInputType[];
@@ -40,10 +41,10 @@ export const CustomForm: React.FC<CustomFormProps> = ({
       setResetClick((prev) => prev + 1);
     }
   }, [isError]);
-
+  console.log(formData);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
+    console.log(formData);
     apiFunction(formData);
     refetch();
   };
@@ -61,6 +62,14 @@ export const CustomForm: React.FC<CustomFormProps> = ({
         {inputValues.map((input, i) =>
           input.type === "Input" ? (
             <InputItem key={i} inputItem={input} handleChange={handleChange} />
+          ) : input.type === "Image" ? (
+            <ImageUploader
+              key={i}
+              setFormData={setFormData}
+              value={input.value}
+              label={input.label as string}
+              resetClick={resetClick}
+            />
           ) : (
             <CustomDropDown
               key={i}

@@ -1,14 +1,33 @@
 "use client";
 
 import { useUploadThing } from "../lib/uploadthing";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Spinner } from "./Spinner";
 import Image from "next/image";
 import { UploadFileResponse } from "uploadthing/client";
 import { ImagesData } from "../api/uploadthing/core";
 import { MdDelete } from "react-icons/md";
 
-export const ImageUploader = () => {
+interface ImageUploaderProps {
+  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
+  value: string;
+  resetClick: number;
+  label: string;
+}
+
+export const ImageUploader: React.FC<ImageUploaderProps> = ({
+  setFormData,
+  value,
+  resetClick,
+  label,
+}) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isImage, setIsImage] = useState(false);
   const [rerender, setRerender] = useState(0);
@@ -27,6 +46,12 @@ export const ImageUploader = () => {
     onClientUploadComplete: (file) => {
       setUploadedFiles(file);
       reset();
+      setFormData((formData) => ({
+        ...formData,
+        [value]: file.map((image, i) => {
+          return image.url;
+        }),
+      }));
     },
     onUploadError: () => {
       alert("error occurred while uploading");
