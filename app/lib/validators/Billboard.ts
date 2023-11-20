@@ -5,6 +5,7 @@ const billboardPayload = z.object({
     .string()
     .min(3, { message: "must be more than 3 characters" })
     .max(15, { message: "must be less than 15 charaters" }),
+  image: z.string().array(),
 });
 
 export type BillboardPayload = z.infer<typeof billboardPayload>;
