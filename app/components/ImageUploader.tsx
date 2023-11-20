@@ -11,6 +11,7 @@ import { MdDelete } from "react-icons/md";
 export const ImageUploader = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [isImage, setIsImage] = useState(false);
+  const [rerender, setRerender] = useState(0);
   const [uploadedFiles, setUploadedFiles] = useState<
     UploadFileResponse<ImagesData>[]
   >([]);
@@ -35,24 +36,33 @@ export const ImageUploader = () => {
     },
   });
 
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch(`/api/uploadthing?fileKey=${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+      });
+      setUploadedFiles((prevFiles) =>
+        prevFiles.filter((file) => file.key !== id),
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRerender((prev) => prev + 1);
+    }
+  };
   useEffect(() => {
     if (!isUploading) {
       setFiles([]);
     }
-  }, [isUploading]);
-  console.log(isUploading);
+    console.log(uploadedFiles);
+  }, [isUploading, rerender]);
 
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
     setFiles(images);
   };
 
-  const handleDelete = async (id: string) => {
-    console.log(id);
-    await fetch(`api/uploadthing?fileKey=${id}`, {
-      method: "DELETE",
-    });
-  };
   return (
     <div className="  flex flex-col gap-2 items-center relative">
       <div className="flex gap-2 ">

@@ -8,19 +8,18 @@ export const { GET, POST } = createNextRouteHandler({
   router: ourFileRouter,
 });
 
+export const utapi = new UTApi();
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const fileKey = searchParams.get("fileKey");
-  const utapi = new UTApi();
-
-  if (!fileKey) {
-    return new Response(JSON.stringify("no fileKey"), { status: 500 });
-  }
-
   try {
+    const { searchParams } = new URL(request.url);
+    const fileKey = searchParams.get("fileKey");
+
+    if (!fileKey) {
+      return new Response(JSON.stringify("no fileKey"), { status: 400 });
+    }
     console.log(fileKey, "its here");
     await utapi.deleteFiles(fileKey);
-    return new Response(JSON.stringify("deleted"), { status: 500 });
+    return new Response(JSON.stringify("deleted"), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
