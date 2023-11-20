@@ -87,13 +87,18 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     const images = Array.from(e.target.files || []);
     setFiles(images);
   };
+  const onToggle = (e) => {
+    e.stopPropagation();
+    setIsImage(!isImage);
+  };
 
   return (
     <div className="  flex flex-col gap-2 items-center relative">
       <div className="flex gap-2 ">
         <button
+          type="button"
           className="p-2 rounded-md bg-blue-500"
-          onClick={() => setIsImage(!isImage)}
+          onClick={(e) => onToggle(e)}
         >
           Images
         </button>
@@ -114,7 +119,10 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         <div>
           {files.length > 0 && (
             <button
-              onClick={() => startUpload(files)}
+              onClick={(e) => {
+                e.stopPropagation();
+                startUpload(files);
+              }}
               className="p-2 bg-neutral-400 rounded-md"
             >
               {isUploading ? <Spinner /> : `Upload ${files.length} files`}
@@ -129,12 +137,16 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           ) : (
             uploadedFiles?.map((img) => (
               <div key={img.serverData.fileUrl} className="relative ">
-                <div
+                <button
+                  type="button"
                   className="absolute cursor-pointer top-1 right-1 z-20"
-                  onClick={() => handleDelete(img.key)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDelete(img.key);
+                  }}
                 >
                   <MdDelete color="white" />
-                </div>
+                </button>
                 <Image
                   src={img.serverData.fileUrl}
                   height={1000}

@@ -44,7 +44,7 @@ export const CustomForm: React.FC<CustomFormProps> = ({
   console.log(formData);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    console.log("submitted");
     apiFunction(formData);
     refetch();
   };
