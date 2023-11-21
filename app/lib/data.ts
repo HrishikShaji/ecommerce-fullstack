@@ -27,6 +27,13 @@ export const billboardInputValues: InputValuesDataType[] = [
     type: "Image",
     label: "Image",
   },
+  {
+    label: "Category",
+    endpoint: "category",
+    queryKey: "categories",
+    name: "categoryId",
+    type: "DropDown",
+  },
 ];
 export const categoryInputInitialObj = {
   name: "",

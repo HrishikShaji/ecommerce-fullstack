@@ -8,8 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Dispatch,
   MouseEvent,
+  Ref,
   SetStateAction,
+  forwardRef,
   useEffect,
+  useImperativeHandle,
   useRef,
   useState,
 } from "react";
@@ -23,7 +26,11 @@ interface NewDropDownProps {
   label: string;
 }
 
-export const NewDropDown = (props: NewDropDownProps) => {
+export type NewDropDownRef = {
+  setSelectedItem: Dispatch<SetStateAction<string>>;
+};
+
+const NewDropDown = (props: NewDropDownProps, ref: Ref<NewDropDownRef>) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
@@ -46,6 +53,17 @@ export const NewDropDown = (props: NewDropDownProps) => {
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        setSelectedItem: setSelectedItem,
+      };
+    },
+    [],
+  );
+
   const { data, isError, isSuccess } = useQuery({
     queryKey: [`dropdown${props.queryKey}`],
     queryFn: async () => {
@@ -58,6 +76,7 @@ export const NewDropDown = (props: NewDropDownProps) => {
   });
 
   if (isError) return null;
+  console.log(selectedItem);
 
   return (
     <div className="flex flex-col gap-2">
@@ -98,6 +117,8 @@ export const NewDropDown = (props: NewDropDownProps) => {
     </div>
   );
 };
+
+export default forwardRef(NewDropDown);
 
 interface MenuItemProps {
   category: CategoryChild;

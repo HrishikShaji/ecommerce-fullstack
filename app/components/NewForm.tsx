@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { EndpointType, QueryKey } from "@/types/types";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
-import { NewDropDown } from "./NewDropDown";
+import NewDropDown, { NewDropDownRef } from "./NewDropDown";
 import { getInputValues } from "../lib/utils";
 import { NewImageUploaderRef } from "./NewImageUploader";
 import NewImageUploader from "./NewImageUploader";
@@ -17,6 +17,8 @@ export const NewForm = (props: NewFormProps) => {
     inputs: props.inputValues,
     formData: formData,
   }) as FinalInputType[];
+  const imageUploaderRef = useRef<NewImageUploaderRef>(null);
+  const dropdownRef = useRef<NewDropDownRef>(null);
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log("submitted", formData);
@@ -24,10 +26,9 @@ export const NewForm = (props: NewFormProps) => {
     imageUploaderRef.current?.setFiles([]);
     imageUploaderRef.current?.reset();
     imageUploaderRef.current?.setIsImage(false);
+    dropdownRef.current?.setSelectedItem("");
     setFormData(props.initialFormData);
   };
-
-  const imageUploaderRef = useRef<NewImageUploaderRef>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((formData) => ({
@@ -35,7 +36,6 @@ export const NewForm = (props: NewFormProps) => {
       [e.target.name]: e.target.value,
     }));
   };
-  console.log(formValues);
 
   return (
     <form className="flex flex-col gap-2 items-start " onSubmit={handleSubmit}>
@@ -53,6 +53,7 @@ export const NewForm = (props: NewFormProps) => {
             />
           ) : (
             <NewDropDown
+              ref={dropdownRef}
               key={i}
               setFormData={setFormData}
               value={input.value}
