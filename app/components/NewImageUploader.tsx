@@ -4,12 +4,13 @@ import { useUploadThing } from "../lib/uploadthing";
 import {
   ChangeEvent,
   Dispatch,
-  MouseEventHandler,
   SetStateAction,
   MouseEvent,
-  useEffect,
   useRef,
   useState,
+  useImperativeHandle,
+  Ref,
+  forwardRef,
 } from "react";
 import { Spinner } from "./Spinner";
 import Image from "next/image";
@@ -23,25 +24,48 @@ interface NewImageUploaderProps {
   label: string;
 }
 
-export const NewImageUploader = (props: NewImageUploaderProps) => {
+export type NewImageUploaderRef = {
+  reset: () => void;
+  setFiles: Dispatch<SetStateAction<File[]>>;
+  setUploadedFiles: Dispatch<SetStateAction<UploadFileResponse<ImagesData>[]>>;
+  setIsImage: Dispatch<SetStateAction<boolean>>;
+};
+
+const NewImageUploader = (
+  props: NewImageUploaderProps,
+  ref: Ref<NewImageUploaderRef>,
+) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isImage, setIsImage] = useState(false);
-  const [rerender, setRerender] = useState(0);
   const [uploadedFiles, setUploadedFiles] = useState<
     UploadFileResponse<ImagesData>[]
   >([]);
-  const ref = useRef<null | HTMLInputElement>(null);
+  const inputRef = useRef<null | HTMLInputElement>(null);
 
   const reset = () => {
-    if (ref.current) {
-      ref.current.value = "";
+    if (inputRef.current) {
+      inputRef.current.value = "";
     }
   };
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reset: reset,
+        setFiles: setFiles,
+        setUploadedFiles: setUploadedFiles,
+        setIsImage: setIsImage,
+      };
+    },
+    [],
+  );
 
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: (file) => {
       setUploadedFiles(file);
       reset();
+      setFiles([]);
       props.setFormData((formData) => ({
         ...formData,
         [props.value]: file.map((image, i) => {
@@ -69,15 +93,8 @@ export const NewImageUploader = (props: NewImageUploaderProps) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setRerender((prev) => prev + 1);
     }
   };
-  useEffect(() => {
-    if (!isUploading) {
-      setFiles([]);
-    }
-    console.log(uploadedFiles);
-  }, [isUploading, rerender]);
 
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
@@ -102,7 +119,7 @@ export const NewImageUploader = (props: NewImageUploaderProps) => {
           multiple
           onChange={(e) => handleSelect(e)}
           type="file"
-          ref={ref}
+          ref={inputRef}
           id="custom-input"
           hidden
         />
@@ -115,6 +132,7 @@ export const NewImageUploader = (props: NewImageUploaderProps) => {
         <div>
           {files.length > 0 && (
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 startUpload(files);
@@ -158,3 +176,5 @@ export const NewImageUploader = (props: NewImageUploaderProps) => {
     </div>
   );
 };
+
+export default forwardRef(NewImageUploader);
