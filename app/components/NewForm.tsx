@@ -1,17 +1,28 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import { EndpointType, QueryKey } from "@/types/types";
+import {
+  ChangeEvent,
+  FormEvent,
+  Validator,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { EndpointType, QueryKey, ValidateTypePayload } from "@/types/types";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
 import NewDropDown, { NewDropDownRef } from "./NewDropDown";
 import { getInputValues } from "../lib/utils";
 import { NewImageUploaderRef } from "./NewImageUploader";
 import NewImageUploader from "./NewImageUploader";
+import { useAddQuery } from "../lib/queries/customQuery";
 
-interface NewFormProps {
+interface NewFormProps<T> {
   inputValues: InputValuesDataType[];
   initialFormData: Record<string, any>;
+  endpoint: EndpointType;
+  validator: Validator<T>;
+  queryKey: QueryKey;
 }
 
-export const NewForm = (props: NewFormProps) => {
+export const NewForm = <T,>(props: NewFormProps<T>) => {
   const [formData, setFormData] = useState(props.initialFormData);
   const formValues = getInputValues({
     inputs: props.inputValues,
@@ -19,9 +30,17 @@ export const NewForm = (props: NewFormProps) => {
   }) as FinalInputType[];
   const imageUploaderRef = useRef<NewImageUploaderRef>(null);
   const dropdownRef = useRef<NewDropDownRef>(null);
+
+  const { add, isPending, isError, error } = useAddQuery({
+    endpoint: props.endpoint,
+    validator: props.validator,
+    queryKey: props.queryKey,
+  });
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log("submitted", formData);
+    add(formData);
     imageUploaderRef.current?.setUploadedFiles([]);
     imageUploaderRef.current?.setFiles([]);
     imageUploaderRef.current?.reset();
@@ -30,6 +49,10 @@ export const NewForm = (props: NewFormProps) => {
     setFormData(props.initialFormData);
   };
 
+  const inputValuesData = getInputValues({
+    inputs: props.inputValues,
+    formData: formData,
+  });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((formData) => ({
       ...formData,
