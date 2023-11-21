@@ -108,13 +108,6 @@ const NewImageUploader = (
   return (
     <div className="  flex flex-col gap-2 items-center relative">
       <div className="flex gap-2 ">
-        <button
-          type="button"
-          className="p-2 rounded-md bg-blue-500"
-          onClick={(e) => onToggle(e)}
-        >
-          Images
-        </button>
         <input
           multiple
           onChange={(e) => handleSelect(e)}
@@ -129,6 +122,15 @@ const NewImageUploader = (
         >
           Add
         </label>
+        {uploadedFiles.length > 0 && (
+          <button
+            type="button"
+            className="p-2 rounded-md bg-blue-500"
+            onClick={(e) => onToggle(e)}
+          >
+            Images
+          </button>
+        )}
         <div>
           {files.length > 0 && (
             <button
@@ -144,7 +146,7 @@ const NewImageUploader = (
           )}
         </div>
       </div>
-      {isImage && (
+      {isImage && uploadedFiles.length > 0 && (
         <div className=" items-center   gap-2 inline-flex  min-h-[100px] origin-center  absolute  top-12 z-10 bg-neutral-700 rounded-md  p-5">
           {uploadedFiles.length === 0 ? (
             <div className="">No Images Selected</div>
