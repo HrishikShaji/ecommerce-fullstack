@@ -17,14 +17,13 @@ import { UploadFileResponse } from "uploadthing/client";
 import { ImagesData } from "../api/uploadthing/core";
 import { MdDelete } from "react-icons/md";
 
-interface ImageUploaderProps {
+interface NewImageUploaderProps {
   setFormData: Dispatch<SetStateAction<Record<string, any>>>;
   value: string;
-  resetClick: number;
   label: string;
 }
 
-export const ImageUploader = (props: ImageUploaderProps) => {
+export const NewImageUploader = (props: NewImageUploaderProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isImage, setIsImage] = useState(false);
   const [rerender, setRerender] = useState(0);
