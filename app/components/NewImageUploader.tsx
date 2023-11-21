@@ -4,12 +4,13 @@ import { useUploadThing } from "../lib/uploadthing";
 import {
   ChangeEvent,
   Dispatch,
-  MouseEventHandler,
   SetStateAction,
   MouseEvent,
-  useEffect,
   useRef,
   useState,
+  useImperativeHandle,
+  Ref,
+  forwardRef,
 } from "react";
 import { Spinner } from "./Spinner";
 import Image from "next/image";
@@ -17,32 +18,54 @@ import { UploadFileResponse } from "uploadthing/client";
 import { ImagesData } from "../api/uploadthing/core";
 import { MdDelete } from "react-icons/md";
 
-interface ImageUploaderProps {
+interface NewImageUploaderProps {
   setFormData: Dispatch<SetStateAction<Record<string, any>>>;
   value: string;
-  resetClick: number;
   label: string;
 }
 
-export const ImageUploader = (props: ImageUploaderProps) => {
+export type NewImageUploaderRef = {
+  reset: () => void;
+  setFiles: Dispatch<SetStateAction<File[]>>;
+  setUploadedFiles: Dispatch<SetStateAction<UploadFileResponse<ImagesData>[]>>;
+  setIsImage: Dispatch<SetStateAction<boolean>>;
+};
+
+const NewImageUploader = (
+  props: NewImageUploaderProps,
+  ref: Ref<NewImageUploaderRef>,
+) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isImage, setIsImage] = useState(false);
-  const [rerender, setRerender] = useState(0);
   const [uploadedFiles, setUploadedFiles] = useState<
     UploadFileResponse<ImagesData>[]
   >([]);
-  const ref = useRef<null | HTMLInputElement>(null);
+  const inputRef = useRef<null | HTMLInputElement>(null);
 
   const reset = () => {
-    if (ref.current) {
-      ref.current.value = "";
+    if (inputRef.current) {
+      inputRef.current.value = "";
     }
   };
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        reset: reset,
+        setFiles: setFiles,
+        setUploadedFiles: setUploadedFiles,
+        setIsImage: setIsImage,
+      };
+    },
+    [],
+  );
 
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: (file) => {
       setUploadedFiles(file);
       reset();
+      setFiles([]);
       props.setFormData((formData) => ({
         ...formData,
         [props.value]: file.map((image, i) => {
@@ -70,15 +93,8 @@ export const ImageUploader = (props: ImageUploaderProps) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setRerender((prev) => prev + 1);
     }
   };
-  useEffect(() => {
-    if (!isUploading) {
-      setFiles([]);
-    }
-    console.log(uploadedFiles);
-  }, [isUploading, rerender]);
 
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
@@ -92,18 +108,11 @@ export const ImageUploader = (props: ImageUploaderProps) => {
   return (
     <div className="  flex flex-col gap-2 items-center relative">
       <div className="flex gap-2 ">
-        <button
-          type="button"
-          className="p-2 rounded-md bg-blue-500"
-          onClick={(e) => onToggle(e)}
-        >
-          Images
-        </button>
         <input
           multiple
           onChange={(e) => handleSelect(e)}
           type="file"
-          ref={ref}
+          ref={inputRef}
           id="custom-input"
           hidden
         />
@@ -113,9 +122,19 @@ export const ImageUploader = (props: ImageUploaderProps) => {
         >
           Add
         </label>
+        {uploadedFiles.length > 0 && (
+          <button
+            type="button"
+            className="p-2 rounded-md bg-blue-500"
+            onClick={(e) => onToggle(e)}
+          >
+            Images
+          </button>
+        )}
         <div>
           {files.length > 0 && (
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 startUpload(files);
@@ -127,7 +146,7 @@ export const ImageUploader = (props: ImageUploaderProps) => {
           )}
         </div>
       </div>
-      {isImage && (
+      {isImage && uploadedFiles.length > 0 && (
         <div className=" items-center   gap-2 inline-flex  min-h-[100px] origin-center  absolute  top-12 z-10 bg-neutral-700 rounded-md  p-5">
           {uploadedFiles.length === 0 ? (
             <div className="">No Images Selected</div>
@@ -159,3 +178,5 @@ export const ImageUploader = (props: ImageUploaderProps) => {
     </div>
   );
 };
+
+export default forwardRef(NewImageUploader);
