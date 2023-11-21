@@ -3,15 +3,18 @@ import { useEffect, useState } from "react";
 import { SectionContainer } from "./SectionContainer";
 import {
   AddQueryProps,
+  EndpointType,
   GetQueryProps,
   QueryKey,
   SortType,
+  ValidateTypePayload,
   Validator,
 } from "@/types/types";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { CustomForm } from "./CustomForm";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
 import { getInputValues } from "../lib/utils";
+import { NewForm } from "./NewForm";
 
 interface SectionProps<T> {
   endpoint: string;
@@ -53,29 +56,12 @@ export const Section = <T,>({
 }: SectionProps<T>) => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
-  const [formData, setFormData] =
-    useState<Record<string, any>>(inputInitialObj);
 
   const { refetch, data, count, isLoading, isError } = customGetHook({
     page: page,
     sort: sort,
     endpoint: endpoint,
     queryKey: queryKey,
-  });
-  const {
-    add,
-    isPending,
-    isError: errorAdd,
-    error,
-  } = customAddHook({
-    endpoint: endpoint,
-    validator: validator,
-    queryKey: queryKey,
-  });
-
-  const inputValuesData = getInputValues({
-    inputs: inputValues,
-    formData: formData,
   });
 
   useEffect(() => {
@@ -86,15 +72,12 @@ export const Section = <T,>({
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2 ">
         <h1 className="text-xl font-semibold">{heading}</h1>
-        <CustomForm
-          isError={errorAdd}
-          error={error}
-          isPending={isPending}
-          formData={formData}
-          setFormData={setFormData}
-          inputValues={inputValuesData as FinalInputType[]}
-          refetch={refetch}
-          apiFunction={add}
+        <NewForm
+          inputValues={inputValues}
+          initialFormData={inputInitialObj}
+          endpoint={endpoint as EndpointType}
+          queryKey={queryKey}
+          validator={validator as Validator<ValidateTypePayload>}
         />
       </div>
       {isLoading ? (

@@ -13,12 +13,13 @@ import { getInputValues } from "../lib/utils";
 import { NewImageUploaderRef } from "./NewImageUploader";
 import NewImageUploader from "./NewImageUploader";
 import { useAddQuery } from "../lib/queries/customQuery";
+import { Button } from "./Button";
 
-interface NewFormProps<T> {
+interface NewFormProps<ValidateTypePayload> {
   inputValues: InputValuesDataType[];
   initialFormData: Record<string, any>;
   endpoint: EndpointType;
-  validator: Validator<T>;
+  validator: Validator<ValidateTypePayload>;
   queryKey: QueryKey;
 }
 
@@ -39,7 +40,6 @@ export const NewForm = <T,>(props: NewFormProps<T>) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log("submitted", formData);
     add(formData);
     imageUploaderRef.current?.setUploadedFiles([]);
     imageUploaderRef.current?.setFiles([]);
@@ -49,10 +49,6 @@ export const NewForm = <T,>(props: NewFormProps<T>) => {
     setFormData(props.initialFormData);
   };
 
-  const inputValuesData = getInputValues({
-    inputs: props.inputValues,
-    formData: formData,
-  });
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((formData) => ({
       ...formData,
@@ -87,7 +83,7 @@ export const NewForm = <T,>(props: NewFormProps<T>) => {
           ),
         )}
       </div>
-      <button className="p-2 rounded-md bg-white">Add</button>
+      <Button isPending={isPending} />
     </form>
   );
 };

@@ -27,13 +27,6 @@ export const billboardInputValues: InputValuesDataType[] = [
     type: "Image",
     label: "Image",
   },
-  {
-    label: "Category",
-    endpoint: "category",
-    queryKey: "categories",
-    name: "categoryId",
-    type: "DropDown",
-  },
 ];
 export const categoryInputInitialObj = {
   name: "",
@@ -236,5 +229,43 @@ export const inputValuesData: InputValuesDataType[] = [
     type: "DropDown",
     endpoint: "category",
     queryKey: "categories",
+  },
+];
+
+export const inputValuesFormData = [
+  {
+    endpoint: "billboard",
+    queryKey: "billboards",
+    validator: validateBillboardPayload,
+    inputValues: billboardInputValues,
+    initialFormData: billboardInputInitialObj,
+  },
+  {
+    endpoint: "category",
+    queryKey: "categories",
+    validator: validateCategoryPayload,
+    inputValues: categoryInputValues,
+    initialFormData: categoryInputInitialObj,
+  },
+  {
+    endpoint: "product",
+    queryKey: "products",
+    validator: validateProductPayload,
+    inputValues: productInputValues,
+    initialFormData: productInputInitialObj,
+  },
+  {
+    endpoint: "size",
+    queryKey: "sizes",
+    validator: validateSizePayload,
+    inputValues: sizeInputValues,
+    initialFormData: sizeInputInitialObj,
+  },
+  {
+    endpoint: "color",
+    queryKey: "colors",
+    validator: validateColorPayload,
+    inputValues: colorInputValues,
+    initialFormData: colorInputInitialObj,
   },
 ];
