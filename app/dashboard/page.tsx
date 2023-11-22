@@ -36,9 +36,6 @@ const Page = () => {
                 queryKey={section.queryKey as QueryKey}
                 validator={section.validator as Validator<ValidateTypePayload>}
                 heading={section.heading}
-                label={section.label}
-                placeholder={section.placeholder}
-                name={section.name}
                 headings={section.headings}
                 customGetHook={section.customGetHook}
                 title={section.title as TitleType}

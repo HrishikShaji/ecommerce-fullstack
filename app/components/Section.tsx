@@ -1,16 +1,7 @@
 import { Spinner } from "../components/Spinner";
 import { useEffect, useState } from "react";
 import { SectionContainer } from "./SectionContainer";
-import {
-  AddQueryProps,
-  EndpointType,
-  GetQueryProps,
-  QueryKey,
-  SortType,
-  ValidateTypePayload,
-  Validator,
-} from "@/types/types";
-import { UseMutateFunction } from "@tanstack/react-query";
+import { EndpointType, GetQueryProps, QueryKey, SortType } from "@/types/types";
 import { NewForm } from "./NewForm";
 import { InputValuesDataType } from "../lib/data";
 import { PayloadType } from "../lib/utils";

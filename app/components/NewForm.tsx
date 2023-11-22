@@ -1,12 +1,5 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  Validator,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { EndpointType, QueryKey, ValidateTypePayload } from "@/types/types";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { EndpointType, QueryKey } from "@/types/types";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
 import NewDropDown, { NewDropDownRef } from "./NewDropDown";
 import { PayloadType, getInputValues } from "../lib/utils";
@@ -83,6 +76,7 @@ export function NewForm(props: NewFormProps) {
           ),
         )}
       </div>
+      {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button isPending={isPending} />
     </form>
   );
