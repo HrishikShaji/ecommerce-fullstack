@@ -1,6 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { EndpointType, QueryKey } from "@/types/types";
-import { FinalInputType, InputValuesDataType } from "../lib/data";
+import {
+  FinalInputType,
+  InputValuesDataType,
+  inputValuesData,
+} from "../lib/data";
 import NewDropDown, { NewDropDownRef } from "./NewDropDown";
 import { PayloadType, getInputValues } from "../lib/utils";
 import { NewImageUploaderRef } from "./NewImageUploader";
@@ -22,6 +26,10 @@ export function NewForm(props: NewFormProps) {
     inputs: props.inputValues,
     formData: formData,
   }) as FinalInputType[];
+  const dropDownValues = formValues.filter(
+    (input) => input.type === "DropDown",
+  );
+  console.log(dropDownValues);
   const imageUploaderRef = useRef<NewImageUploaderRef>(null);
   const dropdownRef = useRef<NewDropDownRef>(null);
 
@@ -30,20 +38,16 @@ export function NewForm(props: NewFormProps) {
     validator: props.validator,
     queryKey: props.queryKey,
   });
-  useEffect(() => {
-    if (!isError) {
-      imageUploaderRef.current?.setUploadedFiles([]);
-      imageUploaderRef.current?.setFiles([]);
-      imageUploaderRef.current?.reset();
-      imageUploaderRef.current?.setIsImage(false);
-      dropdownRef.current?.setSelectedItem("");
-      setFormData(props.initialFormData);
-    }
-  }, [isError]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     add(formData);
+    imageUploaderRef.current?.setUploadedFiles([]);
+    imageUploaderRef.current?.setFiles([]);
+    imageUploaderRef.current?.reset();
+    imageUploaderRef.current?.setIsImage(false);
+    dropdownRef.current?.setSelectedItem("");
+    setFormData(props.initialFormData);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,8 +60,8 @@ export function NewForm(props: NewFormProps) {
   return (
     <form className="flex flex-col gap-2 items-start " onSubmit={handleSubmit}>
       <div className="grid grid-cols-3 gap-4">
-        {formValues.map((input, i) =>
-          input.type === "Input" ? (
+        {formValues.map((input, i) => {
+          return input.type === "Input" ? (
             <InputItem key={i} inputItem={input} handleChange={handleChange} />
           ) : input.type === "Image" ? (
             <NewImageUploader
@@ -69,6 +73,7 @@ export function NewForm(props: NewFormProps) {
             />
           ) : (
             <NewDropDown
+              dropdownValues={dropDownValues}
               ref={dropdownRef}
               key={i}
               setFormData={setFormData}
@@ -77,8 +82,8 @@ export function NewForm(props: NewFormProps) {
               queryKey={input.queryKey as QueryKey}
               label={input.label as string}
             />
-          ),
-        )}
+          );
+        })}
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button isPending={isPending} />

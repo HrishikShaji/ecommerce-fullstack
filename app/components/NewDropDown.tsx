@@ -18,6 +18,7 @@ import {
 } from "react";
 import { BiDownArrow } from "react-icons/bi";
 import { PayloadType } from "../lib/utils";
+import { FinalInputType } from "../lib/data";
 
 interface NewDropDownProps {
   setFormData: Dispatch<SetStateAction<PayloadType>>;
@@ -25,6 +26,7 @@ interface NewDropDownProps {
   endpoint: EndpointType;
   queryKey: QueryKey;
   label: string;
+  dropdownValues: FinalInputType[];
 }
 
 export type NewDropDownRef = {
@@ -130,14 +132,7 @@ interface MenuItemProps {
   setSelectedItem: Dispatch<SetStateAction<string>>;
 }
 
-const MenuItem: React.FC<MenuItemProps> = ({
-  category,
-  setIsOpen,
-  setFormData,
-  value,
-  item,
-  setSelectedItem,
-}) => {
+const MenuItem: React.FC<MenuItemProps> = (props) => {
   const [showSubMenu, setShowSubMenu] = useState(false);
 
   const handleClick = (e: MouseEvent) => {
@@ -145,21 +140,21 @@ const MenuItem: React.FC<MenuItemProps> = ({
     setShowSubMenu(!showSubMenu);
   };
   const handleSelect = (item: SearchType) => {
-    setSelectedItem(item.name as string);
-    setFormData((formData) => ({
+    props.setSelectedItem(item.name as string);
+    props.setFormData((formData) => ({
       ...formData,
-      [value]: item.id,
+      [props.value]: item.id,
     }));
   };
 
   return (
     <li className="relative ">
       <div
-        onClick={() => handleSelect(item)}
+        onClick={() => handleSelect(props.item)}
         className="cursor-pointer flex justify-between items-center border-b-2 border-neutral-800 rounded-md hover:bg-neutral-800 pl-2"
       >
-        <h1 className="">{category.name}</h1>
-        {category.children && category.children.length > 0 && (
+        <h1 className="">{props.category.name}</h1>
+        {props.category.children && props.category.children.length > 0 && (
           <div
             onClick={handleClick}
             className="p-1 rounded-md hover:bg-neutral-700"
@@ -168,17 +163,17 @@ const MenuItem: React.FC<MenuItemProps> = ({
           </div>
         )}
       </div>
-      {showSubMenu && category.children.length > 0 && (
+      {showSubMenu && props.category.children.length > 0 && (
         <ul className="ml-4">
-          {category.children.map((cat: CategoryChild) => (
+          {props.category.children.map((cat: CategoryChild) => (
             <MenuItem
               key={cat.id}
               category={cat}
-              setIsOpen={setIsOpen}
-              setFormData={setFormData}
-              value={value}
+              setIsOpen={props.setIsOpen}
+              setFormData={props.setFormData}
+              value={props.value}
               item={cat}
-              setSelectedItem={setSelectedItem}
+              setSelectedItem={props.setSelectedItem}
             />
           ))}
         </ul>
