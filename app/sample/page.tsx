@@ -1,34 +1,46 @@
 "use client";
 
-import { NewForm } from "../components/NewForm";
-import {
-  billboardInputInitialObj,
-  billboardInputValues,
-  categoryInputInitialObj,
-  categoryInputValues,
-  colorInputInitialObj,
-  colorInputValues,
-  productInputInitialObj,
-  productInputValues,
-  sizeInputInitialObj,
-  sizeInputValues,
-} from "../lib/data";
-import { getInputValues } from "../lib/utils";
-import { validateBillboardPayload } from "../lib/validators/Billboard";
-import { validateProductPayload } from "../lib/validators/Product";
-import { validateCategoryPayload } from "../lib/validators/category";
-import { validateColorPayload } from "../lib/validators/color";
-import { validateSizePayload } from "../lib/validators/size";
+import { useState } from "react";
+import InputField from "../components/ui/InputField";
 
 const Page = () => {
+  const [values, setValues] = useState({
+    name: "",
+    email: "",
+    number: "",
+  });
+
+  const handleChange = (key: string, value: string) => {
+    setValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
   return (
-    <div className="min-h-screen w-full flex items-center justify-center">
-      <NewForm
-        endpoint="billboard"
-        queryKey="billboards"
-        validator={validateBillboardPayload}
-        inputValues={billboardInputValues}
-        initialFormData={billboardInputInitialObj}
+    <div className="min-h-screen w-full flex items-center bg-neutral-600 justify-center">
+      <InputField
+        validator={""}
+        value={values.name}
+        onChange={(value) => handleChange("name", value)}
+        placeholder="name"
+        type="text"
+        label="Name"
+      />
+      <InputField
+        validator={""}
+        value={values.email}
+        onChange={(value) => handleChange("email", value)}
+        placeholder="email"
+        type="email"
+        label="Email"
+      />
+      <InputField
+        validator={""}
+        value={values.number}
+        onChange={(value) => handleChange("number", value)}
+        placeholder="number"
+        type="number"
+        label="Number"
       />
     </div>
   );

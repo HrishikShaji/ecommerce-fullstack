@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 interface InputFieldProps {
   value: string;
   label?: string;
-  type: "text" | "textarea";
+  type: "text" | "textarea" | "number" | "email";
   placeholder: string;
   onChange: (value: string) => void;
   validator: any;
