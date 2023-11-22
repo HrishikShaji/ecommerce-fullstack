@@ -17,9 +17,10 @@ import {
   useState,
 } from "react";
 import { BiDownArrow } from "react-icons/bi";
+import { PayloadType } from "../lib/utils";
 
 interface NewDropDownProps {
-  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
+  setFormData: Dispatch<SetStateAction<PayloadType>>;
   value: string;
   endpoint: EndpointType;
   queryKey: QueryKey;
@@ -123,7 +124,7 @@ export default forwardRef(NewDropDown);
 interface MenuItemProps {
   category: CategoryChild;
   setIsOpen: (value: boolean) => void;
-  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
+  setFormData: Dispatch<SetStateAction<PayloadType>>;
   value: string;
   item: SearchType;
   setSelectedItem: Dispatch<SetStateAction<string>>;

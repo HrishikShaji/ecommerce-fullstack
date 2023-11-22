@@ -11,16 +11,15 @@ import {
   Validator,
 } from "@/types/types";
 import { UseMutateFunction } from "@tanstack/react-query";
-import { CustomForm } from "./CustomForm";
-import { FinalInputType, InputValuesDataType } from "../lib/data";
-import { getInputValues } from "../lib/utils";
 import { NewForm } from "./NewForm";
+import { InputValuesDataType } from "../lib/data";
+import { PayloadType } from "../lib/utils";
 
-interface SectionProps<T> {
+interface SectionProps {
   endpoint: string;
   heading: string;
   queryKey: QueryKey;
-  validator: Validator<T>;
+  validator: (inputs: PayloadType) => typeof inputs;
   customGetHook: (values: GetQueryProps) => {
     count: number;
     data: any[];
@@ -28,32 +27,25 @@ interface SectionProps<T> {
     isLoading: boolean;
     refetch: () => void;
   };
-  customAddHook: (values: AddQueryProps<T>) => {
-    add: UseMutateFunction<Response, Error, T, unknown>;
-    isPending: boolean;
-    isError: boolean;
-    error: Error;
-  };
   title: "Billboards" | "Categories" | "Products" | "Sizes" | "Colors";
   section: "billBoard" | "color" | "size" | "product" | "category";
   headings: string[];
-  inputInitialObj: Record<string, any>;
+  inputInitialObj: PayloadType;
   inputValues: InputValuesDataType[];
 }
 
-export const Section = <T,>({
+export const Section = ({
   queryKey,
   customGetHook,
   title,
   section,
   headings,
   validator,
-  customAddHook,
   heading,
   endpoint,
   inputValues,
   inputInitialObj,
-}: SectionProps<T>) => {
+}: SectionProps) => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
 
@@ -77,7 +69,7 @@ export const Section = <T,>({
           initialFormData={inputInitialObj}
           endpoint={endpoint as EndpointType}
           queryKey={queryKey}
-          validator={validator as Validator<ValidateTypePayload>}
+          validator={validator}
         />
       </div>
       {isLoading ? (

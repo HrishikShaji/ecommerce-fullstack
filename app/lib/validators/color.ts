@@ -1,6 +1,6 @@
 import { ZodError, z } from "zod";
 
-const colorPayload = z.object({
+export const colorPayload = z.object({
   name: z
     .string()
     .min(3, { message: "must be more than 3 characters" })

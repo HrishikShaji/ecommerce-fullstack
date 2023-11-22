@@ -9,21 +9,21 @@ import {
 import { EndpointType, QueryKey, ValidateTypePayload } from "@/types/types";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
 import NewDropDown, { NewDropDownRef } from "./NewDropDown";
-import { getInputValues } from "../lib/utils";
+import { PayloadType, getInputValues } from "../lib/utils";
 import { NewImageUploaderRef } from "./NewImageUploader";
 import NewImageUploader from "./NewImageUploader";
 import { useAddQuery } from "../lib/queries/customQuery";
 import { Button } from "./Button";
 
-interface NewFormProps<ValidateTypePayload> {
+interface NewFormProps {
   inputValues: InputValuesDataType[];
-  initialFormData: Record<string, any>;
+  initialFormData: PayloadType;
   endpoint: EndpointType;
-  validator: Validator<ValidateTypePayload>;
+  validator: (inputs: PayloadType) => typeof inputs;
   queryKey: QueryKey;
 }
 
-export const NewForm = <T,>(props: NewFormProps<T>) => {
+export function NewForm(props: NewFormProps) {
   const [formData, setFormData] = useState(props.initialFormData);
   const formValues = getInputValues({
     inputs: props.inputValues,
@@ -86,7 +86,7 @@ export const NewForm = <T,>(props: NewFormProps<T>) => {
       <Button isPending={isPending} />
     </form>
   );
-};
+}
 
 interface InputItemProps {
   inputItem: FinalInputType;

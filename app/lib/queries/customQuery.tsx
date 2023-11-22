@@ -6,6 +6,7 @@ import {
   UpdateQueryProps,
 } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PayloadType } from "../utils";
 
 export const useGetQuery = ({
   page,
@@ -37,11 +38,11 @@ export const useGetQuery = ({
   return { count, data, isError, refetch, isLoading };
 };
 
-export const useAddQuery = <T,>({
+export const useAddQuery = ({
   validator,
   endpoint,
   queryKey,
-}: AddQueryProps<T>) => {
+}: AddQueryProps) => {
   const queryClient = useQueryClient();
   const {
     mutate: add,
@@ -49,7 +50,7 @@ export const useAddQuery = <T,>({
     isError,
     error,
   } = useMutation({
-    mutationFn: async (payload: T) => {
+    mutationFn: async (payload: PayloadType) => {
       const isValidPayload = validator(payload);
       const response = await fetch(`/api/${endpoint}`, {
         method: "POST",

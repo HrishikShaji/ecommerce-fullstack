@@ -1,3 +1,4 @@
+import { PayloadType } from "@/app/lib/utils";
 import { BillboardPayload } from "@/app/lib/validators/Billboard";
 import { ProductPayload } from "@/app/lib/validators/Product";
 import { CategoryPayload } from "@/app/lib/validators/category";
@@ -60,21 +61,20 @@ export type ValidateTypePayload =
   | SizePayload
   | ColorPayload;
 
+export type Validator<T> = (inputs: T) => T;
+
+export type AddQueryProps = {
+  validator: (inputs: PayloadType) => typeof inputs;
+  endpoint: string;
+  queryKey: QueryKey;
+};
+
 export type GetQueryProps = {
   page: number;
   sort: SortType;
   endpoint: string;
   queryKey: QueryKey;
 };
-
-export type Validator<T> = (inputs: T) => T;
-
-export type AddQueryProps<T> = {
-  validator: Validator<T>;
-  endpoint: string;
-  queryKey: QueryKey;
-};
-
 export type DeleteQueryProps = {
   endpoint: string;
   queryKey: QueryKey;

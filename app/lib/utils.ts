@@ -1,4 +1,10 @@
+import { ZodError } from "zod";
 import { InputValuesDataType } from "./data";
+import { BillboardPayload, billboardPayload } from "./validators/Billboard";
+import { CategoryPayload, categoryPayload } from "./validators/category";
+import { SizePayload, sizePayload } from "./validators/size";
+import { ProductPayload, productPayload } from "./validators/Product";
+import { ColorPayload, colorPayload } from "./validators/color";
 
 export const itemsPerPage = 3;
 
@@ -43,3 +49,34 @@ export function getInputValues({
   });
   return data;
 }
+
+const validators = [
+  billboardPayload,
+  categoryPayload,
+  sizePayload,
+  colorPayload,
+  productPayload,
+];
+
+export type PayloadType =
+  | BillboardPayload
+  | CategoryPayload
+  | ProductPayload
+  | SizePayload
+  | ColorPayload;
+
+export const validatePayload = (inputs, validator) => {
+  try {
+    const isValidData = validator.parse(inputs);
+    return isValidData;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      if (error.errors.length) {
+        for (const value of error.errors) {
+          throw new Error((value as { message: string }).message);
+        }
+      }
+    }
+    throw error;
+  }
+};

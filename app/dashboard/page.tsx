@@ -40,7 +40,6 @@ const Page = () => {
                 placeholder={section.placeholder}
                 name={section.name}
                 headings={section.headings}
-                customAddHook={section.customAddHook}
                 customGetHook={section.customGetHook}
                 title={section.title as TitleType}
                 section={section.section as SectionType}

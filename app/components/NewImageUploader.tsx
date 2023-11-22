@@ -17,9 +17,10 @@ import Image from "next/image";
 import { UploadFileResponse } from "uploadthing/client";
 import { ImagesData } from "../api/uploadthing/core";
 import { MdDelete } from "react-icons/md";
+import { PayloadType } from "../lib/utils";
 
 interface NewImageUploaderProps {
-  setFormData: Dispatch<SetStateAction<Record<string, any>>>;
+  setFormData: Dispatch<SetStateAction<PayloadType>>;
   value: string;
   label: string;
 }
