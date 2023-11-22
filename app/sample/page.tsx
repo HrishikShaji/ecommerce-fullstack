@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import InputField from "../components/ui/InputField";
+import Button from "../components/ui/Button";
 
 const Page = () => {
   const [values, setValues] = useState({
@@ -15,6 +16,11 @@ const Page = () => {
       ...prev,
       [key]: value,
     }));
+  };
+
+  const handleClick = (e: FormEvent) => {
+    e.preventDefault();
+    console.log(values);
   };
   return (
     <div className="min-h-screen w-full flex items-center bg-neutral-600 justify-center">
@@ -42,6 +48,7 @@ const Page = () => {
         type="number"
         label="Number"
       />
+      <Button onClick={handleClick} value="Submit" />
     </div>
   );
 };
