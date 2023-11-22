@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { EndpointType, QueryKey } from "@/types/types";
 import { FinalInputType, InputValuesDataType } from "../lib/data";
 import NewDropDown, { NewDropDownRef } from "./NewDropDown";
@@ -30,16 +30,20 @@ export function NewForm(props: NewFormProps) {
     validator: props.validator,
     queryKey: props.queryKey,
   });
+  useEffect(() => {
+    if (!isError) {
+      imageUploaderRef.current?.setUploadedFiles([]);
+      imageUploaderRef.current?.setFiles([]);
+      imageUploaderRef.current?.reset();
+      imageUploaderRef.current?.setIsImage(false);
+      dropdownRef.current?.setSelectedItem("");
+      setFormData(props.initialFormData);
+    }
+  }, [isError]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     add(formData);
-    imageUploaderRef.current?.setUploadedFiles([]);
-    imageUploaderRef.current?.setFiles([]);
-    imageUploaderRef.current?.reset();
-    imageUploaderRef.current?.setIsImage(false);
-    dropdownRef.current?.setSelectedItem("");
-    setFormData(props.initialFormData);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

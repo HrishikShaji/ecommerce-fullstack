@@ -25,26 +25,15 @@ interface SectionProps {
   inputValues: InputValuesDataType[];
 }
 
-export const Section = ({
-  queryKey,
-  customGetHook,
-  title,
-  section,
-  headings,
-  validator,
-  heading,
-  endpoint,
-  inputValues,
-  inputInitialObj,
-}: SectionProps) => {
+export const Section = (props: SectionProps) => {
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState<SortType>("LATEST");
 
-  const { refetch, data, count, isLoading, isError } = customGetHook({
+  const { refetch, data, count, isLoading, isError } = props.customGetHook({
     page: page,
     sort: sort,
-    endpoint: endpoint,
-    queryKey: queryKey,
+    endpoint: props.endpoint,
+    queryKey: props.queryKey,
   });
 
   useEffect(() => {
@@ -54,26 +43,26 @@ export const Section = ({
   return (
     <div className="p-2 text-white flex flex-col gap-10">
       <div className="flex flex-col gap-2 ">
-        <h1 className="text-xl font-semibold">{heading}</h1>
+        <h1 className="text-xl font-semibold">{props.heading}</h1>
         <NewForm
-          inputValues={inputValues}
-          initialFormData={inputInitialObj}
-          endpoint={endpoint as EndpointType}
-          queryKey={queryKey}
-          validator={validator}
+          inputValues={props.inputValues}
+          initialFormData={props.inputInitialObj}
+          endpoint={props.endpoint as EndpointType}
+          queryKey={props.queryKey}
+          validator={props.validator}
         />
       </div>
       {isLoading ? (
         <Spinner />
       ) : (
         <SectionContainer
-          title={title}
-          headings={headings}
+          title={props.title}
+          headings={props.headings}
           data={data}
           setPage={setPage}
           page={page}
           count={count}
-          section={section}
+          section={props.section}
           setSort={setSort}
           sort={sort}
         />
