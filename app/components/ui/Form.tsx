@@ -1,11 +1,11 @@
 "use client";
 
-import { FormEvent, useState } from "react";
 import InputField from "./InputField";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
 import CheckBox from "./CheckBox";
 import ImageUploader from "./ImageUploader";
+import { useForm } from "./useForm";
 
 const initialValues = {
   name: "",
@@ -17,42 +17,19 @@ const initialValues = {
   images: [],
 };
 const Form = () => {
-  const [values, setValues] = useState(initialValues);
-
-  const handleChange = (key: string, value: string) => {
-    setValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const handleDropdown = (key: string, value: string) => {
-    setValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const handleCheckBox = (key: string, value: boolean) => {
-    setValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const handleImages = (key: string, values: string[]) => {
-    setValues((prev) => ({
-      ...prev,
-      [key]: values,
-    }));
-  };
-  const handleClick = (e: FormEvent) => {
-    e.preventDefault();
-    console.log(values);
-    setValues(initialValues);
-  };
+  const {
+    values,
+    handleClick,
+    handleCheckBox,
+    handleDropdown,
+    handleChange,
+    handleImages,
+  } = useForm({ initialValues: initialValues });
   return (
-    <div className=" grid grid-cols-3 w-[90vw] h-[20vh] gap-4 items-center justify-center">
+    <form
+      onSubmit={handleClick}
+      className=" grid grid-cols-3 w-[90vw] h-[20vh] gap-4 items-center justify-center"
+    >
       <InputField
         validator={""}
         value={values.name}
@@ -106,8 +83,8 @@ const Form = () => {
         selected={values.acceptance}
         onChange={(value) => handleCheckBox("acceptance", value)}
       />
-      <Button onClick={handleClick} value="Submit" />
-    </div>
+      <Button isPending={false} />
+    </form>
   );
 };
 

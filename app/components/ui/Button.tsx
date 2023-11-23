@@ -1,17 +1,16 @@
-import { FormEvent } from "react";
+import { Spinner } from "../Spinner";
 
 interface ButtonProps {
-  onClick: (e: FormEvent) => void;
-  value: string;
+  isPending: boolean;
 }
 
-const Button: React.FC<ButtonProps> = (props) => {
+const Button: React.FC<ButtonProps> = ({ isPending }) => {
   return (
     <button
-      className="rounded-md p-2 bg-white text-black"
-      onClick={(e) => props.onClick(e)}
+      type="submit"
+      className="px-3 py-1 bg-neutral-600 text-white font-semibold rounded-md"
     >
-      {props.value}
+      {isPending ? <Spinner /> : "Add"}
     </button>
   );
 };
