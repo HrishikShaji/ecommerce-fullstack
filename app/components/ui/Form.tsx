@@ -5,6 +5,7 @@ import InputField from "./InputField";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
 import CheckBox from "./CheckBox";
+import ImageUploader from "./ImageUploader";
 
 const initialValues = {
   name: "",
@@ -13,6 +14,7 @@ const initialValues = {
   dropOne: "",
   desc: "",
   acceptance: false,
+  images: [],
 };
 const Form = () => {
   const [values, setValues] = useState(initialValues);
@@ -29,7 +31,6 @@ const Form = () => {
       ...prev,
       [key]: value,
     }));
-    console.log(values);
   };
 
   const handleCheckBox = (key: string, value: boolean) => {
@@ -39,13 +40,19 @@ const Form = () => {
     }));
   };
 
+  const handleImages = (key: string, values: string[]) => {
+    setValues((prev) => ({
+      ...prev,
+      [key]: values,
+    }));
+  };
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
     console.log(values);
     setValues(initialValues);
   };
   return (
-    <div className=" grid grid-cols-3 w-[50vw] h-[20vh] gap-4 items-center justify-center">
+    <div className=" grid grid-cols-3 w-[90vw] h-[20vh] gap-4 items-center justify-center">
       <InputField
         validator={""}
         value={values.name}
@@ -88,6 +95,11 @@ const Form = () => {
         placeholder="description"
         type="textarea"
         label="Description"
+      />
+      <ImageUploader
+        value={values.images}
+        label="Image"
+        onChange={(values) => handleImages("images", values)}
       />
       <CheckBox
         label="I Accept"
