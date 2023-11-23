@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import InputField from "../components/ui/InputField";
 import Button from "../components/ui/Button";
 import Dropdown from "../components/ui/Dropdown";
+import CheckBox from "../components/ui/CheckBox";
 
 const Page = () => {
   const [values, setValues] = useState({
@@ -11,6 +12,8 @@ const Page = () => {
     email: "",
     number: "",
     dropOne: "",
+    desc: "",
+    acceptance: false,
   });
 
   const handleChange = (key: string, value: string) => {
@@ -32,8 +35,15 @@ const Page = () => {
     }));
     console.log(values);
   };
+
+  const handleCheckBox = (key: string, value: boolean) => {
+    setValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  };
   return (
-    <div className="min-h-screen w-full flex items-center bg-neutral-600 justify-center">
+    <div className="min-h-screen w-full flex flex-col gap-4 items-center bg-neutral-600 justify-center">
       <InputField
         validator={""}
         value={values.name}
@@ -67,6 +77,19 @@ const Page = () => {
           { value: 2, label: "soso" },
           { value: 3, label: "koko" },
         ]}
+      />
+      <InputField
+        validator={""}
+        value={values.desc}
+        onChange={(value) => handleChange("desc", value)}
+        placeholder="description"
+        type="textarea"
+        label="Description"
+      />
+      <CheckBox
+        label="I Accept"
+        selected={values.acceptance}
+        onChange={(value) => handleCheckBox("acceptance", value)}
       />
       <Button onClick={handleClick} value="Submit" />
     </div>
