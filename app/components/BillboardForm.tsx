@@ -34,7 +34,7 @@ const BillboardForm = () => {
     },
   });
   return (
-    <form onSubmit={handleClick} className="flex items-start flex-col gap-4">
+    <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
       <div className="flex gap-4 justify-start items-end">
         <InputField
           validator={""}
