@@ -7,11 +7,11 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = (props) => {
   return (
-    <table className="w-[50vw]">
+    <table className="w-full">
       <thead>
-        <tr className="border-b-2 border-black">
+        <tr className="border-b-2 border-neutral-700">
           {props.headings.map((heading, key) => (
-            <th key={key} className="">
+            <th key={key} className="text-left pl-2 py-2">
               {heading}
             </th>
           ))}

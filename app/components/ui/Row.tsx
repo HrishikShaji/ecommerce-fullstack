@@ -22,7 +22,7 @@ const Row: React.FC<RowProps> = (props) => {
   let i = 0;
   return (
     <>
-      <tr className="border-b-2  border-black">
+      <tr className="border-b-2  border-neutral-700">
         {Object.entries(props.item).map(([key, value]) => {
           const itemKey = props.lookup.includes(key);
           if (itemKey) {
@@ -43,6 +43,7 @@ const Row: React.FC<RowProps> = (props) => {
                 <div className="flex items-center gap-2">
                   {i === 1 &&
                     props.subRow &&
+                    props.item[props.subRow] &&
                     props.item[props.subRow].length > 0 && (
                       <button className=" " onClick={() => setIsOpen(!isOpen)}>
                         {isOpen ? (
@@ -69,6 +70,7 @@ const Row: React.FC<RowProps> = (props) => {
       </tr>
       {isOpen &&
         props.subRow &&
+        props.item[props.subRow] &&
         props.item[props.subRow].length > 0 &&
         props.item[props.subRow].map((child: any, key: number) => (
           <Row

@@ -16,7 +16,6 @@ interface useFormProps {
 
 export const useForm = (props: useFormProps) => {
   const [values, setValues] = useState(props.initialValues);
-  console.log(values);
   const handleChange = (key: string, value: string) => {
     setValues((prev) => ({
       ...prev,
