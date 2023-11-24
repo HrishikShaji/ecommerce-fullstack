@@ -7,11 +7,13 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = (props) => {
   return (
-    <table>
+    <table className="w-[50vw]">
       <thead>
-        <tr>
+        <tr className="border-b-2 border-black">
           {props.headings.map((heading, key) => (
-            <th key={key}>{heading}</th>
+            <th key={key} className="">
+              {heading}
+            </th>
           ))}
           <th></th>
         </tr>
@@ -26,6 +28,7 @@ const Table: React.FC<TableProps> = (props) => {
             add
             lookup={["name", "createdAt"]}
             level={0}
+            subRow="children"
           />
         ))}
       </tbody>

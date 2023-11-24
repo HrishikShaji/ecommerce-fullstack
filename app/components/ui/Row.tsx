@@ -2,7 +2,11 @@ import { format } from "date-fns";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
 import { useState } from "react";
-
+import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
+import {
+  IoIosArrowDropdownCircle,
+  IoIosArrowDropupCircle,
+} from "react-icons/io";
 interface RowProps {
   item: Record<string, any>;
   delete?: boolean;
@@ -10,15 +14,15 @@ interface RowProps {
   add?: boolean;
   lookup: string[];
   level: number;
+  subRow?: string;
 }
 
 const Row: React.FC<RowProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   let i = 0;
-  console.log(props.level);
   return (
     <>
-      <tr className="border-b-2 border-black">
+      <tr className="border-b-2  border-black">
         {Object.entries(props.item).map(([key, value]) => {
           const itemKey = props.lookup.includes(key);
           if (itemKey) {
@@ -30,29 +34,43 @@ const Row: React.FC<RowProps> = (props) => {
             return (
               <td
                 key={key}
-                className={i === 1 && props.level !== 0 ? "px-2 pl-5" : "px-2"}
+                className={
+                  i === 1 && props.level !== 0
+                    ? `px-2 pl-${props.level * 5}`
+                    : "px-2 py-2"
+                }
               >
-                {itemValue}
-                {i}
+                <div className="flex items-center gap-2">
+                  {i === 1 &&
+                    props.subRow &&
+                    props.item[props.subRow].length > 0 && (
+                      <button className=" " onClick={() => setIsOpen(!isOpen)}>
+                        {isOpen ? (
+                          <IoIosArrowDropupCircle size={22} />
+                        ) : (
+                          <IoIosArrowDropdownCircle size={22} />
+                        )}
+                      </button>
+                    )}
+
+                  {itemValue}
+                </div>
               </td>
             );
           }
         })}
         <td className="px-2">
-          <div className="flex gap-1">
-            {props.add && (
-              <button onClick={() => setIsOpen(!isOpen)}>
-                <IoAddCircle />{" "}
-              </button>
-            )}
-            {props.update && <MdEdit />}
-            {props.delete && <MdDelete />}
+          <div className="flex gap-2 justify-end">
+            {props.add && <IoAddCircle size={22} />}
+            {props.update && <MdEdit size={22} />}
+            {props.delete && <MdDelete size={22} />}
           </div>
         </td>
       </tr>
       {isOpen &&
-        props.item.children &&
-        props.item.children.map((child, key) => (
+        props.subRow &&
+        props.item[props.subRow].length > 0 &&
+        props.item[props.subRow].map((child: any, key: number) => (
           <Row
             item={child}
             key={key}
@@ -61,6 +79,7 @@ const Row: React.FC<RowProps> = (props) => {
             add
             update
             level={props.level + 1}
+            subRow={props.subRow}
           />
         ))}
     </>
