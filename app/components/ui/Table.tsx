@@ -18,7 +18,15 @@ const Table: React.FC<TableProps> = (props) => {
       </thead>
       <tbody>
         {props.data?.map((item: Record<string, any>, key: number) => (
-          <Row key={key} item={item} delete lookup={["name", "createdAt"]} />
+          <Row
+            key={key}
+            item={item}
+            delete
+            update
+            add
+            lookup={["name", "createdAt"]}
+            level={0}
+          />
         ))}
       </tbody>
     </table>

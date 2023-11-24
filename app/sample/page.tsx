@@ -8,8 +8,8 @@ import Table from "../components/ui/Table";
 
 const Page = () => {
   const { data, isError } = useGetQuery({
-    endpoint: "product",
-    queryKey: "products",
+    endpoint: "category",
+    queryKey: "categories",
     page: 1,
     sort: "LATEST",
   });
