@@ -42,6 +42,7 @@ export const useAddQuery = ({
   validator,
   endpoint,
   queryKey,
+  reset,
 }: AddQueryProps) => {
   const queryClient = useQueryClient();
   const {
@@ -58,6 +59,7 @@ export const useAddQuery = ({
         body: JSON.stringify(isValidPayload),
       });
       if (!response.ok) {
+        console.log(response);
         throw new Error("Failed to Fetch Data");
       }
       return response;
@@ -66,6 +68,7 @@ export const useAddQuery = ({
       throw error;
     },
     onSuccess: () => {
+      reset();
       queryClient.invalidateQueries({ queryKey: [queryKey] });
     },
   });

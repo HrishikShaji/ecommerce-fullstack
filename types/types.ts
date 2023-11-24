@@ -67,6 +67,7 @@ export type AddQueryProps = {
   validator: (inputs: PayloadType) => typeof inputs;
   endpoint: string;
   queryKey: QueryKey;
+  reset: () => void;
 };
 
 export type GetQueryProps = {

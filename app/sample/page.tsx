@@ -1,24 +1,11 @@
 "use client";
 
-import { MdDelete } from "react-icons/md";
-import Form from "../components/ui/Form";
-import { useGetQuery } from "../lib/queries/customQuery";
-import { format } from "date-fns";
-import Table from "../components/ui/Table";
+import BillBoardSection from "../components/BillboardSection";
 
 const Page = () => {
-  const { data, isError } = useGetQuery({
-    endpoint: "category",
-    queryKey: "categories",
-    page: 1,
-    sort: "LATEST",
-  });
-  if (isError) return null;
-  console.log(data);
-  const headings = ["Name", "Date"];
   return (
-    <div className="h-screen w-full flex flex-col gap-4 items-center bg-neutral-600 justify-center">
-      <Table headings={headings} data={data} />
+    <div className="w-full p-10 text-white">
+      <BillBoardSection />
     </div>
   );
 };

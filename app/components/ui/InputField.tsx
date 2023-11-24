@@ -32,7 +32,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
         <input
           value={props.value}
           type={props.type}
-          className="p-2 rounded-md "
+          className="p-2 rounded-md text-black"
           placeholder={props.placeholder}
           onChange={handleChange}
         />

@@ -1,12 +1,22 @@
+import { useAddQuery } from "@/app/lib/queries/customQuery";
+import { PayloadType } from "@/app/lib/utils";
+import { QueryKey } from "@/types/types";
 import { FormEvent, useState } from "react";
+
+type AddQueryOptions = {
+  endpoint: string;
+  queryKey: QueryKey;
+  validator: (inputs: PayloadType) => typeof inputs;
+};
 
 interface useFormProps {
   initialValues: Record<string, any>;
+  options: AddQueryOptions;
 }
 
 export const useForm = (props: useFormProps) => {
   const [values, setValues] = useState(props.initialValues);
-
+  console.log(values);
   const handleChange = (key: string, value: string) => {
     setValues((prev) => ({
       ...prev,
@@ -34,10 +44,16 @@ export const useForm = (props: useFormProps) => {
       [key]: values,
     }));
   };
+
+  const { add, isPending, isError, error } = useAddQuery({
+    ...props.options,
+    reset: () => {
+      setValues(props.initialValues);
+    },
+  });
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
-    console.log(values);
-    setValues(props.initialValues);
+    add(values as PayloadType);
   };
 
   return {
@@ -47,5 +63,8 @@ export const useForm = (props: useFormProps) => {
     handleChange,
     handleDropdown,
     handleCheckBox,
+    isPending,
+    isError,
+    error,
   };
 };
