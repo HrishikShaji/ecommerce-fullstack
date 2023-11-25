@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   const page = Number(searchParams.get("page"));
   const section = searchParams.get("section");
   const searchString = searchParams.get("searchString");
-  console.log("searchPage is", page);
+  console.log("searchPage is", page, section, searchString);
   const order = getSortOrder(request);
   try {
     let results: any[] = [];
@@ -51,6 +51,7 @@ export async function GET(request: Request) {
     });
     const count = allResults.length;
     const searchResults = paginateArray({ array: allResults, page: page });
+
     return new Response(JSON.stringify({ count, searchResults }), {
       status: 200,
     });

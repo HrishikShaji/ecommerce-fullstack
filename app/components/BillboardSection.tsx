@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetQuery } from "../lib/queries/customQuery";
 import BillboardForm from "./BillboardForm";
 import Search from "./ui/Search";
 import Table from "./ui/Table";
+import { useSearch } from "../lib/queries/search";
 
 const BillBoardSection = () => {
   const [searchString, setSearchString] = useState("");
@@ -14,12 +15,23 @@ const BillBoardSection = () => {
     queryKey: "billboards",
   });
 
-  if (isError) return null;
-
-  const searchResults = data?.filter((item, i) => {
-    return item.name.includes(searchString.toLowerCase());
+  const {
+    results,
+    isError: isSearchError,
+    isLoading,
+    refetch,
+  } = useSearch({
+    searchString: searchString,
+    section: "billBoard",
+    page: 1,
+    sort: "LATEST",
   });
-  console.log(searchResults);
+
+  useEffect(() => {
+    refetch();
+  }, [searchString]);
+
+  if (isError) return null;
   return (
     <div className="flex flex-col gap-10 w-full">
       <div className="flex flex-col gap-6 px-2">
@@ -33,7 +45,10 @@ const BillBoardSection = () => {
             <Search onChange={setSearchString} />
           </div>
         </div>
-        <Table data={searchResults} headings={["Billboard", "Date"]} />
+        <Table
+          data={searchString ? results : data}
+          headings={["Billboard", "Date"]}
+        />
       </div>
     </div>
   );
