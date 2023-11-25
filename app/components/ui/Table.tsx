@@ -1,8 +1,11 @@
+import { EndpointType, QueryKey } from "@/types/types";
 import Row from "./Row";
 
 interface TableProps {
   headings: string[];
   data: Record<string, any>[];
+  endpoint: EndpointType;
+  queryKey: QueryKey;
 }
 
 const Table: React.FC<TableProps> = (props) => {
@@ -29,6 +32,9 @@ const Table: React.FC<TableProps> = (props) => {
             lookup={["name", "createdAt"]}
             level={0}
             subRow="children"
+            endpoint={props.endpoint}
+            queryKey={props.queryKey}
+            id={item.id}
           />
         ))}
       </tbody>

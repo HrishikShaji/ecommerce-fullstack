@@ -1,11 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useGetQuery } from "../lib/queries/customQuery";
 import BillboardForm from "./BillboardForm";
 import Search from "./ui/Search";
 import Table from "./ui/Table";
-import { useSearch } from "../lib/queries/search";
-import Dropdown from "./ui/Dropdown";
 import { SortObjectType } from "@/types/types";
 import { Sort } from "./ui/Sort";
 import { Pagination } from "./ui/Pagination";
@@ -59,7 +55,12 @@ const BillBoardSection = () => {
         {isLoading ? (
           <Spinner />
         ) : (
-          <Table data={data} headings={["Billboard", "Date"]} />
+          <Table
+            endpoint="billboard"
+            queryKey="billboards"
+            data={data}
+            headings={["Billboard", "Date"]}
+          />
         )}
       </div>
       <Pagination count={count} page={page} setPage={setPage} />

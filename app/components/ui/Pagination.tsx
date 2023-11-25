@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
-import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from "react-icons/bs";
 import { itemsPerPage } from "@/app/lib/utils";
+import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 
 interface PaginationProps {
   page: number;
@@ -17,23 +17,25 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className="w-full flex gap-2 justify-end">
       <button
         disabled={page === 1}
+        className="p-2 bg-neutral-700 rounded-md disabled:opacity-50"
         onClick={() => {
           setPage((prevState: number) => {
             return prevState - 1;
           });
         }}
       >
-        <BsArrowLeftSquareFill />
+        <BiLeftArrow />
       </button>
       <button
         disabled={page * itemsPerPage >= count}
+        className="p-2 bg-neutral-700 rounded-md disabled:opacity-50"
         onClick={() => {
           setPage((prevState: number) => {
             return prevState + 1;
           });
         }}
       >
-        <BsArrowRightSquareFill />
+        <BiRightArrow />
       </button>
     </div>
   );

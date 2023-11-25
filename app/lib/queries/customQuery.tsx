@@ -78,7 +78,12 @@ export const useAddQuery = ({
 
 export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
   const queryClient = useQueryClient();
-  const { mutate: remove, isPending: isDeleting } = useMutation({
+  const {
+    mutate: remove,
+    isPending: isDeleting,
+    error,
+    isError,
+  } = useMutation({
     mutationFn: async (id: string) => {
       const response = await fetch(`/api/${endpoint}?id=${id}`, {
         method: "DELETE",
@@ -92,12 +97,17 @@ export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
   });
 
-  return { remove, isDeleting };
+  return { remove, isDeleting, isError, error };
 };
 
 export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
   const queryClient = useQueryClient();
-  const { mutate: update, isPending } = useMutation({
+  const {
+    mutate: update,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
     mutationFn: async (payload: UpdatePayload) => {
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
@@ -110,5 +120,5 @@ export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
     },
   });
 
-  return { update, isPending };
+  return { update, isPending, isError, error };
 };

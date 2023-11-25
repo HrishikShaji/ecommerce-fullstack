@@ -2,12 +2,15 @@ import { format } from "date-fns";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
 import { useState } from "react";
-import { IoMdArrowDropdownCircle, IoMdArrowDropupCircle } from "react-icons/io";
 import {
   IoIosArrowDropdownCircle,
   IoIosArrowDropupCircle,
 } from "react-icons/io";
+import { EndpointType, QueryKey } from "@/types/types";
+import { RowDelete } from "./RowDelete";
+
 interface RowProps {
+  id: string;
   item: Record<string, any>;
   delete?: boolean;
   update?: boolean;
@@ -15,6 +18,8 @@ interface RowProps {
   lookup: string[];
   level: number;
   subRow?: string;
+  endpoint: EndpointType;
+  queryKey: QueryKey;
 }
 
 const Row: React.FC<RowProps> = (props) => {
@@ -64,7 +69,13 @@ const Row: React.FC<RowProps> = (props) => {
           <div className="flex gap-2 justify-end">
             {props.add && <IoAddCircle size={22} />}
             {props.update && <MdEdit size={22} />}
-            {props.delete && <MdDelete size={22} />}
+            {props.delete && (
+              <RowDelete
+                id={props.id}
+                endpoint={props.endpoint}
+                queryKey={props.queryKey}
+              />
+            )}
           </div>
         </td>
       </tr>
@@ -82,6 +93,9 @@ const Row: React.FC<RowProps> = (props) => {
             update
             level={props.level + 1}
             subRow={props.subRow}
+            id={child.id}
+            endpoint={props.endpoint}
+            queryKey={props.queryKey}
           />
         ))}
     </>

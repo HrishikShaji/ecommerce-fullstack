@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { IoMdArrowDropdownCircle } from "react-icons/io";
 import { SortObjectType } from "@/types/types";
+import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 
 interface SortProps {
   setSort: Dispatch<SetStateAction<SortObjectType>>;
@@ -12,10 +12,10 @@ export const Sort: React.FC<SortProps> = (props) => {
 
   return (
     <div className="relative gap-2 bg-neutral-700 py-1 px-2   rounded-md">
-      <div className="flex gap-2">
+      <div className="flex gap-6 items-center">
         <h1>Sort</h1>
         <button onClick={() => setIsSortOpen(!isSortOpen)}>
-          <IoMdArrowDropdownCircle />
+          {isSortOpen ? <BiUpArrow /> : <BiDownArrow />}
         </button>
       </div>
       {isSortOpen && (
