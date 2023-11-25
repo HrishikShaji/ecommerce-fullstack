@@ -27,6 +27,12 @@ export type ProductChild = Product & {
 };
 
 export type SortType = "LATEST" | "OLDEST";
+
+export type SortObjectType = {
+  title: string;
+  value: SortType;
+};
+
 export type TitleType =
   | "Billboards"
   | "Categories"
