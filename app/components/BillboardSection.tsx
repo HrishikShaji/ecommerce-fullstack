@@ -9,6 +9,8 @@ import Dropdown from "./ui/Dropdown";
 import { SortObjectType } from "@/types/types";
 import { Sort } from "./ui/Sort";
 import { Pagination } from "./ui/Pagination";
+import { useDataTable } from "./ui/useDataTable";
+import { Spinner } from "./Spinner";
 
 const billboardSortValues: SortObjectType[] = [
   {
@@ -22,44 +24,24 @@ const billboardSortValues: SortObjectType[] = [
 ];
 
 const BillBoardSection = () => {
-  const [searchString, setSearchString] = useState("");
-  const [sort, setSort] = useState<SortObjectType>({
-    title: "Latest",
-    value: "LATEST",
-  });
-  const [page, setPage] = useState(1);
-  console.log(sort);
   const {
     data,
-    isError,
     count,
-    refetch: refetchData,
-  } = useGetQuery({
-    endpoint: "billboard",
-    page: page,
-    sort: sort.value,
-    queryKey: "billboards",
-  });
-
-  const {
-    results,
-    isError: isSearchError,
     isLoading,
-    refetch,
-    count: searchCount,
-  } = useSearch({
-    searchString: searchString,
+    page,
+    isError,
+    setPage,
+    setSearchString,
+    setSort,
+  } = useDataTable({
+    endpoint: "billboard",
     section: "billBoard",
-    page: page,
-    sort: sort.value,
+    queryKey: "billboards",
+    initialSortObj: billboardSortValues[0],
   });
-
-  useEffect(() => {
-    refetchData();
-    refetch();
-  }, [searchString, sort, page]);
 
   if (isError) return null;
+
   return (
     <div className="flex flex-col gap-10 w-full">
       <div className="flex flex-col gap-6 px-2">
@@ -74,16 +56,13 @@ const BillBoardSection = () => {
             <Sort setSort={setSort} sortItems={billboardSortValues} />
           </div>
         </div>
-        <Table
-          data={searchString ? results : data}
-          headings={["Billboard", "Date"]}
-        />
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <Table data={data} headings={["Billboard", "Date"]} />
+        )}
       </div>
-      <Pagination
-        count={searchString ? searchCount : count}
-        page={page}
-        setPage={setPage}
-      />
+      <Pagination count={count} page={page} setPage={setPage} />
     </div>
   );
 };
