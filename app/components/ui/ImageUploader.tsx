@@ -1,12 +1,10 @@
 "use client";
 
-import { useUploadThing } from "@/app/lib/uploadthing";
-import { ChangeEvent, MouseEvent, useRef, useState, useEffect } from "react";
+import { ChangeEvent, MouseEvent, useRef, useState,} from "react";
 import { Spinner } from "../Spinner";
 import Image from "next/image";
-import { UploadFileResponse } from "uploadthing/client";
-import { ImagesData } from "@/app/api/uploadthing/core";
 import { MdDelete, MdImage } from "react-icons/md";
+import { useImageUpload } from "./useImageUpload";
 
 interface ImageUploaderProps {
   value: string[];
@@ -15,34 +13,17 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader = (props: ImageUploaderProps) => {
-  const [files, setFiles] = useState<File[]>([]);
   const [isImage, setIsImage] = useState(false);
-  const [uploadedFiles, setUploadedFiles] = useState<
-    UploadFileResponse<ImagesData>[]
-  >([]);
   const inputRef = useRef<null | HTMLInputElement>(null);
-  useEffect(() => {
-    if (props.value.length === 0) {
-      setUploadedFiles([]);
-    }
-  }, [props.value]);
 
-  const { startUpload, isUploading } = useUploadThing("imageUploader", {
-    onClientUploadComplete: (file) => {
-      setUploadedFiles(file);
-      setFiles([]);
-      const images = file.map((image) => {
-        return image.serverData.fileUrl;
-      });
-      props.onChange(images);
-    },
-    onUploadError: () => {
-      alert("error occurred while uploading");
-    },
-    onUploadBegin: () => {
-      alert("upload has begun");
-    },
-  });
+  const {
+    setFiles,
+    setUploadedFiles,
+    isUploading,
+    uploadedFiles,
+    startUpload,
+    files,
+  } = useImageUpload({ value: props.value, onChange: props.onChange });
 
   const handleDelete = async (id: string) => {
     try {
