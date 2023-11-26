@@ -62,11 +62,7 @@ export const Modal = () => {
           <AiFillCloseCircle />
         </button>
         {mode === "billboard" && (
-          <BillboardUpdateForm
-            data={data as BillBoard}
-            endpoint={endpoint as EndpointType}
-            queryKey={queryKey as QueryKey}
-          />
+          <BillboardUpdateForm data={data as BillBoard} />
         )}
       </div>
     </div>

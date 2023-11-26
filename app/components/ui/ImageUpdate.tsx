@@ -10,15 +10,8 @@ interface ImageUpdateProps {
 }
 
 export const ImageUpdate: React.FC<ImageUpdateProps> = (props) => {
-  const {
-    startUpload,
-    setFiles,
-    setUploadedFiles,
-    isUploading,
-    uploadedFiles,
-    files,
-  } = useImageUpload({ value: props.value, onChange: props.onChange });
-  console.log(files, uploadedFiles);
+  const { startUpload, setFiles, isUploading, uploadedFiles, files } =
+    useImageUpload({ value: props.value, onChange: props.onChange });
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
     setFiles(images);
@@ -59,6 +52,7 @@ export const ImageUpdate: React.FC<ImageUpdateProps> = (props) => {
       />
       {files.length === 1 ? (
         <button
+          type="button"
           className="absolute bottom-0 z-10"
           onClick={(e) => {
             e.stopPropagation();

@@ -72,7 +72,6 @@ export const useForm = (props: useFormProps) => {
     }
 
     if (props.action === "Update") {
-      console.log("update values are", values);
       update(values as UpdateBillboardPayload);
     }
   };

@@ -2,8 +2,6 @@
 
 import InputField from "./ui/InputField";
 import Button from "./ui/Button";
-import Dropdown from "./ui/Dropdown";
-import CheckBox from "./ui/CheckBox";
 import ImageUploader from "./ui/ImageUploader";
 import { useForm } from "./ui/useForm";
 import {
@@ -52,7 +50,7 @@ const BillboardForm = () => {
         />
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
-      <Button isPending={isPending} />
+      <Button label="Add" isPending={isPending} />
     </form>
   );
 };
