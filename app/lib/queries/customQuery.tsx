@@ -2,6 +2,7 @@ import {
   AddQueryProps,
   DeleteQueryProps,
   GetQueryProps,
+  UpdateBillboardPayload,
   UpdatePayload,
   UpdateQueryProps,
 } from "@/types/types";
@@ -108,7 +109,7 @@ export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
     isError,
     error,
   } = useMutation({
-    mutationFn: async (payload: UpdatePayload) => {
+    mutationFn: async (payload: UpdateBillboardPayload) => {
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

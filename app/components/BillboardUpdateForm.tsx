@@ -34,6 +34,7 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
     handleChange,
     handleImages,
   } = useForm({
+    action: "Update",
     initialValues: data,
     options: {
       endpoint: "billboard",
@@ -41,14 +42,6 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
       validator: validateBillboardPayload as Validator<ValidateTypePayload>,
     },
   });
-
-  const { update, isPending: isUpdatePending } = useUpdateQuery({
-    endpoint: endpoint,
-    queryKey: queryKey,
-  });
-  const previewImage = (image: File) => {
-    return URL.createObjectURL(image);
-  };
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">

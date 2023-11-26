@@ -26,6 +26,7 @@ const BillboardForm = () => {
     handleChange,
     handleImages,
   } = useForm({
+    action: "Add",
     initialValues: initialValues,
     options: {
       endpoint: "billboard",

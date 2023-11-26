@@ -1,6 +1,6 @@
-import { useAddQuery } from "@/app/lib/queries/customQuery";
+import { useAddQuery, useUpdateQuery } from "@/app/lib/queries/customQuery";
 import { PayloadType } from "@/app/lib/utils";
-import { QueryKey } from "@/types/types";
+import { QueryKey, UpdateBillboardPayload } from "@/types/types";
 import { FormEvent, useState } from "react";
 
 type AddQueryOptions = {
@@ -12,6 +12,7 @@ type AddQueryOptions = {
 interface useFormProps {
   initialValues: Record<string, any>;
   options: AddQueryOptions;
+  action: "Add" | "Update";
 }
 
 export const useForm = (props: useFormProps) => {
@@ -44,16 +45,41 @@ export const useForm = (props: useFormProps) => {
     }));
   };
 
-  const { add, isPending, isError, error } = useAddQuery({
+  const {
+    add,
+    isPending: isAddPending,
+    isError: isAddError,
+    error: addError,
+  } = useAddQuery({
     ...props.options,
     reset: () => {
       setValues(props.initialValues);
     },
   });
+
+  const {
+    update,
+    isPending: isUpdatePending,
+    isError: isUpdateError,
+    error: updateError,
+  } = useUpdateQuery({
+    ...props.options,
+  });
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
-    add(values as PayloadType);
+    if (props.action === "Add") {
+      add(values as PayloadType);
+    }
+
+    if (props.action === "Update") {
+      console.log("update values are", values);
+      update(values as UpdateBillboardPayload);
+    }
   };
+
+  const isPending = props.action === "Add" ? isAddPending : isUpdatePending;
+  const isError = props.action === "Add" ? isAddError : isUpdateError;
+  const error = props.action === "Add" ? addError : updateError;
 
   return {
     values,

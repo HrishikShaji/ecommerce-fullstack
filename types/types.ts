@@ -92,6 +92,11 @@ export type UpdatePayload = {
   id: string;
 };
 
+export type UpdateBillboardPayload = {
+  name: string;
+  images: string[];
+  id: string;
+};
 export type UpdateQueryProps = {
   endpoint: string;
   queryKey: QueryKey;

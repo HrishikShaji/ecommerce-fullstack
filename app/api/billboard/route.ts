@@ -93,11 +93,14 @@ export async function DELETE(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const { name, id } = await request.json();
+    const { name, id, images } = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
     if (!name) {
+      return new Response(JSON.stringify("Wrong input"), { status: 400 });
+    }
+    if (!images) {
       return new Response(JSON.stringify("Wrong input"), { status: 400 });
     }
     if (!id) {
@@ -113,9 +116,10 @@ export async function PATCH(request: Request) {
       },
       data: {
         name: name,
+        images: images,
       },
     });
-
+    console.log("in the backend", name, id, images, billboard);
     return new Response(JSON.stringify(billboard), { status: 200 });
   } catch (error) {
     console.log(error);
