@@ -1,13 +1,17 @@
 "use client";
 
 import { BillBoard } from "@prisma/client";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Spinner } from "./Spinner";
+import { Validator } from "@/types/types";
 import { useUpdateQuery } from "../lib/queries/customQuery";
-import { EndpointType, QueryKey } from "@/types/types";
-import Image from "next/image";
-import { MdEdit } from "react-icons/md";
-import { useImageUpload } from "./ui/useImageUpload";
+import { EndpointType, QueryKey, ValidateTypePayload } from "@/types/types";
+import {
+  BillboardPayload,
+  validateBillboardPayload,
+} from "../lib/validators/Billboard";
+import { useForm } from "./ui/useForm";
+import InputField from "./ui/InputField";
+import ImageUploader from "./ui/ImageUploader";
+import Button from "./ui/Button";
 
 interface BillboardUpdateFormProps {
   data: BillBoard;
@@ -20,32 +24,58 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
   endpoint,
   queryKey,
 }) => {
-  const [name, setName] = useState(data.name || "");
-  const [images, setImages] = useState<string[]>([]);
-
   const {
-    isUploading,
-    uploadedFiles,
-    startUpload,
-    files,
-    setFiles,
-    setUploadedFiles,
-  } = useImageUpload({ value: images, onChange: setImages });
+    values,
+    isError,
+    isPending,
+    error,
+    handleClick,
+    handleChange,
+    handleImages,
+  } = useForm({
+    initialValues: data,
+    options: {
+      endpoint: "billboard",
+      queryKey: "billboards",
+      validator: validateBillboardPayload as Validator<ValidateTypePayload>,
+    },
+  });
 
-  const { update, isPending } = useUpdateQuery({
+  const { update, isPending: isUpdatePending } = useUpdateQuery({
     endpoint: endpoint,
     queryKey: queryKey,
   });
-  console.log(files, uploadedFiles);
-  const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    const images = Array.from(e.target.files || []);
-    setFiles(images);
-  };
   const previewImage = (image: File) => {
     return URL.createObjectURL(image);
   };
 
   return (
+    <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
+      <div className="flex gap-4 justify-start items-end">
+        <InputField
+          validator={""}
+          value={values.name}
+          onChange={(value) => handleChange("name", value)}
+          placeholder="name"
+          type="text"
+          label="Name"
+        />
+        <ImageUploader
+          value={values.images}
+          label="Image"
+          onChange={(values) => handleImages("images", values)}
+        />
+      </div>
+      {isError && <h1 className="text-red-500">{error?.message}</h1>}
+      <Button isPending={isPending} />
+    </form>
+  );
+};
+
+{
+  /*
+
+
     <form
       className="flex flex-col gap-2"
       onSubmit={(e) => {
@@ -104,5 +134,5 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
       />
       <button>{isPending ? <Spinner /> : "Update"}</button>
     </form>
-  );
-};
+*/
+}
