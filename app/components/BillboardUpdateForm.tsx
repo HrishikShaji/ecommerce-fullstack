@@ -12,6 +12,7 @@ import { useForm } from "./ui/useForm";
 import InputField from "./ui/InputField";
 import ImageUploader from "./ui/ImageUploader";
 import Button from "./ui/Button";
+import { ImageUpdate } from "./ui/ImageUpdate";
 
 interface BillboardUpdateFormProps {
   data: BillBoard;
@@ -51,7 +52,11 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
-      <div className="flex gap-4 justify-start items-end">
+      <div className="flex flex-col gap-4 justify-start items-end">
+        <ImageUpdate
+          value={data.images}
+          onChange={(values) => handleImages("images", values)}
+        />
         <InputField
           validator={""}
           value={values.name}
@@ -59,11 +64,6 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
           placeholder="name"
           type="text"
           label="Name"
-        />
-        <ImageUploader
-          value={values.images}
-          label="Image"
-          onChange={(values) => handleImages("images", values)}
         />
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
