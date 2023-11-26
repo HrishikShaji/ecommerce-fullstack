@@ -8,6 +8,7 @@ import {
 } from "react-icons/io";
 import { EndpointType, QueryKey } from "@/types/types";
 import { RowDelete } from "./RowDelete";
+import { RowUpdate } from "./RowUpdate";
 
 interface RowProps {
   id: string;
@@ -68,7 +69,7 @@ const Row: React.FC<RowProps> = (props) => {
         <td className="px-2">
           <div className="flex gap-2 justify-end">
             {props.add && <IoAddCircle size={22} />}
-            {props.update && <MdEdit size={22} />}
+            {props.update && <RowUpdate item={props.item} />}
             {props.delete && (
               <RowDelete
                 id={props.id}

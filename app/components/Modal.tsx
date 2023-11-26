@@ -8,6 +8,7 @@ import { SubCategoryAddForm } from "./SubCategoryAddForm";
 import { ModalForm } from "./ModalForm";
 import { EndpointType } from "@/types/types";
 import { QueryKey } from "@/types/types";
+import { BillboardUpdateForm } from "./BillboardUpdateForm";
 
 type LookupItem = {
   endpoint: EndpointType;
@@ -46,7 +47,9 @@ const lookup: Record<string, LookupItem> = {
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
   const data = useAppSelector((state) => state.modalReducer.value.data);
-  const title = useAppSelector((state) => state.modalReducer.value.mode);
+  const mode = useAppSelector((state) => state.modalReducer.value.mode);
+  const endpoint = useAppSelector((state) => state.modalReducer.value.endpoint);
+  const queryKey = useAppSelector((state) => state.modalReducer.value.queryKey);
   const dispatch = useDispatch<AppDispatch>();
   if (!isOpen) return null;
   return (
@@ -58,19 +61,12 @@ export const Modal = () => {
         >
           <AiFillCloseCircle />
         </button>
-        {lookup[title as EndpointType] && (
-          <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">{`Update ${
-              lookup[title as EndpointType].endpoint
-            }`}</h1>
-            <ModalForm data={data} {...lookup[title as EndpointType]} />
-          </div>
-        )}
-        {title === "subCategory" && (
-          <div className="flex flex-col gap-5 items-center">
-            <h1 className="text-xl font-semibold">Add SubCategory</h1>
-            <SubCategoryAddForm category={data as Category} />
-          </div>
+        {mode === "billboard" && (
+          <BillboardUpdateForm
+            data={data as BillBoard}
+            endpoint={endpoint as EndpointType}
+            queryKey={queryKey as QueryKey}
+          />
         )}
       </div>
     </div>

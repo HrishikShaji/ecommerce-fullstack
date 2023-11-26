@@ -6,13 +6,13 @@ import { Spinner } from "./Spinner";
 import { useUpdateQuery } from "../lib/queries/customQuery";
 import { EndpointType, QueryKey } from "@/types/types";
 
-interface ModalFormProps {
-  data: BillBoard | Product | Category | Size | Color;
+interface BillboardUpdateFormProps {
+  data: BillBoard;
   endpoint: EndpointType;
   queryKey: QueryKey;
 }
 
-export const ModalForm: React.FC<ModalFormProps> = ({
+export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = ({
   data,
   endpoint,
   queryKey,
