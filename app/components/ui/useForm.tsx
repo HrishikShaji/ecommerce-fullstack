@@ -1,31 +1,23 @@
 import { useAddQuery, useUpdateQuery } from "@/app/lib/queries/customQuery";
 import { PayloadType } from "@/app/lib/utils";
+import { UpdateBillboardPayload } from "@/app/lib/validators/Billboard";
 import {
-  QueryKey,
-  UpdateBillboardPayload,
-  UpdateTypePayload,
+  AddQueryProps,
+  UpdatePayload,
+  UpdateQueryProps,
+  ValidateTypePayload,
 } from "@/types/types";
 import { FormEvent, useState } from "react";
 
-type AddQueryOptions = {
-  endpoint: string;
-  queryKey: QueryKey;
-  validator: (inputs: PayloadType) => typeof inputs;
-};
-
-type UpdateQueryOptions = {
-  endpoint: string;
-  queryKey: QueryKey;
-  validator: (inputs: UpdateTypePayload) => typeof inputs;
-};
-
-interface useFormProps {
+interface useFormProps<T> {
   initialValues: Record<string, any>;
-  options: AddQueryOptions | UpdateQueryOptions;
+  options: AddQueryProps<T> | UpdateQueryProps<T>;
   action: "Add" | "Update";
 }
 
-export const useForm = (props: useFormProps) => {
+export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
+  props: useFormProps<T>,
+) => {
   const [values, setValues] = useState(props.initialValues);
   const handleChange = (key: string, value: string) => {
     setValues((prev) => ({
@@ -61,7 +53,7 @@ export const useForm = (props: useFormProps) => {
     isError: isAddError,
     error: addError,
   } = useAddQuery({
-    ...(props.options as AddQueryOptions),
+    ...(props.options as AddQueryProps<ValidateTypePayload>),
     reset: () => {
       setValues(props.initialValues);
     },
@@ -73,7 +65,7 @@ export const useForm = (props: useFormProps) => {
     isError: isUpdateError,
     error: updateError,
   } = useUpdateQuery({
-    ...(props.options as UpdateQueryOptions),
+    ...(props.options as UpdateQueryProps<UpdatePayload>),
   });
   const handleClick = (e: FormEvent) => {
     e.preventDefault();

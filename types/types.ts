@@ -1,5 +1,9 @@
 import { PayloadType } from "@/app/lib/utils";
-import { BillboardPayload } from "@/app/lib/validators/Billboard";
+import {
+  BillboardPayload,
+  UpdateBillboardPayload,
+  ValidationSchema,
+} from "@/app/lib/validators/Billboard";
 import { ProductPayload } from "@/app/lib/validators/Product";
 import { CategoryPayload } from "@/app/lib/validators/category";
 import { ColorPayload } from "@/app/lib/validators/color";
@@ -67,16 +71,7 @@ export type ValidateTypePayload =
   | SizePayload
   | ColorPayload;
 
-export type UpdateTypePayload = UpdateBillboardPayload;
-
 export type Validator<T> = (inputs: T) => T;
-
-export type AddQueryProps = {
-  validator: (inputs: PayloadType) => typeof inputs;
-  endpoint: string;
-  queryKey: QueryKey;
-  reset: () => void;
-};
 
 export type GetQueryProps = {
   page: number;
@@ -89,22 +84,20 @@ export type DeleteQueryProps = {
   queryKey: QueryKey;
 };
 
-export type UpdatePayload = {
-  name: string;
-  id: string;
-};
+export type UpdatePayload = UpdateBillboardPayload;
 
-export type UpdateBillboardPayload = {
-  name: string;
-  images: string[];
-  id: string;
-};
-export type UpdateQueryProps = {
+export type UpdateQueryProps<UpdatePayload> = {
   endpoint: string;
   queryKey: QueryKey;
-  validator: (inputs: UpdateTypePayload) => typeof inputs;
+  validator: ValidationSchema<UpdatePayload>;
 };
 
+export type AddQueryProps<ValidateTypePayload> = {
+  validator: ValidationSchema<ValidateTypePayload>;
+  endpoint: string;
+  queryKey: QueryKey;
+  reset: () => void;
+};
 export type SelectItem = {
   name: string;
   id: string;

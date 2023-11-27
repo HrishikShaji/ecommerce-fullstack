@@ -6,9 +6,8 @@ import ImageUploader from "./ui/ImageUploader";
 import { useForm } from "./ui/useForm";
 import {
   BillboardPayload,
-  validateBillboardPayload,
+  billboardPayload,
 } from "../lib/validators/Billboard";
-import { ValidateTypePayload, Validator } from "@/types/types";
 
 const initialValues: BillboardPayload = {
   name: "",
@@ -29,7 +28,7 @@ const BillboardForm = () => {
     options: {
       endpoint: "billboard",
       queryKey: "billboards",
-      validator: validateBillboardPayload as Validator<ValidateTypePayload>,
+      validator: billboardPayload,
     },
   });
   return (

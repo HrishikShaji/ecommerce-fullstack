@@ -2,12 +2,15 @@ import {
   AddQueryProps,
   DeleteQueryProps,
   GetQueryProps,
-  UpdateBillboardPayload,
-  UpdatePayload,
   UpdateQueryProps,
+  ValidateTypePayload,
 } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PayloadType } from "../utils";
+import {
+  UpdateBillboardPayload,
+  validatePayload,
+} from "../validators/Billboard";
 
 export const useGetQuery = ({
   page,
@@ -39,12 +42,12 @@ export const useGetQuery = ({
   return { count, data, isError, refetch, isLoading };
 };
 
-export const useAddQuery = ({
+export const useAddQuery = <T extends ValidateTypePayload>({
   validator,
   endpoint,
   queryKey,
   reset,
-}: AddQueryProps) => {
+}: AddQueryProps<T>) => {
   const queryClient = useQueryClient();
   const {
     mutate: add,
@@ -53,7 +56,10 @@ export const useAddQuery = ({
     error,
   } = useMutation({
     mutationFn: async (payload: PayloadType) => {
-      const isValidPayload = validator(payload);
+      const isValidPayload = validatePayload({
+        schema: validator,
+        inputs: payload,
+      });
       const response = await fetch(`/api/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,11 +107,11 @@ export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
   return { remove, isDeleting, isError, error };
 };
 
-export const useUpdateQuery = ({
+export const useUpdateQuery = <T extends UpdateBillboardPayload>({
   endpoint,
   queryKey,
   validator,
-}: UpdateQueryProps) => {
+}: UpdateQueryProps<T>) => {
   const queryClient = useQueryClient();
   const {
     mutate: update,
@@ -114,7 +120,10 @@ export const useUpdateQuery = ({
     error,
   } = useMutation({
     mutationFn: async (payload: UpdateBillboardPayload) => {
-      const isValidPayload = validator(payload);
+      const isValidPayload = validatePayload({
+        schema: validator,
+        inputs: payload,
+      });
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },

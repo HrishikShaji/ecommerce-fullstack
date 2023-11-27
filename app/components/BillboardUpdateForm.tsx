@@ -1,14 +1,9 @@
 "use client";
 
 import { BillBoard } from "@prisma/client";
-import { UpdateTypePayload, Validator } from "@/types/types";
-import { useUpdateQuery } from "../lib/queries/customQuery";
-import { EndpointType, QueryKey, ValidateTypePayload } from "@/types/types";
 import {
-  BillboardPayload,
   UpdateBillboardPayload,
-  validateBillboardPayload,
-  validateUpdateBillboardPayload,
+  updateBillboardPayload,
 } from "../lib/validators/Billboard";
 import { useForm } from "./ui/useForm";
 import InputField from "./ui/InputField";
@@ -40,7 +35,7 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = (
     options: {
       endpoint: "billboard",
       queryKey: "billboards",
-      validator: validateUpdateBillboardPayload as Validator<UpdateTypePayload>,
+      validator: updateBillboardPayload,
     },
   });
 

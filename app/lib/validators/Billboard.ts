@@ -1,20 +1,15 @@
-import { ZodError, string, z } from "zod";
+import { ZodError, z } from "zod";
 
-export const billboardPayload = z.object({
-  name: z
-    .string()
-    .min(3, { message: "must be more than 3 characters" })
-    .max(15, { message: "must be less than 15 charaters" }),
-  images: z
-    .string({ required_error: "image is required" })
-    .array()
-    .min(1, { message: "must upload an image" }),
-});
-
-export type BillboardPayload = z.infer<typeof billboardPayload>;
-export const validateBillboardPayload = (inputs: BillboardPayload) => {
+export type ValidationSchema<T> = z.ZodSchema<T>;
+export const validatePayload = <T>({
+  schema,
+  inputs,
+}: {
+  schema: ValidationSchema<T>;
+  inputs: T;
+}) => {
   try {
-    const isValidData = billboardPayload.parse(inputs);
+    const isValidData = schema.parse(inputs);
     return isValidData;
   } catch (error) {
     if (error instanceof ZodError) {
@@ -28,12 +23,27 @@ export const validateBillboardPayload = (inputs: BillboardPayload) => {
   }
 };
 
-export const updateBillboardPayload = z.object({
-  id: string({ required_error: "id is required" }),
+export const billboardPayload = z.object({
   name: z
     .string()
     .min(3, { message: "must be more than 3 characters" })
-    .max(15, { message: "must be less than 15 charaters" }),
+    .max(15, { message: "must be less than 15 characters" }),
+  images: z
+    .string({ required_error: "image is required" })
+    .array()
+    .min(1, { message: "must upload an image" }),
+});
+
+export type BillboardPayload = z.infer<typeof billboardPayload>;
+export const validateBillboardPayload = (inputs: BillboardPayload) =>
+  validatePayload({ schema: billboardPayload, inputs: inputs });
+
+export const updateBillboardPayload = z.object({
+  id: z.string({ required_error: "id is required" }),
+  name: z
+    .string()
+    .min(3, { message: "must be more than 3 characters" })
+    .max(15, { message: "must be less than 15 characters" }),
   images: z
     .string({ required_error: "image is required" })
     .array()
@@ -43,18 +53,4 @@ export const updateBillboardPayload = z.object({
 export type UpdateBillboardPayload = z.infer<typeof updateBillboardPayload>;
 export const validateUpdateBillboardPayload = (
   inputs: UpdateBillboardPayload,
-) => {
-  try {
-    const isValidData = updateBillboardPayload.parse(inputs);
-    return isValidData;
-  } catch (error) {
-    if (error instanceof ZodError) {
-      if (error.errors.length) {
-        for (const value of error.errors) {
-          throw new Error((value as { message: string }).message);
-        }
-      }
-    }
-    throw error;
-  }
-};
+) => validatePayload({ schema: updateBillboardPayload, inputs: inputs });
