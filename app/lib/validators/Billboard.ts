@@ -35,8 +35,6 @@ export const billboardPayload = z.object({
 });
 
 export type BillboardPayload = z.infer<typeof billboardPayload>;
-export const validateBillboardPayload = (inputs: BillboardPayload) =>
-  validatePayload({ schema: billboardPayload, inputs: inputs });
 
 export const updateBillboardPayload = z.object({
   id: z.string({ required_error: "id is required" }),
@@ -51,6 +49,3 @@ export const updateBillboardPayload = z.object({
 });
 
 export type UpdateBillboardPayload = z.infer<typeof updateBillboardPayload>;
-export const validateUpdateBillboardPayload = (
-  inputs: UpdateBillboardPayload,
-) => validatePayload({ schema: updateBillboardPayload, inputs: inputs });

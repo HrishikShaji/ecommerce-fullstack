@@ -7,8 +7,9 @@ import { Sort } from "./ui/Sort";
 import { Pagination } from "./ui/Pagination";
 import { useDataTable } from "./ui/useDataTable";
 import { Spinner } from "./Spinner";
+import CategoryForm from "./CategoryForm";
 
-const billboardSortValues: SortObjectType[] = [
+const categorySortValues: SortObjectType[] = [
   {
     title: "Latest",
     value: "LATEST",
@@ -19,7 +20,7 @@ const billboardSortValues: SortObjectType[] = [
   },
 ];
 
-const BillBoardSection = () => {
+const CategorySection = () => {
   const {
     data,
     count,
@@ -30,10 +31,10 @@ const BillBoardSection = () => {
     setSearchString,
     setSort,
   } = useDataTable({
-    endpoint: "billboard",
-    section: "billBoard",
-    queryKey: "billboards",
-    initialSortObj: billboardSortValues[0],
+    endpoint: "category",
+    section: "category",
+    queryKey: "categories",
+    initialSortObj: categorySortValues[0],
   });
 
   if (isError) return null;
@@ -41,26 +42,26 @@ const BillBoardSection = () => {
   return (
     <div className="flex flex-col gap-10 w-full">
       <div className="flex flex-col gap-6 px-2">
-        <h1 className="font-semibold text-2xl">Add Billboards </h1>
-        <BillboardForm />
+        <h1 className="font-semibold text-2xl">Add Categories</h1>
+        <CategoryForm />
       </div>
       <div className=" flex flex-col gap-6">
         <div className="flex justify-between w-full px-2">
-          <h1 className="text-2xl font-semibold">Billboards</h1>
+          <h1 className="text-2xl font-semibold">Categories</h1>
           <div className="flex gap-3">
             <Search onChange={setSearchString} />
-            <Sort setSort={setSort} sortItems={billboardSortValues} />
+            <Sort setSort={setSort} sortItems={categorySortValues} />
           </div>
         </div>
         {isLoading ? (
           <Spinner />
         ) : (
           <Table
-            endpoint="billboard"
-            queryKey="billboards"
+            mode="category"
+            endpoint="category"
+            queryKey="categories"
             data={data}
-            headings={["Billboard", "Date"]}
-            mode="billboard"
+            headings={["Category", "Date"]}
           />
         )}
       </div>
@@ -69,4 +70,4 @@ const BillBoardSection = () => {
   );
 };
 
-export default BillBoardSection;
+export default CategorySection;

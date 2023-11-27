@@ -9,6 +9,7 @@ import {
 import { EndpointType, QueryKey } from "@/types/types";
 import { RowDelete } from "./RowDelete";
 import { RowUpdate } from "./RowUpdate";
+import { ModeType } from "@/redux/slices/modalSlice";
 
 interface RowProps {
   id: string;
@@ -21,6 +22,7 @@ interface RowProps {
   subRow?: string;
   endpoint: EndpointType;
   queryKey: QueryKey;
+  mode: ModeType;
 }
 
 const Row: React.FC<RowProps> = (props) => {
@@ -69,7 +71,14 @@ const Row: React.FC<RowProps> = (props) => {
         <td className="px-2">
           <div className="flex gap-2 justify-end">
             {props.add && <IoAddCircle size={22} />}
-            {props.update && <RowUpdate item={props.item} />}
+            {props.update && (
+              <RowUpdate
+                item={props.item}
+                mode={props.mode}
+                endpoint={props.endpoint}
+                queryKey={props.queryKey}
+              />
+            )}
             {props.delete && (
               <RowDelete
                 id={props.id}
@@ -86,6 +95,7 @@ const Row: React.FC<RowProps> = (props) => {
         props.item[props.subRow].length > 0 &&
         props.item[props.subRow].map((child: any, key: number) => (
           <Row
+            mode={props.mode}
             item={child}
             key={key}
             lookup={props.lookup}

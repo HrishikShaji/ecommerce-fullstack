@@ -1,11 +1,13 @@
 import { EndpointType, QueryKey } from "@/types/types";
 import Row from "./Row";
+import { ModeType } from "@/redux/slices/modalSlice";
 
 interface TableProps {
   headings: string[];
   data: Record<string, any>[];
   endpoint: EndpointType;
   queryKey: QueryKey;
+  mode: ModeType;
 }
 
 const Table: React.FC<TableProps> = (props) => {
@@ -24,6 +26,7 @@ const Table: React.FC<TableProps> = (props) => {
       <tbody>
         {props.data?.map((item: Record<string, any>, key: number) => (
           <Row
+            mode={props.mode}
             key={key}
             item={item}
             delete

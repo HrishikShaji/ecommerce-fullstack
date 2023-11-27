@@ -19,7 +19,7 @@ export const RowUpdate: React.FC<RowUpdateProps> = (props) => {
       onClick={() =>
         dispatch(
           onOpen({
-            mode: "billboard",
+            mode: props.mode,
             data: props.item,
             endpoint: props.endpoint,
             queryKey: props.queryKey,
