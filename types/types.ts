@@ -67,6 +67,8 @@ export type ValidateTypePayload =
   | SizePayload
   | ColorPayload;
 
+export type UpdateTypePayload = UpdateBillboardPayload;
+
 export type Validator<T> = (inputs: T) => T;
 
 export type AddQueryProps = {
@@ -100,6 +102,7 @@ export type UpdateBillboardPayload = {
 export type UpdateQueryProps = {
   endpoint: string;
   queryKey: QueryKey;
+  validator: (inputs: UpdateTypePayload) => typeof inputs;
 };
 
 export type SelectItem = {

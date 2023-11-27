@@ -101,7 +101,11 @@ export const useDeleteQuery = ({ endpoint, queryKey }: DeleteQueryProps) => {
   return { remove, isDeleting, isError, error };
 };
 
-export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
+export const useUpdateQuery = ({
+  endpoint,
+  queryKey,
+  validator,
+}: UpdateQueryProps) => {
   const queryClient = useQueryClient();
   const {
     mutate: update,
@@ -110,10 +114,11 @@ export const useUpdateQuery = ({ endpoint, queryKey }: UpdateQueryProps) => {
     error,
   } = useMutation({
     mutationFn: async (payload: UpdateBillboardPayload) => {
+      const isValidPayload = validator(payload);
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(isValidPayload),
       });
     },
     onSuccess: () => {
