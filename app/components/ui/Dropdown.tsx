@@ -13,14 +13,16 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = (props) => {
-  const [selectedValue, setSelectedValue] = useState(props.label);
+  const [selectedValue, setSelectedValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   console.log(selectedValue, props.value);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    setSelectedValue(props.label);
-  }, [props.label]);
+    if (props.value === "") {
+      setSelectedValue("");
+    }
+  }, [props.value]);
 
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
