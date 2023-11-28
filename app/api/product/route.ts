@@ -48,7 +48,8 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const { name, id } = await request.json();
+    const { name, id, billboardId, categoryId, sizeId, colorId } =
+      await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
@@ -56,6 +57,18 @@ export async function PATCH(request: Request) {
       return new Response(JSON.stringify("Wrong input"), { status: 400 });
     }
     if (!id) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (!categoryId) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (!billboardId) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (!sizeId) {
+      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    }
+    if (!colorId) {
       return new Response(JSON.stringify("wrong input"), { status: 200 });
     }
     if (user.user.role !== "ADMIN") {
@@ -68,6 +81,10 @@ export async function PATCH(request: Request) {
       },
       data: {
         name: name,
+        categoryId: categoryId,
+        billoardId: billboardId,
+        colorId: colorId,
+        sizeId: sizeId,
       },
     });
 

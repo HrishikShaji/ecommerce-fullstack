@@ -10,6 +10,7 @@ import { CategoryChild, EndpointType } from "@/types/types";
 import { QueryKey } from "@/types/types";
 import { BillboardUpdateForm } from "./BillboardUpdateForm";
 import { CategoryUpdateForm } from "./CategoryUpdateForm";
+import { ProductUpdateForm } from "./ProductUpdateForm";
 
 type LookupItem = {
   endpoint: EndpointType;
@@ -68,6 +69,7 @@ export const Modal = () => {
         {mode === "category" && (
           <CategoryUpdateForm data={data as CategoryChild} />
         )}
+        {mode === "product" && <ProductUpdateForm data={data as Product} />}
       </div>
     </div>
   );
