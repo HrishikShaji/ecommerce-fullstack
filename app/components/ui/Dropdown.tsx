@@ -1,24 +1,26 @@
+import { EndpointType, QueryKey } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { BiDownArrow } from "react-icons/bi";
 
 interface DropdownProps {
   value: string;
-  data: any[];
   placeholder: string;
   onChange: (value: string) => void;
   label: string;
+  endpoint: EndpointType;
+  queryKey: QueryKey;
 }
 
 const Dropdown: React.FC<DropdownProps> = (props) => {
-  const [selectedValue, setSelectedValue] = useState(props.value);
+  const [selectedValue, setSelectedValue] = useState(props.label);
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(selectedValue, props.value);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    setSelectedValue(props.value);
-  }, [props.value]);
+    setSelectedValue(props.label);
+  }, [props.label]);
 
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
@@ -38,27 +40,28 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
     };
   }, []);
   const { data, isError, isSuccess } = useQuery({
-    queryKey: [`dropdowncategories`],
+    queryKey: [`dropdown${props.queryKey}`],
     queryFn: async () => {
-      const response = await fetch(`/api/category`, {
+      const response = await fetch(`/api/${props.endpoint}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
       return response.json();
     },
   });
-  const handleChange = (value: string) => {
-    setSelectedValue(value);
+  const handleChange = ({ label, value }: { label: string; value: string }) => {
+    console.log(label, value);
+    setSelectedValue(label);
     props.onChange(value);
     setIsOpen(false);
   };
 
   if (isError) return null;
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <h1>{props.label}</h1>
       <div className="bg-neutral-800 rounded-md w-[150px] text-white relative">
-        <div className="flex justify-between p-1 ">
+        <div className="flex justify-between p-2 ">
           <h1>{selectedValue ? selectedValue : "Select"}</h1>
           <div
             ref={buttonRef}
@@ -74,7 +77,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="absolute overflow-hidden rounded-md pb-2 w-full mt-2 bg-neutral-700"
+            className="absolute z-100 overflow-hidden rounded-md pb-2 w-full mt-2 bg-neutral-700"
           >
             {data?.data?.map((item: any) => (
               <DropItem
@@ -98,7 +101,7 @@ interface DropItemProps {
   value: string;
   label: string;
   item: Record<string, any>;
-  handleChange: (value: string) => void;
+  handleChange: ({ label, value }: { label: string; value: string }) => void;
 }
 
 const DropItem: React.FC<DropItemProps> = (props) => {
@@ -106,11 +109,13 @@ const DropItem: React.FC<DropItemProps> = (props) => {
   return (
     <>
       <div
-        onClick={() => props.handleChange(props.label)}
+        onClick={() =>
+          props.handleChange({ value: props.value, label: props.label })
+        }
         className=" p-1 border-b-2 border-neutral-800 hover:bg-neutral-900 flex cursor-pointer justify-between"
       >
         <h1>{props.label}</h1>
-        {props.item.children.length > 0 && (
+        {props.item.children && props.item.children.length > 0 && (
           <div
             onClick={(e) => {
               e.stopPropagation();

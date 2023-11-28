@@ -13,7 +13,7 @@ const Search: React.FC<SearchProps> = (props) => {
         onChange={(e) => props.onChange(e.target.value)}
         placeholder="Search..."
       />
-      <button className="absolute right-2">
+      <button className="absolute z-10 right-2">
         <ImSearch color="black" />
       </button>
     </div>

@@ -48,6 +48,7 @@ export const useAddQuery = <T extends ValidateTypePayload>({
   queryKey,
   reset,
 }: AddQueryProps<T>) => {
+  console.log("its add query");
   const queryClient = useQueryClient();
   const {
     mutate: add,
@@ -60,6 +61,7 @@ export const useAddQuery = <T extends ValidateTypePayload>({
         schema: validator,
         inputs: payload,
       });
+      console.log(isValidPayload);
       const response = await fetch(`/api/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
