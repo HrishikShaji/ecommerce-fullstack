@@ -12,6 +12,7 @@ import { BillboardUpdateForm } from "./BillboardUpdateForm";
 import { CategoryUpdateForm } from "./CategoryUpdateForm";
 import { ProductUpdateForm } from "./ProductUpdateForm";
 import { SizeUpdateForm } from "./SizeUpdateForm";
+import { ColorUpdateForm } from "./ColorUpdateForm";
 
 type LookupItem = {
   endpoint: EndpointType;
@@ -74,6 +75,7 @@ export const Modal = () => {
           <ProductUpdateForm data={data as ProductChild} />
         )}
         {mode === "size" && <SizeUpdateForm data={data as Size} />}
+        {mode === "color" && <ColorUpdateForm data={data as Color} />}
       </div>
     </div>
   );

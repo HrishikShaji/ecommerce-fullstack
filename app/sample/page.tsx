@@ -2,6 +2,7 @@
 
 import BillBoardSection from "../components/BillboardSection";
 import CategorySection from "../components/CategorySection";
+import ColorSection from "../components/ColorSection";
 import ProductSection from "../components/ProductSection";
 import SizeSection from "../components/SizeSection";
 
@@ -12,6 +13,7 @@ const Page = () => {
       <CategorySection />
       <ProductSection />
       <SizeSection />
+      <ColorSection />
     </div>
   );
 };
