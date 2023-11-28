@@ -6,11 +6,12 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
 import { SubCategoryAddForm } from "./SubCategoryAddForm";
 import { ModalForm } from "./ModalForm";
-import { CategoryChild, EndpointType } from "@/types/types";
+import { CategoryChild, EndpointType, ProductChild } from "@/types/types";
 import { QueryKey } from "@/types/types";
 import { BillboardUpdateForm } from "./BillboardUpdateForm";
 import { CategoryUpdateForm } from "./CategoryUpdateForm";
 import { ProductUpdateForm } from "./ProductUpdateForm";
+import { SizeUpdateForm } from "./SizeUpdateForm";
 
 type LookupItem = {
   endpoint: EndpointType;
@@ -69,7 +70,10 @@ export const Modal = () => {
         {mode === "category" && (
           <CategoryUpdateForm data={data as CategoryChild} />
         )}
-        {mode === "product" && <ProductUpdateForm data={data as Product} />}
+        {mode === "product" && (
+          <ProductUpdateForm data={data as ProductChild} />
+        )}
+        {mode === "size" && <SizeUpdateForm data={data as Size} />}
       </div>
     </div>
   );
