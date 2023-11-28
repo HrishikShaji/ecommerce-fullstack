@@ -57,6 +57,14 @@ const ProductSection = () => {
           <Spinner />
         ) : (
           <Table
+            lookup={[
+              "name",
+              "billboard",
+              "category",
+              "size",
+              "color",
+              "createdAt",
+            ]}
             endpoint="product"
             queryKey="products"
             data={data}

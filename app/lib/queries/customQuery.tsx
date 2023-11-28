@@ -48,7 +48,6 @@ export const useAddQuery = <T extends ValidateTypePayload>({
   queryKey,
   reset,
 }: AddQueryProps<T>) => {
-  console.log("its add query");
   const queryClient = useQueryClient();
   const {
     mutate: add,

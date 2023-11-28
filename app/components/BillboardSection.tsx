@@ -56,6 +56,7 @@ const BillBoardSection = () => {
           <Spinner />
         ) : (
           <Table
+            lookup={["name", "createdAt"]}
             endpoint="billboard"
             queryKey="billboards"
             data={data}

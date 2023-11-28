@@ -57,6 +57,7 @@ const CategorySection = () => {
           <Spinner />
         ) : (
           <Table
+            lookup={["name", "createdAt"]}
             mode="category"
             endpoint="category"
             queryKey="categories"

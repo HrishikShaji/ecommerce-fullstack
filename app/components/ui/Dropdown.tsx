@@ -15,7 +15,6 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = (props) => {
   const [selectedValue, setSelectedValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  console.log(selectedValue, props.value);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -52,7 +51,6 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
     },
   });
   const handleChange = ({ label, value }: { label: string; value: string }) => {
-    console.log(label, value);
     setSelectedValue(label);
     props.onChange(value);
     setIsOpen(false);

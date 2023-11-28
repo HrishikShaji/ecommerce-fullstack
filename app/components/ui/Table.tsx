@@ -8,6 +8,7 @@ interface TableProps {
   endpoint: EndpointType;
   queryKey: QueryKey;
   mode: ModeType;
+  lookup: string[];
 }
 
 const Table: React.FC<TableProps> = (props) => {
@@ -32,7 +33,7 @@ const Table: React.FC<TableProps> = (props) => {
             delete
             update
             add
-            lookup={["name", "createdAt"]}
+            lookup={props.lookup}
             level={0}
             subRow="children"
             endpoint={props.endpoint}
