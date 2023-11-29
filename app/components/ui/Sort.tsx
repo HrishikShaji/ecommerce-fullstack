@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SortObjectType } from "@/types/types";
 import { BiUpArrow, BiDownArrow } from "react-icons/bi";
 

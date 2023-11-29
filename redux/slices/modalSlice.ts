@@ -1,4 +1,4 @@
-import { CategoryChild, EndpointType, QueryKey } from "@/types/types";
+import { CategoryChild } from "@/types/types";
 import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
@@ -19,8 +19,6 @@ type ModalState = {
   isOpen: boolean;
   mode: ModeType;
   data: Product | BillBoard | Size | Color | Category;
-  endpoint: EndpointType | "";
-  queryKey: QueryKey | "";
 };
 
 const initialState = {
@@ -28,16 +26,12 @@ const initialState = {
     isOpen: false,
     mode: "",
     data: {},
-    endpoint: "",
-    queryKey: "",
   } as ModalState,
 } as InitialState;
 
 type OpenPayload = {
   data: Product | BillBoard | Size | Color | CategoryChild;
   mode: ModeType;
-  endpoint: EndpointType;
-  queryKey: QueryKey;
 };
 
 export const modal = createSlice({
@@ -53,8 +47,6 @@ export const modal = createSlice({
           isOpen: true,
           mode: action.payload.mode,
           data: action.payload.data,
-          endpoint: action.payload.endpoint,
-          queryKey: action.payload.queryKey,
         },
       };
     },

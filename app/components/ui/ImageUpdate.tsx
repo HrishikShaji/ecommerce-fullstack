@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useImageUpload } from "./useImageUpload";
 import { ChangeEvent } from "react";
 import { MdEdit } from "react-icons/md";
-import { Spinner } from "../Spinner";
+import { Spinner } from "./Spinner";
 
 interface ImageUpdateProps {
   value: string[];

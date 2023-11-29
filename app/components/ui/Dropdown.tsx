@@ -1,6 +1,6 @@
 import { EndpointType, QueryKey } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiDownArrow } from "react-icons/bi";
 
 interface DropdownProps {
@@ -40,7 +40,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
-  const { data, isError, isSuccess } = useQuery({
+  const { data, isError } = useQuery({
     queryKey: [`dropdown${props.queryKey}`],
     queryFn: async () => {
       const response = await fetch(`/api/${props.endpoint}`, {

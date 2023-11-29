@@ -1,8 +1,7 @@
-import { PayloadType } from "@/app/lib/utils";
+import { ValidationSchema } from "@/app/lib/utils";
 import {
   BillboardPayload,
   UpdateBillboardPayload,
-  ValidationSchema,
 } from "@/app/lib/validators/Billboard";
 import { ProductPayload } from "@/app/lib/validators/Product";
 import { CategoryPayload } from "@/app/lib/validators/category";
@@ -21,6 +20,13 @@ import { Dispatch, SetStateAction } from "react";
 export type CategoryChild = Category & {
   children: CategoryChild[];
 };
+
+export type PayloadType =
+  | BillboardPayload
+  | CategoryPayload
+  | ProductPayload
+  | SizePayload
+  | ColorPayload;
 
 export type ProductChild = Product & {
   category: Category;

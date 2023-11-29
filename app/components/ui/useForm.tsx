@@ -1,5 +1,6 @@
-import { useAddQuery, useUpdateQuery } from "@/app/lib/queries/customQuery";
-import { PayloadType } from "@/app/lib/utils";
+import { PayloadType } from "@/types/types";
+import { useUpdateQuery } from "@/app/hooks/useUpdateQuery";
+import { useAddQuery } from "@/app/hooks/useAddQuery";
 import { UpdateBillboardPayload } from "@/app/lib/validators/Billboard";
 import {
   AddQueryProps,

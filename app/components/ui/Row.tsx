@@ -1,5 +1,4 @@
 import { format } from "date-fns";
-import { MdDelete, MdEdit } from "react-icons/md";
 import { IoAddCircle } from "react-icons/io5";
 import { useState } from "react";
 import {
@@ -10,7 +9,6 @@ import { EndpointType, QueryKey } from "@/types/types";
 import { RowDelete } from "./RowDelete";
 import { RowUpdate } from "./RowUpdate";
 import { ModeType } from "@/redux/slices/modalSlice";
-import { string } from "zod";
 
 interface RowProps {
   id: string;
@@ -52,12 +50,10 @@ const getNames = ({
 
 const Row: React.FC<RowProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  let i = 0;
   const values = getNames({
     lookup: props.lookup,
     item: props.item,
   });
-  console.log(values);
   return (
     <>
       <tr className="border-b-2  border-neutral-700 text-white">

@@ -1,4 +1,4 @@
-import { ZodError, z } from "zod";
+import {  z } from "zod";
 
 export const colorPayload = z.object({
   name: z

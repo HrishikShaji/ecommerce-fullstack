@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SortType } from "@/types/types";
 
-export const useSearch = ({
+export const useSearchQuery = ({
   page,
   section,
   searchString,

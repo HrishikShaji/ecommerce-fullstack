@@ -1,23 +1,48 @@
 "use client";
 
-import { useState } from "react";
-import { Section } from "../components/Section";
-import { sectionsData } from "../lib/data";
-import {
-  QueryKey,
-  SectionType,
-  TitleType,
-  ValidateTypePayload,
-  Validator,
-} from "@/types/types";
+import { ReactNode, useState } from "react";
+import BillBoardSection from "../components/BillboardSection";
+import CategorySection from "../components/CategorySection";
+import ProductSection from "../components/ProductSection";
+import SizeSection from "../components/SizeSection";
+import ColorSection from "../components/ColorSection";
+
+type Section = {
+  title: string;
+  component: React.ComponentType;
+};
+
+const sections: Section[] = [
+  {
+    title: "Billboards",
+    component: BillBoardSection,
+  },
+  {
+    title: "Categories",
+    component: CategorySection,
+  },
+  {
+    title: "Products",
+    component: ProductSection,
+  },
+  {
+    title: "Sizes",
+    component: SizeSection,
+  },
+  {
+    title: "Colors",
+    component: ColorSection,
+  },
+];
 
 const Page = () => {
   const [showSection, setShowSection] = useState(
-    Array(sectionsData.length).fill(false),
+    Array(sections.length).fill(false),
   );
   return (
     <div className="text-white p-10 flex flex-col gap-4">
-      {sectionsData.map((section, i) => {
+      {sections.map((section, i) => {
+        const Section = section.component;
         return (
           <div key={i}>
             <div
@@ -30,20 +55,7 @@ const Page = () => {
             >
               {section.title}
             </div>
-            {showSection[i] && (
-              <Section
-                endpoint={section.endpoint}
-                queryKey={section.queryKey as QueryKey}
-                validator={section.validator as Validator<ValidateTypePayload>}
-                heading={section.heading}
-                headings={section.headings}
-                customGetHook={section.customGetHook}
-                title={section.title as TitleType}
-                section={section.section as SectionType}
-                inputInitialObj={section.inputInitialObj}
-                inputValues={section.inputValues}
-              />
-            )}
+            {showSection[i] && <Section />}
           </div>
         );
       })}

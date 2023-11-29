@@ -1,10 +1,5 @@
-import { ZodError } from "zod";
+import { ZodError, z } from "zod";
 import { InputValuesDataType } from "./data";
-import { BillboardPayload, billboardPayload } from "./validators/Billboard";
-import { CategoryPayload, categoryPayload } from "./validators/category";
-import { SizePayload, sizePayload } from "./validators/size";
-import { ProductPayload, productPayload } from "./validators/Product";
-import { ColorPayload, colorPayload } from "./validators/color";
 
 export const itemsPerPage = 3;
 
@@ -18,7 +13,6 @@ export function paginateArray({ array, page }: { array: any[]; page: number }) {
 export function getSortOrder(request: Request) {
   const { searchParams } = new URL(request.url);
   const sort = searchParams.get("sort");
-  console.log(sort, "in the backend");
   const order = sort === "LATEST" ? "desc" : "asc";
 
   return order;
@@ -50,24 +44,16 @@ export function getInputValues({
   return data;
 }
 
-const validators = [
-  billboardPayload,
-  categoryPayload,
-  sizePayload,
-  colorPayload,
-  productPayload,
-];
-
-export type PayloadType =
-  | BillboardPayload
-  | CategoryPayload
-  | ProductPayload
-  | SizePayload
-  | ColorPayload;
-
-export const validatePayload = (inputs, validator) => {
+export type ValidationSchema<T> = z.ZodSchema<T>;
+export const validatePayload = <T>({
+  schema,
+  inputs,
+}: {
+  schema: ValidationSchema<T>;
+  inputs: T;
+}) => {
   try {
-    const isValidData = validator.parse(inputs);
+    const isValidData = schema.parse(inputs);
     return isValidData;
   } catch (error) {
     if (error instanceof ZodError) {

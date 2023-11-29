@@ -21,8 +21,6 @@ export const RowUpdate: React.FC<RowUpdateProps> = (props) => {
           onOpen({
             mode: props.mode,
             data: props.item,
-            endpoint: props.endpoint,
-            queryKey: props.queryKey,
           }),
         )
       }

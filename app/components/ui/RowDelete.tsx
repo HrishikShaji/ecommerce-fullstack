@@ -1,7 +1,7 @@
-import { useDeleteQuery } from "@/app/lib/queries/customQuery";
+import { useDeleteQuery } from "@/app/hooks/useDeleteQuery";
 import { EndpointType, QueryKey } from "@/types/types";
 import { MdDelete } from "react-icons/md";
-import { Spinner } from "../Spinner";
+import { Spinner } from "./Spinner";
 
 export interface RowDeleteProps {
   id: string;

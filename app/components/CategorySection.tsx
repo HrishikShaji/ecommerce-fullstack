@@ -1,12 +1,11 @@
 "use client";
-import BillboardForm from "./BillboardForm";
 import Search from "./ui/Search";
 import Table from "./ui/Table";
 import { SortObjectType } from "@/types/types";
 import { Sort } from "./ui/Sort";
 import { Pagination } from "./ui/Pagination";
 import { useDataTable } from "./ui/useDataTable";
-import { Spinner } from "./Spinner";
+import { Spinner } from "./ui/Spinner";
 import CategoryForm from "./CategoryForm";
 
 const categorySortValues: SortObjectType[] = [

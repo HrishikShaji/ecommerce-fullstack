@@ -2,12 +2,7 @@
 
 import InputField from "./ui/InputField";
 import Button from "./ui/Button";
-import ImageUploader from "./ui/ImageUploader";
 import { useForm } from "./ui/useForm";
-import {
-  BillboardPayload,
-  billboardPayload,
-} from "../lib/validators/Billboard";
 import { CategoryPayload, categoryPayload } from "../lib/validators/category";
 
 const initialValues: CategoryPayload = {

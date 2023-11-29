@@ -1,14 +1,9 @@
 "use client";
 
-import { BillBoard, Size } from "@prisma/client";
-import {
-  UpdateBillboardPayload,
-  updateBillboardPayload,
-} from "../lib/validators/Billboard";
+import { Size } from "@prisma/client";
 import { useForm } from "./ui/useForm";
 import InputField from "./ui/InputField";
 import Button from "./ui/Button";
-import { ImageUpdate } from "./ui/ImageUpdate";
 import { UpdateSizePayload, updateSizePayload } from "../lib/validators/size";
 
 interface SizeUpdateFormProps {
@@ -16,26 +11,19 @@ interface SizeUpdateFormProps {
 }
 
 export const SizeUpdateForm: React.FC<SizeUpdateFormProps> = (props) => {
-  const {
-    values,
-    isError,
-    isPending,
-    error,
-    handleClick,
-    handleChange,
-    handleImages,
-  } = useForm({
-    action: "Update",
-    initialValues: {
-      name: props.data.name,
-      id: props.data.id,
-    } as UpdateSizePayload,
-    options: {
-      endpoint: "size",
-      queryKey: "sizes",
-      validator: updateSizePayload,
-    },
-  });
+  const { values, isError, isPending, error, handleClick, handleChange } =
+    useForm({
+      action: "Update",
+      initialValues: {
+        name: props.data.name,
+        id: props.data.id,
+      } as UpdateSizePayload,
+      options: {
+        endpoint: "size",
+        queryKey: "sizes",
+        validator: updateSizePayload,
+      },
+    });
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">

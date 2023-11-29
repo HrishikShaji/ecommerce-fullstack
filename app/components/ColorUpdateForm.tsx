@@ -1,15 +1,9 @@
 "use client";
 
-import { BillBoard, Color, Size } from "@prisma/client";
-import {
-  UpdateBillboardPayload,
-  updateBillboardPayload,
-} from "../lib/validators/Billboard";
+import { Color } from "@prisma/client";
 import { useForm } from "./ui/useForm";
 import InputField from "./ui/InputField";
 import Button from "./ui/Button";
-import { ImageUpdate } from "./ui/ImageUpdate";
-import { UpdateSizePayload, updateSizePayload } from "../lib/validators/size";
 import {
   UpdateColorPayload,
   updateColorPayload,
@@ -20,26 +14,19 @@ interface ColorUpdateFormProps {
 }
 
 export const ColorUpdateForm: React.FC<ColorUpdateFormProps> = (props) => {
-  const {
-    values,
-    isError,
-    isPending,
-    error,
-    handleClick,
-    handleChange,
-    handleImages,
-  } = useForm({
-    action: "Update",
-    initialValues: {
-      name: props.data.name,
-      id: props.data.id,
-    } as UpdateColorPayload,
-    options: {
-      endpoint: "color",
-      queryKey: "colors",
-      validator: updateColorPayload,
-    },
-  });
+  const { values, isError, isPending, error, handleClick, handleChange } =
+    useForm({
+      action: "Update",
+      initialValues: {
+        name: props.data.name,
+        id: props.data.id,
+      } as UpdateColorPayload,
+      options: {
+        endpoint: "color",
+        queryKey: "colors",
+        validator: updateColorPayload,
+      },
+    });
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">

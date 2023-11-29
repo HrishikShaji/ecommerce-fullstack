@@ -1,27 +1,4 @@
-import { ZodError, z } from "zod";
-
-export type ValidationSchema<T> = z.ZodSchema<T>;
-export const validatePayload = <T>({
-  schema,
-  inputs,
-}: {
-  schema: ValidationSchema<T>;
-  inputs: T;
-}) => {
-  try {
-    const isValidData = schema.parse(inputs);
-    return isValidData;
-  } catch (error) {
-    if (error instanceof ZodError) {
-      if (error.errors.length) {
-        for (const value of error.errors) {
-          throw new Error((value as { message: string }).message);
-        }
-      }
-    }
-    throw error;
-  }
-};
+import { z } from "zod";
 
 export const billboardPayload = z.object({
   name: z

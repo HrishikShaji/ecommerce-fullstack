@@ -3,57 +3,18 @@ import { onClose } from "@/redux/slices/modalSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { BillBoard, Category, Color, Product, Size } from "@prisma/client";
-import { SubCategoryAddForm } from "./SubCategoryAddForm";
-import { ModalForm } from "./ModalForm";
-import { CategoryChild, EndpointType, ProductChild } from "@/types/types";
-import { QueryKey } from "@/types/types";
-import { BillboardUpdateForm } from "./BillboardUpdateForm";
-import { CategoryUpdateForm } from "./CategoryUpdateForm";
-import { ProductUpdateForm } from "./ProductUpdateForm";
-import { SizeUpdateForm } from "./SizeUpdateForm";
-import { ColorUpdateForm } from "./ColorUpdateForm";
-
-type LookupItem = {
-  endpoint: EndpointType;
-  queryKey: QueryKey;
-  action: "Update" | "Add";
-};
-
-const lookup: Record<string, LookupItem> = {
-  product: {
-    endpoint: "product",
-    queryKey: "products",
-    action: "Update",
-  },
-  category: {
-    endpoint: "category",
-    queryKey: "categories",
-    action: "Update",
-  },
-  billboard: {
-    endpoint: "billboard",
-    queryKey: "billboards",
-    action: "Update",
-  },
-  color: {
-    endpoint: "color",
-    queryKey: "colors",
-    action: "Update",
-  },
-  size: {
-    endpoint: "size",
-    queryKey: "sizes",
-    action: "Update",
-  },
-};
+import { CategoryChild, ProductChild } from "@/types/types";
+import { BillboardUpdateForm } from "../BillboardUpdateForm";
+import { CategoryUpdateForm } from "../CategoryUpdateForm";
+import { ProductUpdateForm } from "../ProductUpdateForm";
+import { SizeUpdateForm } from "../SizeUpdateForm";
+import { ColorUpdateForm } from "../ColorUpdateForm";
+import { BillBoard, Color, Size } from "@prisma/client";
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
   const data = useAppSelector((state) => state.modalReducer.value.data);
   const mode = useAppSelector((state) => state.modalReducer.value.mode);
-  const endpoint = useAppSelector((state) => state.modalReducer.value.endpoint);
-  const queryKey = useAppSelector((state) => state.modalReducer.value.queryKey);
   const dispatch = useDispatch<AppDispatch>();
   if (!isOpen) return null;
   return (

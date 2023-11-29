@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 
 interface InputFieldProps {
   value: string;
@@ -10,7 +10,6 @@ interface InputFieldProps {
 }
 
 const InputField: React.FC<InputFieldProps> = (props) => {
-  const [error, setError] = useState(null);
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {

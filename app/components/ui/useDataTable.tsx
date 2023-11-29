@@ -1,6 +1,6 @@
 "use client";
-import { useGetQuery } from "@/app/lib/queries/customQuery";
-import { useSearch } from "@/app/lib/queries/search";
+import { useGetQuery } from "@/app/hooks/useGetQuery";
+import { useSearchQuery } from "@/app/hooks/useSearchQuery";
 import {
   EndpointType,
   QueryKey,
@@ -39,7 +39,7 @@ export const useDataTable = (props: useDataTableProps) => {
     isLoading: isSearchLoading,
     refetch: refetchResults,
     count: searchCount,
-  } = useSearch({
+  } = useSearchQuery({
     searchString: searchString,
     section: props.section,
     page: page,

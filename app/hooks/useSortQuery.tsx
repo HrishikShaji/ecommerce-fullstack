@@ -12,7 +12,6 @@ export const useSort = ({
   searchString: string;
   sort: SortType;
 }) => {
-  console.log(page, section, searchString, sort);
   const { data, isError, refetch, isLoading } = useQuery({
     queryKey: [`${section}Search`],
     queryFn: async () => {
