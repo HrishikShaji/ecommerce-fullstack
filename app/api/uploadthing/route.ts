@@ -8,8 +8,8 @@ export const { GET, POST } = createNextRouteHandler({
   router: ourFileRouter,
 });
 
-export const utapi = new UTApi();
 export async function DELETE(request: Request) {
+  const utapi = new UTApi();
   try {
     const { searchParams } = new URL(request.url);
     const fileKey = searchParams.get("fileKey");
