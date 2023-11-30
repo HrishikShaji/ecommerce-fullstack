@@ -1,7 +1,10 @@
 import { PayloadType } from "@/types/types";
 import { useUpdateQuery } from "@/app/hooks/useUpdateQuery";
 import { useAddQuery } from "@/app/hooks/useAddQuery";
-import { UpdateBillboardPayload } from "@/app/lib/validators/Billboard";
+import {
+  UpdateBillboardPayload,
+  billboardPayload,
+} from "@/app/lib/validators/Billboard";
 import {
   AddQueryProps,
   UpdatePayload,
@@ -12,6 +15,7 @@ import { FormEvent, useState } from "react";
 
 interface useFormProps<T> {
   initialValues: Record<string, any>;
+  initialErrors: Record<string, any>;
   options: AddQueryProps<T> | UpdateQueryProps<T>;
   action: "Add" | "Update";
 }
@@ -20,6 +24,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   props: useFormProps<T>,
 ) => {
   const [values, setValues] = useState(props.initialValues);
+  const [errors, setErrors] = useState(props.initialErrors);
   const handleChange = (key: string, value: string) => {
     setValues((prev) => ({
       ...prev,
@@ -70,6 +75,16 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   });
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
+    const validatedData = billboardPayload.safeParse(values);
+    if (!validatedData.success) {
+      const newErrors: Record<string, any> = {};
+      validatedData.error.errors.map(
+        (error) => (newErrors[error.path[0]] = error.message),
+        setErrors(newErrors),
+      );
+      return;
+    }
+    setErrors(props.initialErrors);
     if (props.action === "Add") {
       add(values as PayloadType);
     }
@@ -93,5 +108,6 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
     isPending,
     isError,
     error,
+    errors,
   };
 };

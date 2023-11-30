@@ -8,12 +8,20 @@ import {
   BillboardPayload,
   billboardPayload,
 } from "../lib/validators/Billboard";
+import { useEffect, useState } from "react";
 
 const initialValues: BillboardPayload = {
   name: "",
   images: [],
 };
+
+const initialErrors = {
+  name: "",
+  images: "",
+};
+
 const BillboardForm = () => {
+  const [inputErrors, setInputErrors] = useState(initialErrors);
   const {
     values,
     isError,
@@ -22,15 +30,21 @@ const BillboardForm = () => {
     handleClick,
     handleChange,
     handleImages,
+    errors,
   } = useForm({
     action: "Add",
     initialValues: initialValues,
+    initialErrors: initialErrors,
     options: {
       endpoint: "billboard",
       queryKey: "billboards",
       validator: billboardPayload,
     },
   });
+  useEffect(() => {
+    console.log(errors);
+    setInputErrors(errors);
+  }, [errors]);
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
       <div className="flex gap-4 justify-start items-end">
@@ -42,11 +56,17 @@ const BillboardForm = () => {
           type="text"
           label="Name"
         />
+        {errors.name !== "" ? (
+          <h1 className="text-red-500">{errors.name}</h1>
+        ) : null}
         <ImageUploader
           value={values.images}
           label="Image"
           onChange={(values) => handleImages("images", values)}
         />
+        {errors.images !== "" ? (
+          <h1 className="text-red-500">{errors.images}</h1>
+        ) : null}
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button label="Add" isPending={isPending} />

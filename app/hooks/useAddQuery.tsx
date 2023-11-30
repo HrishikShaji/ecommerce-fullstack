@@ -16,14 +16,10 @@ export const useAddQuery = <T extends ValidateTypePayload>({
     error,
   } = useMutation({
     mutationFn: async (payload: PayloadType) => {
-      const isValidPayload = validatePayload({
-        schema: validator,
-        inputs: payload,
-      });
       const response = await fetch(`/api/${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(isValidPayload),
+        body: JSON.stringify(payload),
       });
       if (!response.ok) {
         throw new Error("Failed to Fetch Data");

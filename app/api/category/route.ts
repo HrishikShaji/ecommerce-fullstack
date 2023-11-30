@@ -4,24 +4,35 @@ import prisma from "@/app/lib/connect";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
 import { getSortOrder, itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { categoryPayload } from "@/app/lib/validators/category";
 
 export async function POST(request: Request) {
   try {
-    const { name, parentId } = await request.json();
-
+    const payload = await request.json();
+    const validatedPayload = categoryPayload.safeParse(payload);
+    if (!validatedPayload.success) {
+      const error = validatedPayload.error.errors.map((error) => {
+        return error.message;
+      });
+      return new Response(JSON.stringify(error[0]), {
+        status: 400,
+      });
+    }
     const user = (await getServerSession(authOptions)) as Session;
+    if (!user) {
+      return new Response(JSON.stringify("Login Required"), { status: 401 });
+    }
 
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
     if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
+      return new Response(JSON.stringify("Admin Privilege Required"), {
+        status: 401,
+      });
     }
-    if (parentId) {
+    if (validatedPayload.data.parentId) {
       const category = await prisma.category.create({
         data: {
-          name: name,
-          parentId: parentId,
+          name: validatedPayload.data.name,
+          parentId: validatedPayload.data.parentId,
           userId: user.user.id,
         },
       });
@@ -30,16 +41,14 @@ export async function POST(request: Request) {
 
     const category = await prisma.category.create({
       data: {
-        name: name,
+        name: validatedPayload.data.name,
         userId: user.user.id,
       },
     });
-    console.log("category added", category);
 
     return new Response(JSON.stringify(category), { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify("error"), { status: 500 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error), { status: 500 });
   }
 }
 
