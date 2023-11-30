@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     const validatedPayload = billboardPayload.safeParse(body);
 
     if (!validatedPayload.success) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
+      return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
@@ -101,7 +101,7 @@ export async function PATCH(request: Request) {
 
     const validatedPayload = updateBillboardPayload.safeParse(body);
     if (!validatedPayload.success) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
+      return new Response(JSON.stringify("Invalid Input"), { status: 200 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });

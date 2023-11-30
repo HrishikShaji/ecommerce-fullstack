@@ -2,31 +2,27 @@ import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
+import {
+  productPayload,
+  updateProductPayload,
+} from "@/app/lib/validators/Product";
 
 export async function POST(request: Request) {
   try {
-    const { name, categoryId, billboardId, sizeId, colorId } =
-      await request.json();
+    const body = await request.json();
     const user = (await getServerSession(authOptions)) as Session;
 
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!categoryId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!billboardId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!sizeId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!colorId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    const validatedPayload = productPayload.safeParse(body);
+
+    if (!validatedPayload.success) {
+      return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
+
+    const { name, categoryId, billboardId, sizeId, colorId } =
+      validatedPayload.data;
 
     const product = await prisma.product.create({
       data: {
@@ -48,33 +44,20 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
-    const { name, id, billboardId, categoryId, sizeId, colorId } =
-      await request.json();
+    const body = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
+    const validatedPayload = updateProductPayload.safeParse(body);
 
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!id) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!categoryId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!billboardId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!sizeId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
-    }
-    if (!colorId) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    if (!validatedPayload.success) {
+      return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
 
+    const { name, categoryId, billboardId, sizeId, colorId, id } =
+      validatedPayload.data;
     const product = await prisma.product.update({
       where: {
         id: id,
@@ -90,7 +73,6 @@ export async function PATCH(request: Request) {
 
     return new Response(JSON.stringify(product), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
@@ -120,7 +102,6 @@ export async function GET(request: Request) {
     }
     return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
@@ -146,7 +127,6 @@ export async function DELETE(request: Request) {
 
     return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }

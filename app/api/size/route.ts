@@ -2,19 +2,21 @@ import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
+import { sizePayload, updateSizePayload } from "@/app/lib/validators/size";
 
 export async function POST(request: Request) {
   try {
-    const { name } = await request.json();
+    const body = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
-
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
+    const validatedPayload = sizePayload.safeParse(body);
+    if (!validatedPayload.success) {
+      return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
+    const { name } = validatedPayload.data;
 
     const size = await prisma.size.create({
       data: {
@@ -24,7 +26,6 @@ export async function POST(request: Request) {
 
     return new Response(JSON.stringify(size), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
@@ -60,26 +61,24 @@ export async function GET(request: Request) {
 
     return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
 
 export async function PATCH(request: Request) {
   try {
-    const { name, id } = await request.json();
+    const body = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
-
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!id) {
-      return new Response(JSON.stringify("wrong input"), { status: 200 });
+    const validatedPayload = updateSizePayload.safeParse(body);
+    if (!validatedPayload.success) {
+      return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
+
+    const { name, id } = validatedPayload.data;
 
     const size = await prisma.size.update({
       where: {
@@ -92,7 +91,6 @@ export async function PATCH(request: Request) {
 
     return new Response(JSON.stringify(size), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
@@ -117,7 +115,6 @@ export async function DELETE(request: Request) {
 
     return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
