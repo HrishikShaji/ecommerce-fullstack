@@ -2,22 +2,26 @@ import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
+import {
+  billboardPayload,
+  updateBillboardPayload,
+} from "@/app/lib/validators/Billboard";
 
 export async function POST(request: Request) {
   try {
-    const { name, images } = await request.json();
+    const body = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
+    const validatedPayload = billboardPayload.safeParse(body);
 
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!images) {
+    if (!validatedPayload.success) {
       return new Response(JSON.stringify("Wrong input"), { status: 400 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
+
+    const { name, images } = validatedPayload.data;
 
     const billboard = await prisma.billBoard.create({
       data: {
@@ -29,7 +33,6 @@ export async function POST(request: Request) {
 
     return new Response(JSON.stringify(billboard), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
@@ -86,29 +89,24 @@ export async function DELETE(request: Request) {
 
     return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
 
 export async function PATCH(request: Request) {
   try {
-    const { name, id, images } = await request.json();
+    const body = await request.json();
 
     const user = (await getServerSession(authOptions)) as Session;
 
-    if (!name) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!images) {
-      return new Response(JSON.stringify("Wrong input"), { status: 400 });
-    }
-    if (!id) {
+    const validatedPayload = updateBillboardPayload.safeParse(body);
+    if (!validatedPayload.success) {
       return new Response(JSON.stringify("wrong input"), { status: 200 });
     }
     if (user.user.role !== "ADMIN") {
       return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
+    const { id, name, images } = validatedPayload.data;
 
     const billboard = await prisma.billBoard.update({
       where: {
@@ -119,10 +117,8 @@ export async function PATCH(request: Request) {
         images: images,
       },
     });
-    console.log("in the backend", name, id, images, billboard);
     return new Response(JSON.stringify(billboard), { status: 200 });
   } catch (error) {
-    console.log(error);
     return new Response(JSON.stringify("error"), { status: 500 });
   }
 }
