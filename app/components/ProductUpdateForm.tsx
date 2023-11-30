@@ -9,11 +9,19 @@ import {
   updateProductPayload,
 } from "../lib/validators/Product";
 import { ProductChild } from "@/types/types";
+import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 
 interface ProductUpdateFormProps {
   data: ProductChild;
 }
 
+const initialErrors = {
+  name: "",
+  billboardId: "",
+  categoryId: "",
+  sizeId: "",
+  colorId: "",
+};
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
   const {
     values,
@@ -23,7 +31,10 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
     handleClick,
     handleChange,
     handleDropdown,
+    errors,
   } = useForm({
+    initialErrors: initialErrors,
+    validator: updateProductPayload,
     action: "Update",
     initialValues: {
       name: props.data.name,
@@ -39,51 +50,65 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       validator: updateProductPayload,
     },
   });
-  console.log(props.data);
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
-      <div className="flex flex-col gap-4 justify-start items-end">
-        <InputField
-          validator={""}
-          value={values.name}
-          onChange={(value) => handleChange("name", value)}
-          placeholder="name"
-          type="text"
-          label="Name"
-        />
-        <Dropdown
-          endpoint="billboard"
-          queryKey="billboards"
-          placeholder="Select"
-          value={values.billboardId}
-          onChange={(value) => handleDropdown("billboardId", value)}
-          label="Billboard"
-        />
-        <Dropdown
-          endpoint="category"
-          queryKey="categories"
-          placeholder="Select"
-          value={values.categoryId}
-          onChange={(value) => handleDropdown("categoryId", value)}
-          label="Category"
-        />
-        <Dropdown
-          endpoint="size"
-          queryKey="sizes"
-          placeholder="Select"
-          value={values.sizeId}
-          onChange={(value) => handleDropdown("sizeId", value)}
-          label="Size"
-        />
-        <Dropdown
-          endpoint="color"
-          queryKey="colors"
-          placeholder="Select"
-          value={values.colorId}
-          onChange={(value) => handleDropdown("colorId", value)}
-          label="Color"
-        />
+      <div className="grid grid-cols-2 gap-4 justify-start items-end">
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.name}
+            onChange={(value) => handleChange("name", value)}
+            placeholder="name"
+            type="text"
+            label="Name"
+          />
+          <ErrorMessageForm value={errors.name} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Dropdown
+            endpoint="billboard"
+            queryKey="billboards"
+            placeholder="Select"
+            value={values.billboardId}
+            onChange={(value) => handleDropdown("billboardId", value)}
+            label="Billboard"
+          />
+          <ErrorMessageForm value={errors.billboardId} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Dropdown
+            endpoint="category"
+            queryKey="categories"
+            placeholder="Select"
+            value={values.categoryId}
+            onChange={(value) => handleDropdown("categoryId", value)}
+            label="Category"
+          />
+          <ErrorMessageForm value={errors.categoryId} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Dropdown
+            endpoint="size"
+            queryKey="sizes"
+            placeholder="Select"
+            value={values.sizeId}
+            onChange={(value) => handleDropdown("sizeId", value)}
+            label="Size"
+          />
+          <ErrorMessageForm value={errors.sizeId} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Dropdown
+            endpoint="color"
+            queryKey="colors"
+            placeholder="Select"
+            value={values.colorId}
+            onChange={(value) => handleDropdown("colorId", value)}
+            label="Color"
+          />
+          <ErrorMessageForm value={errors.colorId} />
+        </div>
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button label="Update" isPending={isPending} />
