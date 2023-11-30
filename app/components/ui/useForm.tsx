@@ -12,10 +12,12 @@ import {
   ValidateTypePayload,
 } from "@/types/types";
 import { FormEvent, useState } from "react";
+import { ValidationSchema } from "@/app/lib/utils";
 
 interface useFormProps<T> {
   initialValues: Record<string, any>;
   initialErrors: Record<string, any>;
+  validator: ValidationSchema<T>;
   options: AddQueryProps<T> | UpdateQueryProps<T>;
   action: "Add" | "Update";
 }
@@ -75,7 +77,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   });
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
-    const validatedData = billboardPayload.safeParse(values);
+    const validatedData = props.validator.safeParse(values);
     if (!validatedData.success) {
       const newErrors: Record<string, any> = {};
       validatedData.error.errors.map(

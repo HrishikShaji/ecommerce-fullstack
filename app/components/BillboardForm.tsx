@@ -21,7 +21,6 @@ const initialErrors = {
 };
 
 const BillboardForm = () => {
-  const [inputErrors, setInputErrors] = useState(initialErrors);
   const {
     values,
     isError,
@@ -32,6 +31,7 @@ const BillboardForm = () => {
     handleImages,
     errors,
   } = useForm({
+    validator: billboardPayload,
     action: "Add",
     initialValues: initialValues,
     initialErrors: initialErrors,
@@ -41,10 +41,6 @@ const BillboardForm = () => {
       validator: billboardPayload,
     },
   });
-  useEffect(() => {
-    console.log(errors);
-    setInputErrors(errors);
-  }, [errors]);
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
       <div className="flex gap-4 justify-start items-end">

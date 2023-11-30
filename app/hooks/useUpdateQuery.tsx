@@ -16,14 +16,10 @@ export const useUpdateQuery = <T extends UpdateBillboardPayload>({
     error,
   } = useMutation({
     mutationFn: async (payload: UpdateBillboardPayload) => {
-      const isValidPayload = validatePayload({
-        schema: validator,
-        inputs: payload,
-      });
       await fetch(`/api/${endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(isValidPayload),
+        body: JSON.stringify(payload),
       });
     },
     onSuccess: () => {
