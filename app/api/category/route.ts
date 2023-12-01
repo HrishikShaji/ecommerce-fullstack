@@ -9,8 +9,9 @@ import {
 
 export async function POST(request: Request) {
   try {
-    const payload = await request.json();
     const user = await authUser({ checkRole: "ADMIN" });
+
+    const payload = await request.json();
     const validatedPayload = categoryPayload.safeParse(payload);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), {
@@ -115,13 +116,14 @@ export async function GET(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
+    await authUser({ checkRole: "ADMIN" });
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
     if (!id) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
-    await authUser({ checkRole: "ADMIN" });
 
     await prisma.category.delete({
       where: {
@@ -137,9 +139,10 @@ export async function DELETE(request: Request) {
 
 export async function PATCH(request: Request) {
   try {
+    await authUser({ checkRole: "ADMIN" });
+
     const body = await request.json();
 
-    await authUser({ checkRole: "ADMIN" });
     const validatedPayload = updateCategoryPayload.safeParse(body);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });

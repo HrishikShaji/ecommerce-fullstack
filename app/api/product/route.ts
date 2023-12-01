@@ -1,7 +1,7 @@
 import { authOptions } from "@/app/lib/auth";
 import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
-import { getSortOrder, itemsPerPage } from "@/app/lib/utils";
+import { authUser, getSortOrder, itemsPerPage } from "@/app/lib/utils";
 import {
   productPayload,
   updateProductPayload,
@@ -9,22 +9,20 @@ import {
 
 export async function POST(request: Request) {
   try {
+    const user = await authUser({ checkRole: "ADMIN" });
+
     const body = await request.json();
-    const user = (await getServerSession(authOptions)) as Session;
 
     const validatedPayload = productPayload.safeParse(body);
 
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
-    }
 
     const { name, categoryId, billboardId, sizeId, colorId } =
       validatedPayload.data;
 
-    const product = await prisma.product.create({
+    await prisma.product.create({
       data: {
         name: name,
         categoryId: categoryId,
@@ -35,30 +33,27 @@ export async function POST(request: Request) {
       },
     });
 
-    return new Response(JSON.stringify(product), { status: 200 });
-  } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify("error"), { status: 500 });
+    return new Response(JSON.stringify("success"), { status: 200 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
 
 export async function PATCH(request: Request) {
   try {
+    await authUser({ checkRole: "ADMIN" });
+
     const body = await request.json();
 
-    const user = (await getServerSession(authOptions)) as Session;
     const validatedPayload = updateProductPayload.safeParse(body);
 
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
-    }
 
     const { name, categoryId, billboardId, sizeId, colorId, id } =
       validatedPayload.data;
-    const product = await prisma.product.update({
+    await prisma.product.update({
       where: {
         id: id,
       },
@@ -71,9 +66,9 @@ export async function PATCH(request: Request) {
       },
     });
 
-    return new Response(JSON.stringify(product), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify("error"), { status: 500 });
+    return new Response(JSON.stringify("success"), { status: 200 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
 export async function GET(request: Request) {
@@ -81,6 +76,8 @@ export async function GET(request: Request) {
   const page = Number(searchParams.get("page"));
   const order = getSortOrder(request);
   try {
+    await authUser({});
+
     const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
@@ -101,22 +98,20 @@ export async function GET(request: Request) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
     return new Response(JSON.stringify({ count, data }), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify("error"), { status: 500 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
 
 export async function DELETE(request: Request) {
   try {
+    await authUser({ checkRole: "ADMIN" });
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
     if (!id) {
       return new Response(JSON.stringify("wrong input"), { status: 400 });
-    }
-    const user = (await getServerSession(authOptions)) as Session;
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
     }
 
     await prisma.product.delete({
@@ -126,7 +121,7 @@ export async function DELETE(request: Request) {
     });
 
     return new Response(JSON.stringify("success"), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify("error"), { status: 500 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
