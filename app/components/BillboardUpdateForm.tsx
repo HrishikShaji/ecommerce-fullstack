@@ -4,7 +4,6 @@ import { BillBoard } from "@prisma/client";
 import {
   UpdateBillboardPayload,
   billboardPayload,
-  updateBillboardPayload,
 } from "../lib/validators/Billboard";
 import { useForm } from "./ui/useForm";
 import InputField from "./ui/InputField";

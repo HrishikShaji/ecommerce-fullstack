@@ -1,11 +1,8 @@
 import { PayloadType } from "@/types/types";
 import { UpdateQueryProps, useUpdateQuery } from "@/app/hooks/useUpdateQuery";
 import { AddQueryProps, useAddQuery } from "@/app/hooks/useAddQuery";
-import {
-  UpdateBillboardPayload,
-  billboardPayload,
-} from "@/app/lib/validators/Billboard";
-import { UpdatePayload, ValidateTypePayload } from "@/types/types";
+import { UpdateBillboardPayload } from "@/app/lib/validators/Billboard";
+import { ValidateTypePayload } from "@/types/types";
 import { FormEvent, useState } from "react";
 import { ValidationSchema } from "@/app/lib/utils";
 

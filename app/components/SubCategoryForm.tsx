@@ -35,7 +35,6 @@ const SubCategoryForm: React.FC<SubCategoryFormProps> = (props) => {
     options: {
       endpoint: "category",
       queryKey: "categories",
-      validator: categoryPayload,
     },
   });
   return (
