@@ -19,6 +19,30 @@ export function getSortOrder(request: Request) {
   return order;
 }
 
+interface ValidateUrlProps<T> {
+  request: Request;
+  params: string[];
+  schema: ValidationSchema<T>;
+}
+
+export function validateUrl<T>(props: ValidateUrlProps<T>) {
+  try {
+    const { searchParams } = new URL(props.request.url);
+    const params: Record<string, string | null> = {};
+    props.params.forEach((param) => {
+      const value = searchParams.get(param);
+      params[param] = value;
+    });
+    const validatedUrl = props.schema.safeParse(params);
+    if (!validatedUrl.success) {
+      throw new Error("Invalid URL");
+    }
+    return validatedUrl.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export type ValidationSchema<T> = z.ZodSchema<T>;
 export const validatePayload = <T>({
   schema,

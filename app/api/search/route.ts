@@ -1,13 +1,14 @@
 import prisma from "@/app/lib/connect";
-import { getSortOrder, itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { getSortOrder, paginateArray, validateUrl } from "@/app/lib/utils";
 import { getCategories } from "../category/route";
+import { searchUrlSchema } from "@/app/lib/validators/search";
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const page = Number(searchParams.get("page"));
-  const section = searchParams.get("section");
-  const searchString = searchParams.get("searchString");
-  console.log("searchPage is", page, section, searchString);
+  const { page, section, searchString } = validateUrl({
+    request: request,
+    params: ["page", "section", "searchString"],
+    schema: searchUrlSchema,
+  });
   const order = getSortOrder(request);
   try {
     let results: any[] = [];
@@ -55,8 +56,7 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify({ count, searchResults }), {
       status: 200,
     });
-  } catch (error) {
-    console.log(error);
-    return new Response(JSON.stringify("error"), { status: 500 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
