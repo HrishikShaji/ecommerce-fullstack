@@ -20,22 +20,35 @@ type Payload = z.infer<typeof payload>;
 const Page = () => {
   const [formData, setFormData] = useState<Payload>({ name: "", email: "" });
   const [errors, setErrors] = useState<Payload>({ name: "", email: "" });
-  const handleSubmit = async (e: FormEvent) => {
+  const {
+    mutate: add,
+    isPending,
+    isError,
+    error,
+  } = useMutation({
+    mutationFn: async () => {
+      const response = await fetch(`/api/category`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        const body = await response.json();
+        const error = body.message instanceof ZodError;
+        console.log(error);
+        throw new Error(body);
+      }
+      return response;
+    },
+    onError: (error) => {
+      throw error;
+    },
+  });
+  console.log(error);
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const validatedData = payload.safeParse(formData);
-    if (!validatedData.success) {
-      console.log(validatedData.error.errors);
-      validatedData.error.errors.map((error) =>
-        setErrors((prev) => ({
-          ...prev,
-          [error.path[0]]: error.message,
-        })),
-      );
-      return;
-    }
-    setErrors({ name: "", email: "" });
+    add();
   };
-  console.log(errors);
 
   return (
     <div className="flex justify-center items-center h-screen w-full text-white">
@@ -89,29 +102,5 @@ export default Page;
 {
   /*  
 
-  const {
-    mutate: add,
-    isPending,
-    isError,
-    error,
-  } = useMutation({
-    mutationFn: async () => {
-      const response = await fetch(`/api/category`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        const body = await response.json();
-        const error = body.message instanceof ZodError;
-        console.log(error);
-        throw new Error(body);
-      }
-      return response;
-    },
-    onError: (error) => {
-      throw error;
-    },
-  });
 */
 }

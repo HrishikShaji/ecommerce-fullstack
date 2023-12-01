@@ -1,4 +1,6 @@
 import { ZodError, z } from "zod";
+import { authOptions } from "./auth";
+import { getServerSession, Session } from "next-auth";
 
 export const itemsPerPage = 3;
 
@@ -36,6 +38,30 @@ export const validatePayload = <T>({
         }
       }
     }
+    throw error;
+  }
+};
+
+interface AuthUserProps {
+  checkRole?: "ADMIN" | "USER";
+}
+
+export const authUser = async (props: AuthUserProps) => {
+  try {
+    const user = (await getServerSession(authOptions)) as Session;
+
+    if (!user) {
+      throw new Error("Login Required");
+    }
+
+    if (props.checkRole && props.checkRole === "ADMIN") {
+      if (user.user.role !== "ADMIN") {
+        throw new Error("Admin Privilege Required");
+      }
+    }
+
+    return user;
+  } catch (error: any) {
     throw error;
   }
 };

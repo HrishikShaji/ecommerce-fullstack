@@ -3,7 +3,7 @@ import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
-import { getSortOrder, itemsPerPage, paginateArray } from "@/app/lib/utils";
+import { authUser, getSortOrder, paginateArray } from "@/app/lib/utils";
 import {
   categoryPayload,
   updateCategoryPayload,
@@ -12,20 +12,11 @@ import {
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
+    const user = (await authUser({ checkRole: "ADMIN" })) as Session;
     const validatedPayload = categoryPayload.safeParse(payload);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), {
         status: 400,
-      });
-    }
-    const user = (await getServerSession(authOptions)) as Session;
-    if (!user) {
-      return new Response(JSON.stringify("Login Required"), { status: 401 });
-    }
-
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("Admin Privilege Required"), {
-        status: 401,
       });
     }
     const { name, parentId } = validatedPayload.data;
@@ -49,7 +40,8 @@ export async function POST(request: Request) {
 
     return new Response(JSON.stringify(category), { status: 200 });
   } catch (error: any) {
-    return new Response(JSON.stringify(error), { status: 500 });
+    console.log("error is", error);
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
 
