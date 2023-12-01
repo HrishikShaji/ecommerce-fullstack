@@ -4,9 +4,9 @@ import { getCategories } from "../category/route";
 import { searchUrlSchema } from "@/app/lib/validators/search";
 
 export async function GET(request: Request) {
-  const { page, section, searchString } = validateUrl({
+  const { page, section, searchString, sort } = validateUrl({
     request: request,
-    params: ["page", "section", "searchString"],
+    params: ["page", "section", "searchString", "sort"],
     schema: searchUrlSchema,
   });
   const order = getSortOrder(request);

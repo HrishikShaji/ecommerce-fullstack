@@ -33,6 +33,9 @@ export function validateUrl<T>(props: ValidateUrlProps<T>) {
       const value = searchParams.get(param);
       params[param] = value;
     });
+    if ("sort" in params) {
+      params["sort"] = params["sort"] === "LATEST" ? "desc" : "asc";
+    }
     const validatedUrl = props.schema.safeParse(params);
     if (!validatedUrl.success) {
       throw new Error("Invalid URL");
