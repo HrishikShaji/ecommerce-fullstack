@@ -60,7 +60,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
   return (
     <div className="flex flex-col gap-2">
       <h1>{props.label}</h1>
-      <div className="bg-neutral-800 rounded-md w-[150px] text-white relative">
+      <div className="bg-neutral-800 rounded-md w-[150px] relative z-1 text-white">
         <div className="flex justify-between p-2 ">
           <h1>{selectedValue ? selectedValue : "Select"}</h1>
           <div
@@ -77,7 +77,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="absolute z-100 overflow-hidden rounded-md pb-2 w-full mt-2 bg-neutral-700"
+            className="absolute z-10 overflow-hidden rounded-md pb-2 w-full mt-2 bg-neutral-700"
           >
             {data?.data?.map((item: any) => (
               <DropItem

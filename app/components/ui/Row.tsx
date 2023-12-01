@@ -9,6 +9,7 @@ import { EndpointType, QueryKey } from "@/types/types";
 import { RowDelete } from "./RowDelete";
 import { RowUpdate } from "./RowUpdate";
 import { ModeType } from "@/redux/slices/modalSlice";
+import { RowAdd } from "./RowAdd";
 
 interface RowProps {
   id: string;
@@ -92,7 +93,14 @@ const Row: React.FC<RowProps> = (props) => {
         })}
         <td className="px-2">
           <div className="flex gap-2 justify-end">
-            {props.add && <IoAddCircle size={22} />}
+            {props.add && props.mode === "category" && (
+              <RowAdd
+                item={props.item}
+                mode="subCategory"
+                endpoint={props.endpoint}
+                queryKey={props.queryKey}
+              />
+            )}
             {props.update && (
               <RowUpdate
                 item={props.item}

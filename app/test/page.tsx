@@ -70,6 +70,16 @@ const Page = () => {
         </div>
         <button>Submit</button>
       </form>
+      <div className="flex flex-col gap-4">
+        <div className="flex">
+          <h1 className="text-red-500">first</h1>
+          <div className="h-40 w-40 mt-5 bg-neutral-700 absolute z-20"></div>
+        </div>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-red-500">second</h1>
+          <div className="h-40 w-40 bg-neutral-400 mt-5 absolute z-20"></div>
+        </div>
+      </div>
     </div>
   );
 };

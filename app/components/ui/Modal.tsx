@@ -10,6 +10,7 @@ import { ProductUpdateForm } from "../ProductUpdateForm";
 import { SizeUpdateForm } from "../SizeUpdateForm";
 import { ColorUpdateForm } from "../ColorUpdateForm";
 import { BillBoard, Color, Size } from "@prisma/client";
+import SubCategoryForm from "../SubCategoryForm";
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
@@ -37,6 +38,7 @@ export const Modal = () => {
         )}
         {mode === "size" && <SizeUpdateForm data={data as Size} />}
         {mode === "color" && <ColorUpdateForm data={data as Color} />}
+        {mode === "subCategory" && <SubCategoryForm parentId={data.id} />}
       </div>
     </div>
   );

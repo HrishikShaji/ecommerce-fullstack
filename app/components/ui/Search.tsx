@@ -7,13 +7,13 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = (props) => {
   return (
-    <div className="relative flex items-center">
+    <div className="relative z-[-1] isolate flex items-center">
       <input
         className="p-1 text-black rounded-md"
         onChange={(e) => props.onChange(e.target.value)}
         placeholder="Search..."
       />
-      <button className="absolute z-10 right-2">
+      <button className="absolute z-20 right-2">
         <ImSearch color="black" />
       </button>
     </div>
