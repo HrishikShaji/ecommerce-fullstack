@@ -38,7 +38,6 @@ const ProductForm = () => {
     options: {
       endpoint: "product",
       queryKey: "products",
-      validator: productPayload,
     },
     action: "Add",
   });

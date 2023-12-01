@@ -29,7 +29,6 @@ const CategoryForm = () => {
     options: {
       endpoint: "category",
       queryKey: "categories",
-      validator: categoryPayload,
     },
   });
   return (

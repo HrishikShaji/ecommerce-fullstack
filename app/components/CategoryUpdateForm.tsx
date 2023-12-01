@@ -40,7 +40,6 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = (
     options: {
       endpoint: "category",
       queryKey: "categories",
-      validator: updateCategoryPayload,
     },
   });
 

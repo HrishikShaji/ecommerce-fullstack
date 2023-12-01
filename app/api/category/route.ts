@@ -1,5 +1,3 @@
-import { authOptions } from "@/app/lib/auth";
-import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { Category } from "@prisma/client";
 import { CategoryChild } from "@/types/types";
@@ -12,7 +10,7 @@ import {
 export async function POST(request: Request) {
   try {
     const payload = await request.json();
-    const user = (await authUser({ checkRole: "ADMIN" })) as Session;
+    const user = await authUser({ checkRole: "ADMIN" });
     const validatedPayload = categoryPayload.safeParse(payload);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), {
@@ -31,16 +29,15 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify(category), { status: 200 });
     }
 
-    const category = await prisma.category.create({
+    await prisma.category.create({
       data: {
         name: name,
         userId: user.user.id,
       },
     });
 
-    return new Response(JSON.stringify(category), { status: 200 });
+    return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error: any) {
-    console.log("error is", error);
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
@@ -78,6 +75,8 @@ export async function GET(request: Request) {
   const page = Number(searchParams.get("page"));
   const order = getSortOrder(request);
   try {
+    await authUser({});
+
     if (page === 0) {
       const categories = await prisma.category.findMany({
         orderBy: { createdAt: order },
@@ -109,8 +108,8 @@ export async function GET(request: Request) {
     return new Response(JSON.stringify({ count, data }), {
       status: 200,
     });
-  } catch (error) {
-    return new Response(JSON.stringify("error"), { status: 500 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
 
@@ -120,12 +119,9 @@ export async function DELETE(request: Request) {
     const id = searchParams.get("id");
 
     if (!id) {
-      return new Response(JSON.stringify("wrong input"), { status: 400 });
+      return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
-    const user = (await getServerSession(authOptions)) as Session;
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
-    }
+    await authUser({ checkRole: "ADMIN" });
 
     await prisma.category.delete({
       where: {
@@ -134,8 +130,8 @@ export async function DELETE(request: Request) {
     });
 
     return new Response(JSON.stringify("success"), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify("error"), { status: 500 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
 
@@ -143,17 +139,14 @@ export async function PATCH(request: Request) {
   try {
     const body = await request.json();
 
-    const user = (await getServerSession(authOptions)) as Session;
+    await authUser({ checkRole: "ADMIN" });
     const validatedPayload = updateCategoryPayload.safeParse(body);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    if (user.user.role !== "ADMIN") {
-      return new Response(JSON.stringify("unauthorized"), { status: 401 });
-    }
     const { id, name } = validatedPayload.data;
-    const category = await prisma.category.update({
+    await prisma.category.update({
       where: {
         id: id,
       },
@@ -162,8 +155,8 @@ export async function PATCH(request: Request) {
       },
     });
 
-    return new Response(JSON.stringify(category), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify("error"), { status: 500 });
+    return new Response(JSON.stringify("success"), { status: 200 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }

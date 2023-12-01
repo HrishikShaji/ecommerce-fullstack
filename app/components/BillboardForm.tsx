@@ -8,7 +8,6 @@ import {
   BillboardPayload,
   billboardPayload,
 } from "../lib/validators/Billboard";
-import { useEffect, useState } from "react";
 
 const initialValues: BillboardPayload = {
   name: "",
@@ -38,7 +37,6 @@ const BillboardForm = () => {
     options: {
       endpoint: "billboard",
       queryKey: "billboards",
-      validator: billboardPayload,
     },
   });
   return (

@@ -44,7 +44,6 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = (
     options: {
       endpoint: "billboard",
       queryKey: "billboards",
-      validator: updateBillboardPayload,
     },
   });
 

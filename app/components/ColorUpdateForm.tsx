@@ -38,7 +38,6 @@ export const ColorUpdateForm: React.FC<ColorUpdateFormProps> = (props) => {
     options: {
       endpoint: "color",
       queryKey: "colors",
-      validator: updateColorPayload,
     },
   });
 

@@ -30,7 +30,6 @@ const ColorForm = () => {
     options: {
       endpoint: "color",
       queryKey: "colors",
-      validator: colorPayload,
     },
   });
   return (

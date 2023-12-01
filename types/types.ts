@@ -79,31 +79,8 @@ export type ValidateTypePayload =
 
 export type Validator<T> = (inputs: T) => T;
 
-export type GetQueryProps = {
-  page: number;
-  sort: SortType;
-  endpoint: string;
-  queryKey: QueryKey;
-};
-export type DeleteQueryProps = {
-  endpoint: string;
-  queryKey: QueryKey;
-};
-
 export type UpdatePayload = UpdateBillboardPayload;
 
-export type UpdateQueryProps<UpdatePayload> = {
-  endpoint: string;
-  queryKey: QueryKey;
-  validator: ValidationSchema<UpdatePayload>;
-};
-
-export type AddQueryProps<ValidateTypePayload> = {
-  validator: ValidationSchema<ValidateTypePayload>;
-  endpoint: string;
-  queryKey: QueryKey;
-  reset: () => void;
-};
 export type SelectItem = {
   name: string;
   id: string;

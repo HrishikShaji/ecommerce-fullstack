@@ -47,7 +47,6 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
     options: {
       endpoint: "product",
       queryKey: "products",
-      validator: updateProductPayload,
     },
   });
 

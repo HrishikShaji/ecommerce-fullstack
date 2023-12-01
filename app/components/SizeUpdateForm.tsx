@@ -34,7 +34,6 @@ export const SizeUpdateForm: React.FC<SizeUpdateFormProps> = (props) => {
     options: {
       endpoint: "size",
       queryKey: "sizes",
-      validator: updateSizePayload,
     },
   });
 

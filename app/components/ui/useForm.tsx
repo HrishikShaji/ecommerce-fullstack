@@ -1,16 +1,11 @@
 import { PayloadType } from "@/types/types";
-import { useUpdateQuery } from "@/app/hooks/useUpdateQuery";
-import { useAddQuery } from "@/app/hooks/useAddQuery";
+import { UpdateQueryProps, useUpdateQuery } from "@/app/hooks/useUpdateQuery";
+import { AddQueryProps, useAddQuery } from "@/app/hooks/useAddQuery";
 import {
   UpdateBillboardPayload,
   billboardPayload,
 } from "@/app/lib/validators/Billboard";
-import {
-  AddQueryProps,
-  UpdatePayload,
-  UpdateQueryProps,
-  ValidateTypePayload,
-} from "@/types/types";
+import { UpdatePayload, ValidateTypePayload } from "@/types/types";
 import { FormEvent, useState } from "react";
 import { ValidationSchema } from "@/app/lib/utils";
 
@@ -18,7 +13,7 @@ interface useFormProps<T> {
   initialValues: Record<string, any>;
   initialErrors: Record<string, any>;
   validator: ValidationSchema<T>;
-  options: AddQueryProps<T> | UpdateQueryProps<T>;
+  options: AddQueryProps | UpdateQueryProps;
   action: "Add" | "Update";
 }
 
@@ -61,7 +56,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
     isError: isAddError,
     error: addError,
   } = useAddQuery({
-    ...(props.options as AddQueryProps<ValidateTypePayload>),
+    ...(props.options as AddQueryProps),
     reset: () => {
       setValues(props.initialValues);
     },
@@ -73,7 +68,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
     isError: isUpdateError,
     error: updateError,
   } = useUpdateQuery({
-    ...(props.options as UpdateQueryProps<UpdatePayload>),
+    ...(props.options as UpdateQueryProps),
   });
   const handleClick = (e: FormEvent) => {
     e.preventDefault();

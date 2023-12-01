@@ -1,13 +1,12 @@
-import { UpdateQueryProps } from "@/types/types";
 import { UpdateBillboardPayload } from "../lib/validators/Billboard";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { validatePayload } from "../lib/utils";
+import { QueryKey } from "@/types/types";
 
-export const useUpdateQuery = <T extends UpdateBillboardPayload>({
-  endpoint,
-  queryKey,
-  validator,
-}: UpdateQueryProps<T>) => {
+export type UpdateQueryProps = {
+  endpoint: string;
+  queryKey: QueryKey;
+};
+export const useUpdateQuery = (props: UpdateQueryProps) => {
   const queryClient = useQueryClient();
   const {
     mutate: update,
@@ -16,14 +15,21 @@ export const useUpdateQuery = <T extends UpdateBillboardPayload>({
     error,
   } = useMutation({
     mutationFn: async (payload: UpdateBillboardPayload) => {
-      await fetch(`/api/${endpoint}`, {
+      const response = await fetch(`/api/${props.endpoint}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!response.ok) {
+        const body = await response.json();
+        throw new Error(body);
+      }
+    },
+    onError: (error) => {
+      throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] });
+      queryClient.invalidateQueries({ queryKey: [props.queryKey] });
     },
   });
 

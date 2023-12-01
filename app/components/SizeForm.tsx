@@ -30,7 +30,6 @@ const SizeForm = () => {
     options: {
       endpoint: "size",
       queryKey: "sizes",
-      validator: sizePayload,
     },
   });
   return (
