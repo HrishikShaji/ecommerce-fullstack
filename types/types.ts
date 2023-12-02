@@ -61,14 +61,16 @@ export type EndpointType =
   | "color"
   | "size"
   | "product"
-  | "category";
+  | "category"
+  | "filter";
 export type QueryKey =
   | "billboards"
   | "products"
   | "categories"
   | "search"
   | "sizes"
-  | "colors";
+  | "colors"
+  | "filters";
 
 export type ValidateTypePayload =
   | BillboardPayload

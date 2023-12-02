@@ -1,5 +1,3 @@
-import { authOptions } from "@/app/lib/auth";
-import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { authUser, getSortOrder, itemsPerPage } from "@/app/lib/utils";
 import {
