@@ -13,6 +13,7 @@ export type ModeType =
   | "color"
   | "billboard"
   | "subCategory"
+  | "filter"
   | "";
 
 type ModalState = {

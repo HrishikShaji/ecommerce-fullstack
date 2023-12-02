@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import Dropdown from "./ui/Dropdown";
-import Button from "./ui/Button";
 
 interface FilterSectionProps {
   setValues: Dispatch<SetStateAction<Record<string, any>>>;

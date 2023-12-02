@@ -27,9 +27,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
     const handleClickOutside: EventListener = (e) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(e.target as Node)
+        !dropdownRef.current.contains(e.target as Node)
       ) {
         setIsOpen(false);
       }
@@ -76,6 +74,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
         </div>
         {isOpen && (
           <div
+            key={props.label}
             ref={dropdownRef}
             className="absolute z-10 overflow-hidden rounded-md pb-2 w-full mt-2 bg-neutral-700"
           >

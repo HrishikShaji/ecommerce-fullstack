@@ -10,10 +10,13 @@ export async function GET(request: Request) {
   const billboardId = searchParams.get("billboardId");
   const categoryId = searchParams.get("categoryId");
 
-  console.log(colorId, sizeId, billboardId, categoryId);
   try {
     await authUser({});
-    const queryObj = colorId ? { colorId: colorId } : {};
+    const queryObj: any = {};
+    if (colorId) queryObj.colorId = colorId;
+    if (sizeId) queryObj.sizeId = sizeId;
+    if (billboardId) queryObj.billoardId = billboardId;
+    if (categoryId) queryObj.categoryId = categoryId;
     const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
@@ -36,6 +39,7 @@ export async function GET(request: Request) {
     }
     return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error: any) {
+    console.log(error);
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
