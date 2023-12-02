@@ -13,6 +13,7 @@ export type FilterQueryProps = {
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [colors, setColors] = useState<string[]>([]);
   const values = useAppSelector((state) => state.filterReducer.values);
   const handleCheckBox = (key: string, value: boolean) => {
     dispatch(setFilterValues({ ...values, [key]: value }));
@@ -27,7 +28,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryKey: [props.queryKey],
     queryFn: async () => {
       const response = await fetch(
-        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}`,
+        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&colorId=${colors}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -39,7 +40,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       }
       return response.json();
     },
-    staleTime: Infinity,
   });
 
   const data = response?.data;
@@ -53,5 +53,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     refetch,
     isLoading,
     values,
+    setColors,
   };
 };

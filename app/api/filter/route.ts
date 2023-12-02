@@ -4,7 +4,7 @@ import prisma from "@/app/lib/connect";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
-  const colorId = searchParams.get("colorId");
+  const colorId = Array(searchParams.get("colorId"));
   const order = getSortOrder(request);
   const sizeId = searchParams.get("sizeId");
   const billboardId = searchParams.get("billboardId");
@@ -17,6 +17,7 @@ export async function GET(request: Request) {
     if (sizeId) queryObj.sizeId = sizeId;
     if (billboardId) queryObj.billoardId = billboardId;
     if (categoryId) queryObj.categoryId = categoryId;
+    console.log("colors are", colorId, colorId[0]);
     const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
@@ -31,7 +32,16 @@ export async function GET(request: Request) {
       orderBy: {
         createdAt: order,
       },
-      where: queryObj,
+      where: {
+        OR: [
+          {
+            colorId: colorId[0],
+          },
+          {
+            colorId: colorId[1],
+          },
+        ],
+      },
     });
 
     if (!data) {
