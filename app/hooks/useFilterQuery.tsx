@@ -1,17 +1,22 @@
+import { setFilterValues } from "@/redux/slices/filterSlice";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export type FilterQueryProps = {
   page: number;
   sort: SortType;
   endpoint: string;
   queryKey: QueryKey;
-  colorId?: string;
-  sizeId?: string;
-  billboardId?: string;
-  categoryId?: string;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const values = useAppSelector((state) => state.filterReducer.values);
+  const handleCheckBox = (key: string, value: boolean) => {
+    dispatch(setFilterValues({ ...values, [key]: value }));
+  };
   const {
     data: response,
     isError,
@@ -22,7 +27,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryKey: [props.queryKey],
     queryFn: async () => {
       const response = await fetch(
-        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&colorId=${props.colorId}&sizeId=${props.sizeId}&billboardId=${props.billboardId}&categoryId=${props.categoryId}`,
+        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -34,9 +39,19 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       }
       return response.json();
     },
+    staleTime: Infinity,
   });
 
   const data = response?.data;
   const count = response?.count;
-  return { count, data, error, isError, refetch, isLoading };
+  return {
+    handleCheckBox,
+    count,
+    data,
+    error,
+    isError,
+    refetch,
+    isLoading,
+    values,
+  };
 };

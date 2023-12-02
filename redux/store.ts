@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import modalReducer from "./slices/modalSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
+import filterReducer from "./slices/filterSlice";
 
 export const store = configureStore({
   reducer: {
     modalReducer,
+    filterReducer,
   },
 });
 

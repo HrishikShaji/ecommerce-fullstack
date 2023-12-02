@@ -3,17 +3,25 @@ import CheckBox from "./ui/CheckBox";
 import { useGetQuery } from "../hooks/useGetQuery";
 import { Color } from "@prisma/client";
 import { Spinner } from "./ui/Spinner";
+import { useFilterQuery } from "../hooks/useFilterQuery";
 
 type FilterType = "color" | "size" | "billboard" | "category";
 
 export const FilterModal = () => {
   const [filter, setFilter] = useState<FilterType>("color");
-  const [values, setValues] = useState<Record<string, any>>({});
-  const handleCheckBox = (key: string, value: boolean) => {
-    setValues((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+
+  const { values, handleCheckBox } = useFilterQuery({
+    endpoint: "product",
+    queryKey: "products",
+    page: 1,
+    sort: "LATEST",
+  });
+
+  const handleFilter = () => {
+    const newValues = Object.keys(values).filter((value) => {
+      return values[value] === true;
+    });
+    console.log(newValues);
   };
 
   const { data, isError, isLoading } = useGetQuery({
@@ -63,10 +71,10 @@ export const FilterModal = () => {
                   <CheckBox
                     key={item.id}
                     onChange={(value: boolean) =>
-                      handleCheckBox(item.name as string, value)
+                      handleCheckBox(item.id as string, value)
                     }
                     label={item.name as string}
-                    selected={values[item.name as string]}
+                    selected={values[item.id as string]}
                   />
                 ))
               )}
@@ -89,7 +97,10 @@ export const FilterModal = () => {
           </div>
         ) : null}
       </div>
-      <button className="p-1 rounded-md bg-white text-black absolute bottom-2 right-2">
+      <button
+        onClick={handleFilter}
+        className="p-1 rounded-md bg-white text-black absolute bottom-2 right-2"
+      >
         Submit
       </button>
     </div>
