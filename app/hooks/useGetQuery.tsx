@@ -14,6 +14,7 @@ export const useGetQuery = (props: GetQueryProps) => {
     refetch,
     isLoading,
     error,
+    isSuccess,
   } = useQuery({
     queryKey: [props.queryKey],
     queryFn: async () => {
@@ -34,5 +35,5 @@ export const useGetQuery = (props: GetQueryProps) => {
 
   const data = response?.data;
   const count = response?.count;
-  return { count, data, error, isError, refetch, isLoading };
+  return { isSuccess, count, data, error, isError, refetch, isLoading };
 };

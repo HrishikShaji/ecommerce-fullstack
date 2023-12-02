@@ -6,20 +6,20 @@ interface CheckBoxProps {
   onChange: (value: boolean) => void;
 }
 
-const CheckBox: React.FC<CheckBoxProps> = (props) => {
+const CheckBox: React.FC<CheckBoxProps> = ({
+  selected = false,
+  label,
+  onChange,
+}) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { checked } = e.target;
-    props.onChange(checked);
+    onChange(checked);
   };
   return (
     <div className="flex gap-2">
       <label>
-        <input
-          type="checkbox"
-          checked={props.selected}
-          onChange={handleChange}
-        />
-        {props.label}
+        <input type="checkbox" checked={selected} onChange={handleChange} />
+        {label}
       </label>
     </div>
   );
