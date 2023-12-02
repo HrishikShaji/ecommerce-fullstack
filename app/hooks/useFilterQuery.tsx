@@ -7,6 +7,9 @@ export type FilterQueryProps = {
   endpoint: string;
   queryKey: QueryKey;
   colorId?: string;
+  sizeId?: string;
+  billboardId?: string;
+  categoryId?: string;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const {
@@ -19,7 +22,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryKey: [props.queryKey],
     queryFn: async () => {
       const response = await fetch(
-        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&colorId=${props.colorId}`,
+        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&colorId=${props.colorId}&sizeId=${props.sizeId}&billboardId=${props.billboardId}&categoryId=${props.categoryId}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },

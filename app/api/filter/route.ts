@@ -6,8 +6,11 @@ export async function GET(request: Request) {
   const page = Number(searchParams.get("page"));
   const colorId = searchParams.get("colorId");
   const order = getSortOrder(request);
+  const sizeId = searchParams.get("sizeId");
+  const billboardId = searchParams.get("billboardId");
+  const categoryId = searchParams.get("categoryId");
 
-  console.log(colorId);
+  console.log(colorId, sizeId, billboardId, categoryId);
   try {
     await authUser({});
     const queryObj = colorId ? { colorId: colorId } : {};

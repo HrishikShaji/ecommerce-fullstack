@@ -7,13 +7,21 @@ import { useState } from "react";
 import { useFilterQuery } from "../hooks/useFilterQuery";
 
 const Page = () => {
-  const [values, setValues] = useState<Record<string, any>>({ colorId: "" });
+  const [values, setValues] = useState<Record<string, any>>({
+    colorId: "",
+    billboardId: "",
+    sizeId: "",
+    categoryId: "",
+  });
   const { data, isError, isLoading, refetch } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
     sort: "LATEST",
     colorId: values.colorId,
+    sizeId: values.sizeId,
+    billboardId: values.billboardId,
+    categoryId: values.categoryId,
   });
   if (isError) return <div>Error</div>;
   if (isLoading) return <Spinner />;
@@ -22,7 +30,7 @@ const Page = () => {
       <FilterSection
         refetch={refetch}
         setValues={setValues}
-        value={values.colorId}
+        values={values}
         isLoading={isLoading}
       />
       <div className="w-full min-h-screen p-10 grid grid-cols-3 gap-4">
@@ -30,6 +38,9 @@ const Page = () => {
           <div key={item.id} className="p-2 bg-neutral-600 rounded-md">
             <h1>{item.name}</h1>
             <h1>{item.color.name}</h1>
+            <h1>{item.size.name}</h1>
+            <h1>{item.billboard.name}</h1>
+            <h1>{item.category.name}</h1>
           </div>
         ))}
       </div>
