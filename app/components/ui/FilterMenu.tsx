@@ -1,17 +1,20 @@
 import { useGetQuery } from "@/app/hooks/useGetQuery";
 import { Spinner } from "./Spinner";
 import CheckBox from "./CheckBox";
+import { EndpointType, QueryKey } from "@/types/types";
 
 interface FilterMenuProps {
   values: Record<string, any>;
   handleCheckBox: (key: string, value: boolean) => void;
   field: string;
+  endpoint: EndpointType;
+  queryKey: QueryKey;
 }
 
 export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
   const { data, isError, isLoading } = useGetQuery({
-    endpoint: "color",
-    queryKey: "colors",
+    endpoint: props.endpoint,
+    queryKey: props.queryKey,
     page: 1,
     sort: "LATEST",
   });

@@ -6,16 +6,22 @@ export async function GET(request: Request) {
   const page = Number(searchParams.get("page"));
   const colorId = searchParams.getAll("colorId");
   const order = getSortOrder(request);
-  const sizeId = searchParams.get("sizeId");
+  const sizeId = searchParams.getAll("sizeId");
   const billboardId = searchParams.get("billboardId");
   const categoryId = searchParams.get("categoryId");
-  const queryObj =
+  const colorObj =
     colorId.length === 0
       ? {}
       : {
           in: colorId,
         };
-  console.log(queryObj);
+  const sizeObj =
+    sizeId.length === 0
+      ? {}
+      : {
+          in: sizeId,
+        };
+  console.log("colors are:", colorId, "sizes are:", sizeId);
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -33,10 +39,10 @@ export async function GET(request: Request) {
         createdAt: order,
       },
       where: {
-        colorId: queryObj,
+        colorId: colorObj,
+        sizeId: sizeObj,
       },
     });
-    console.log(data);
 
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
