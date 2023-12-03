@@ -2,7 +2,7 @@ import { ZodError, z } from "zod";
 import { authOptions } from "./auth";
 import { getServerSession, Session } from "next-auth";
 
-export const itemsPerPage = 3;
+export const itemsPerPage = 10;
 
 export function paginateArray({ array, page }: { array: any[]; page: number }) {
   const startIndex = page === 1 ? 0 : (page - 1) * itemsPerPage;

@@ -2,8 +2,7 @@ import { setFilterValues } from "@/redux/slices/filterSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import querystring from "querystring";
 
 export type FilterQueryProps = {
