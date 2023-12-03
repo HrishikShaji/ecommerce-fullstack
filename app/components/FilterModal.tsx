@@ -48,6 +48,7 @@ export const FilterModal = () => {
       <div className="bg-neutral-500 w-2/3 h-full p-2">
         {filter === "color" ? (
           <FilterMenu
+            label="Color"
             endpoint="color"
             queryKey="colors"
             handleCheckBox={(key: string, value: boolean) =>
@@ -59,6 +60,7 @@ export const FilterModal = () => {
         ) : null}
         {filter === "size" ? (
           <FilterMenu
+            label="Size"
             endpoint="size"
             queryKey="sizes"
             handleCheckBox={(key: string, value: boolean) =>
@@ -69,14 +71,28 @@ export const FilterModal = () => {
           />
         ) : null}
         {filter === "category" ? (
-          <div>
-            <h1>Category</h1>
-          </div>
+          <FilterMenu
+            label="Category"
+            endpoint="category"
+            queryKey="categories"
+            handleCheckBox={(key: string, value: boolean) =>
+              handleCheckBox(key, value, filter)
+            }
+            field={filter}
+            values={values}
+          />
         ) : null}
         {filter === "billboard" ? (
-          <div>
-            <h1>Billboard</h1>
-          </div>
+          <FilterMenu
+            label="Billboard"
+            endpoint="billboard"
+            queryKey="billboards"
+            handleCheckBox={(key: string, value: boolean) =>
+              handleCheckBox(key, value, filter)
+            }
+            field={filter}
+            values={values}
+          />
         ) : null}
       </div>
       <button

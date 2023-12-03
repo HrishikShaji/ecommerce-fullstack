@@ -40,9 +40,21 @@ export const useFilterQuery = (props: FilterQueryProps) => {
         (value) =>
           values[value].value === true && values[value].filterName === "size",
       );
+      const categoryIds = Object.keys(values).filter(
+        (value) =>
+          values[value].value === true &&
+          values[value].filterName === "category",
+      );
+      const billboardIds = Object.keys(values).filter(
+        (value) =>
+          values[value].value === true &&
+          values[value].filterName === "billboard",
+      );
       const queryString = querystring.stringify({
         colorId: colorIds,
         sizeId: sizeIds,
+        billboardId: billboardIds,
+        categoryId: categoryIds,
       });
       const response = await fetch(
         `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&${queryString}`,

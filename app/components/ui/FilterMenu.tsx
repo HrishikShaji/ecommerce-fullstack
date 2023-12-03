@@ -9,6 +9,7 @@ interface FilterMenuProps {
   field: string;
   endpoint: EndpointType;
   queryKey: QueryKey;
+  label: string;
 }
 
 export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
@@ -21,7 +22,7 @@ export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
   if (isError) return null;
   return (
     <div className="flex flex-col gap-2">
-      <h1>Color</h1>
+      <h1>{props.label}</h1>
       <div>
         {isLoading ? (
           <Spinner />

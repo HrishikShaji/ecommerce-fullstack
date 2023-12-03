@@ -7,8 +7,8 @@ export async function GET(request: Request) {
   const colorId = searchParams.getAll("colorId");
   const order = getSortOrder(request);
   const sizeId = searchParams.getAll("sizeId");
-  const billboardId = searchParams.get("billboardId");
-  const categoryId = searchParams.get("categoryId");
+  const billboardId = searchParams.getAll("billboardId");
+  const categoryId = searchParams.getAll("categoryId");
   const colorObj =
     colorId.length === 0
       ? {}
@@ -21,7 +21,28 @@ export async function GET(request: Request) {
       : {
           in: sizeId,
         };
-  console.log("colors are:", colorId, "sizes are:", sizeId);
+  const billboardObj =
+    billboardId.length === 0
+      ? {}
+      : {
+          in: billboardId,
+        };
+  const categoryObj =
+    categoryId.length === 0
+      ? {}
+      : {
+          in: categoryId,
+        };
+  console.log(
+    "colors are:",
+    colorId,
+    "sizes are:",
+    sizeId,
+    "billboards are:",
+    billboardId,
+    "categories are:",
+    categoryId,
+  );
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -41,6 +62,8 @@ export async function GET(request: Request) {
       where: {
         colorId: colorObj,
         sizeId: sizeObj,
+        billoardId: billboardObj,
+        categoryId: categoryObj,
       },
     });
 
