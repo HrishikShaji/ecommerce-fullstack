@@ -5,6 +5,7 @@ import CheckBox from "./CheckBox";
 interface FilterMenuProps {
   values: Record<string, any>;
   handleCheckBox: (key: string, value: boolean) => void;
+  field: string;
 }
 
 export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
@@ -29,7 +30,7 @@ export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
                 props.handleCheckBox(item.id as string, value)
               }
               label={item.name as string}
-              selected={props.values[item.id as string]}
+              selected={props.values[item.id]?.value}
             />
           ))
         )}

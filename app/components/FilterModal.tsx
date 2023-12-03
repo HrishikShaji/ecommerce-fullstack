@@ -14,7 +14,7 @@ export const FilterModal = () => {
     sort: "LATEST",
   });
   const handleFilter = () => {
-    console.log("refetching");
+    console.log("refetching", values);
     refetch();
   };
   return (
@@ -47,7 +47,13 @@ export const FilterModal = () => {
       </div>
       <div className="bg-neutral-500 w-2/3 h-full p-2">
         {filter === "color" ? (
-          <FilterMenu handleCheckBox={handleCheckBox} values={values} />
+          <FilterMenu
+            handleCheckBox={(key: string, value: boolean) =>
+              handleCheckBox(key, value, filter)
+            }
+            field={filter}
+            values={values}
+          />
         ) : null}
         {filter === "size" ? (
           <div>

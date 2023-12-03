@@ -14,8 +14,14 @@ export type FilterQueryProps = {
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const values = useAppSelector((state) => state.filterReducer.values);
-  const handleCheckBox = (key: string, value: boolean) => {
-    dispatch(setFilterValues({ ...values, [key]: value }));
+  const handleCheckBox = (key: string, value: boolean, filterName: string) => {
+    console.log(filterName);
+    dispatch(
+      setFilterValues({
+        ...values,
+        [key]: { value: value, filterName: filterName },
+      }),
+    );
   };
 
   const {
@@ -28,7 +34,8 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryKey: [props.queryKey],
     queryFn: async () => {
       const newValues = Object.keys(values).filter(
-        (value) => values[value] === true,
+        (value) =>
+          values[value].value === true && values[value].filterName === "color",
       );
       const queryString = querystring.stringify({ colorId: newValues });
       const response = await fetch(
