@@ -92,3 +92,16 @@ export const authUser = async (props: AuthUserProps) => {
     throw error;
   }
 };
+
+export function getFilterQueryValues({
+  values,
+  filterName,
+}: {
+  values: Record<string, any>;
+  filterName: string;
+}) {
+  return Object.keys(values).filter(
+    (value) =>
+      values[value].value === true && values[value].filterName === filterName,
+  );
+}

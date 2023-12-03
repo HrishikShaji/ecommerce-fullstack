@@ -9,40 +9,14 @@ export async function GET(request: Request) {
   const sizeId = searchParams.getAll("sizeId");
   const billboardId = searchParams.getAll("billboardId");
   const categoryId = searchParams.getAll("categoryId");
-  const colorObj =
-    colorId.length === 0
-      ? {}
-      : {
-          in: colorId,
-        };
-  const sizeObj =
-    sizeId.length === 0
-      ? {}
-      : {
-          in: sizeId,
-        };
-  const billboardObj =
-    billboardId.length === 0
-      ? {}
-      : {
-          in: billboardId,
-        };
-  const categoryObj =
-    categoryId.length === 0
-      ? {}
-      : {
-          in: categoryId,
-        };
-  console.log(
-    "colors are:",
-    colorId,
-    "sizes are:",
-    sizeId,
-    "billboards are:",
-    billboardId,
-    "categories are:",
-    categoryId,
-  );
+
+  function getFilterObj(values: string[]) {
+    return values.length === 0 ? {} : { in: values };
+  }
+  const colorObj = getFilterObj(colorId);
+  const sizeObj = getFilterObj(sizeId);
+  const billboardObj = getFilterObj(billboardId);
+  const categoryObj = getFilterObj(categoryId);
   try {
     await authUser({});
     const count = await prisma.product.count();
