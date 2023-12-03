@@ -10,18 +10,13 @@ type FilterType = "color" | "size" | "billboard" | "category";
 export const FilterModal = () => {
   const [filter, setFilter] = useState<FilterType>("color");
 
-  const { setColors, values, refetch, handleCheckBox } = useFilterQuery({
+  const { values, refetch, handleCheckBox } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
     sort: "LATEST",
   });
-
   const handleFilter = () => {
-    const newValues = Object.keys(values).filter((value) => {
-      return values[value] === true;
-    });
-    setColors(newValues);
     refetch();
   };
   const { data, isError, isLoading } = useGetQuery({

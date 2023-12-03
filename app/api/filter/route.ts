@@ -4,20 +4,19 @@ import prisma from "@/app/lib/connect";
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
-  const colorId = Array(searchParams.get("colorId"));
+  const colorId = searchParams.getAll("colorId");
   const order = getSortOrder(request);
   const sizeId = searchParams.get("sizeId");
   const billboardId = searchParams.get("billboardId");
   const categoryId = searchParams.get("categoryId");
-
+  const queryObj =
+    colorId.length === 0
+      ? {}
+      : {
+          in: colorId,
+        };
   try {
     await authUser({});
-    const queryObj: any = {};
-    if (colorId) queryObj.colorId = colorId;
-    if (sizeId) queryObj.sizeId = sizeId;
-    if (billboardId) queryObj.billoardId = billboardId;
-    if (categoryId) queryObj.categoryId = categoryId;
-    console.log("colors are", colorId, colorId[0]);
     const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
@@ -33,14 +32,7 @@ export async function GET(request: Request) {
         createdAt: order,
       },
       where: {
-        OR: [
-          {
-            colorId: colorId[0],
-          },
-          {
-            colorId: colorId[1],
-          },
-        ],
+        colorId: queryObj,
       },
     });
 

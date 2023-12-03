@@ -4,6 +4,7 @@ import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import querystring from "querystring";
 
 export type FilterQueryProps = {
   page: number;
@@ -13,11 +14,11 @@ export type FilterQueryProps = {
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [colors, setColors] = useState<string[]>([]);
   const values = useAppSelector((state) => state.filterReducer.values);
   const handleCheckBox = (key: string, value: boolean) => {
     dispatch(setFilterValues({ ...values, [key]: value }));
   };
+
   const {
     data: response,
     isError,
@@ -27,8 +28,12 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   } = useQuery({
     queryKey: [props.queryKey],
     queryFn: async () => {
+      const newValues = Object.keys(values).filter(
+        (value) => values[value] === true,
+      );
+      const queryString = querystring.stringify({ colorId: newValues });
       const response = await fetch(
-        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&colorId=${colors}`,
+        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&${queryString}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -53,6 +58,5 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     refetch,
     isLoading,
     values,
-    setColors,
   };
 };
