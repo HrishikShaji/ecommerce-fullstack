@@ -1,4 +1,9 @@
-import { authUser, getSortOrder, itemsPerPage } from "@/app/lib/utils";
+import {
+  authUser,
+  getFilterObj,
+  getSortOrder,
+  itemsPerPage,
+} from "@/app/lib/utils";
 import prisma from "@/app/lib/connect";
 
 export async function GET(request: Request) {
@@ -10,13 +15,6 @@ export async function GET(request: Request) {
   const billboardId = searchParams.getAll("billboardId");
   const categoryId = searchParams.getAll("categoryId");
 
-  function getFilterObj(values: string[]) {
-    return values.length === 0 ? {} : { in: values };
-  }
-  const colorObj = getFilterObj(colorId);
-  const sizeObj = getFilterObj(sizeId);
-  const billboardObj = getFilterObj(billboardId);
-  const categoryObj = getFilterObj(categoryId);
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -34,10 +32,10 @@ export async function GET(request: Request) {
         createdAt: order,
       },
       where: {
-        colorId: colorObj,
-        sizeId: sizeObj,
-        billoardId: billboardObj,
-        categoryId: categoryObj,
+        colorId: getFilterObj(colorId),
+        sizeId: getFilterObj(sizeId),
+        billoardId: getFilterObj(billboardId),
+        categoryId: getFilterObj(categoryId),
       },
     });
 

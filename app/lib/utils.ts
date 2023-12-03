@@ -1,6 +1,7 @@
 import { ZodError, z } from "zod";
 import { authOptions } from "./auth";
 import { getServerSession, Session } from "next-auth";
+import querystring from "querystring";
 
 export const itemsPerPage = 10;
 
@@ -104,4 +105,31 @@ export function getFilterQueryValues({
     (value) =>
       values[value].value === true && values[value].filterName === filterName,
   );
+}
+export function getFilterQueryString({
+  values,
+  filterNames,
+}: {
+  values: Record<string, any>;
+  filterNames: string[];
+}) {
+  const newValues = filterNames.map((filterName) => {
+    const filterIds = getFilterQueryValues({
+      values: values,
+      filterName: filterName,
+    });
+    return querystring.stringify({ [`${filterName}Id`]: filterIds });
+  });
+  return newValues.join("&");
+}
+export function getFilterObj(values: string[]) {
+  return values.length === 0 ? {} : { in: values };
+}
+
+export function capitalizeFirstChar(string: string) {
+  const letters = string.split("");
+  const firstLetter = letters[0].toUpperCase();
+  letters.shift();
+
+  return firstLetter.concat(letters.join(""));
 }
