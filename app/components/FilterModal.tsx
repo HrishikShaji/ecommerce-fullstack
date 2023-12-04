@@ -8,7 +8,7 @@ const filters: FilterType[] = ["color", "size", "category", "billboard"];
 
 export const FilterModal = () => {
   const [filter, setFilter] = useState<FilterType>("color");
-  const { values, refetch, handleCheckBox } = useFilterQuery({
+  const { values, refetch } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
@@ -33,9 +33,6 @@ export const FilterModal = () => {
             label="Color"
             endpoint="color"
             queryKey="colors"
-            handleCheckBox={(key: string, value: boolean) =>
-              handleCheckBox(key, value, filter)
-            }
             field={filter}
             values={values}
           />
@@ -45,9 +42,6 @@ export const FilterModal = () => {
             label="Size"
             endpoint="size"
             queryKey="sizes"
-            handleCheckBox={(key: string, value: boolean) =>
-              handleCheckBox(key, value, filter)
-            }
             field={filter}
             values={values}
           />
@@ -57,9 +51,6 @@ export const FilterModal = () => {
             label="Category"
             endpoint="category"
             queryKey="categories"
-            handleCheckBox={(key: string, value: boolean) =>
-              handleCheckBox(key, value, filter)
-            }
             field={filter}
             values={values}
           />
@@ -69,9 +60,6 @@ export const FilterModal = () => {
             label="Billboard"
             endpoint="billboard"
             queryKey="billboards"
-            handleCheckBox={(key: string, value: boolean) =>
-              handleCheckBox(key, value, filter)
-            }
             field={filter}
             values={values}
           />
