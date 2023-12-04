@@ -1,18 +1,21 @@
 "use client";
 
-import { productPayload } from "../lib/validators/Product";
+import { ProductPayload, productPayload } from "../lib/validators/Product";
 import Button from "./ui/Button";
 import Dropdown from "./ui/Dropdown";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
+import ImageUploader from "./ui/ImageUploader";
 import InputField from "./ui/InputField";
 import { useForm } from "./ui/useForm";
 
-const initialValues = {
+const initialValues: ProductPayload = {
   name: "",
   billboardId: "",
   categoryId: "",
   sizeId: "",
   colorId: "",
+  images: [],
+  price: 0,
 };
 const initialErrors = {
   name: "",
@@ -20,6 +23,8 @@ const initialErrors = {
   categoryId: "",
   sizeId: "",
   colorId: "",
+  images: "",
+  price: "",
 };
 const ProductForm = () => {
   const {
@@ -30,6 +35,7 @@ const ProductForm = () => {
     error,
     handleDropdown,
     handleChange,
+    handleImages,
     errors,
   } = useForm({
     initialErrors: initialErrors,
@@ -98,6 +104,25 @@ const ProductForm = () => {
             label="Color"
           />
           <ErrorMessageForm value={errors.colorId} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ImageUploader
+            value={values.images}
+            label="Image"
+            onChange={(values) => handleImages("images", values)}
+          />
+          <ErrorMessageForm value={errors.images} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.price}
+            onChange={(value) => handleChange("price", value)}
+            placeholder="price"
+            type="number"
+            label="Price"
+          />
+          <ErrorMessageForm value={errors.price} />
         </div>
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}

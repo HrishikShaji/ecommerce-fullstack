@@ -9,6 +9,7 @@ import {
   updateCategoryPayload,
 } from "../lib/validators/category";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
+import { ImageUpdate } from "./ui/ImageUpdate";
 
 interface CategoryUpdateFormProps {
   data: CategoryChild;
@@ -16,6 +17,7 @@ interface CategoryUpdateFormProps {
 
 const initialErrors = {
   name: "",
+  images: "",
 };
 
 export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = (
@@ -29,6 +31,7 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = (
     error,
     handleClick,
     handleChange,
+    handleImages,
   } = useForm({
     initialErrors: initialErrors,
     validator: updateCategoryPayload,
@@ -46,6 +49,11 @@ export const CategoryUpdateForm: React.FC<CategoryUpdateFormProps> = (
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
       <div className="flex flex-col gap-2 justify-start items-end">
+        <ImageUpdate
+          value={props.data.images}
+          onChange={(values) => handleImages("images", values)}
+        />
+        <ErrorMessageForm value={errors.images} />
         <InputField
           validator={""}
           value={values.name}

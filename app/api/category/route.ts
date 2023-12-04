@@ -18,13 +18,14 @@ export async function POST(request: Request) {
         status: 400,
       });
     }
-    const { name, parentId } = validatedPayload.data;
+    const { name, parentId, images } = validatedPayload.data;
     if (validatedPayload.data.parentId) {
       const category = await prisma.category.create({
         data: {
           name: name,
           parentId: parentId,
           userId: user.user.id,
+          images: images,
         },
       });
       return new Response(JSON.stringify(category), { status: 200 });
@@ -65,6 +66,7 @@ export const getCategories = (
       userId: cat.userId,
       createdAt: cat.createdAt,
       updatedAt: cat.updatedAt,
+      images: cat.images,
       children: getCategories(categories, cat.id),
     });
   }
@@ -148,13 +150,14 @@ export async function PATCH(request: Request) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const { id, name } = validatedPayload.data;
+    const { id, name, images } = validatedPayload.data;
     await prisma.category.update({
       where: {
         id: id,
       },
       data: {
         name: name,
+        images: images,
       },
     });
 

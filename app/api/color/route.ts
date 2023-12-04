@@ -1,5 +1,3 @@
-import { authOptions } from "@/app/lib/auth";
-import { Session, getServerSession } from "next-auth";
 import prisma from "@/app/lib/connect";
 import { authUser, getSortOrder, itemsPerPage } from "@/app/lib/utils";
 import { colorPayload, updateColorPayload } from "@/app/lib/validators/color";
@@ -16,11 +14,12 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const { name } = validatedPayload.data;
+    const { name, hexCode } = validatedPayload.data;
 
     await prisma.color.create({
       data: {
         name: name,
+        hexCode: hexCode,
       },
     });
 
@@ -82,7 +81,7 @@ export async function PATCH(request: Request) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const { id, name } = validatedPayload.data;
+    const { id, name, hexCode } = validatedPayload.data;
 
     await prisma.color.update({
       where: {
@@ -90,6 +89,7 @@ export async function PATCH(request: Request) {
       },
       data: {
         name: name,
+        hexCode: hexCode,
       },
     });
 

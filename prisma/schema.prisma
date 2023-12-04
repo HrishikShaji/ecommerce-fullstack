@@ -54,7 +54,9 @@ model User {
 
 model Product {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
+  name String
+  images String[]
+  price Int
 
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
@@ -77,9 +79,10 @@ updatedAt DateTime @updatedAt
 
 model Category {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
+  name String
   parentId String? @db.ObjectId
   products Product[]
+  images String[]
   userId String @db.ObjectId
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 createdAt DateTime @default(now())
@@ -93,7 +96,7 @@ enum Role {
 model BillBoard {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
+  name String
   parentId String? @db.ObjectId
   products Product[]
   userId String @db.ObjectId
@@ -107,7 +110,7 @@ updatedAt DateTime @updatedAt
 model Size {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
+  name String
   products Product[]
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt
@@ -116,8 +119,8 @@ updatedAt DateTime @updatedAt
 model Color {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
-  name String?
-  hexCode String?
+  name String
+  hexCode String
   products Product[]
 createdAt DateTime @default(now())
 updatedAt DateTime @updatedAt

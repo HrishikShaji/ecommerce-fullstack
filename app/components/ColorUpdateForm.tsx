@@ -16,6 +16,7 @@ interface ColorUpdateFormProps {
 
 const initialErrors = {
   name: "",
+  hexCode: "",
 };
 
 export const ColorUpdateForm: React.FC<ColorUpdateFormProps> = (props) => {
@@ -53,6 +54,15 @@ export const ColorUpdateForm: React.FC<ColorUpdateFormProps> = (props) => {
           label="Name"
         />
         <ErrorMessageForm value={errors.name} />
+        <InputField
+          validator={""}
+          value={values.hexCode}
+          onChange={(value) => handleChange("hexCode", value)}
+          placeholder="hexCode"
+          type="text"
+          label="HexCode"
+        />
+        <ErrorMessageForm value={errors.hexCode} />
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button label="Update" isPending={isPending} />

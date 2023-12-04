@@ -10,6 +10,7 @@ import {
 } from "../lib/validators/Product";
 import { ProductChild } from "@/types/types";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
+import { ImageUpdate } from "./ui/ImageUpdate";
 
 interface ProductUpdateFormProps {
   data: ProductChild;
@@ -21,6 +22,8 @@ const initialErrors = {
   categoryId: "",
   sizeId: "",
   colorId: "",
+  images: "",
+  price: "",
 };
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
   const {
@@ -31,6 +34,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
     handleClick,
     handleChange,
     handleDropdown,
+    handleImages,
     errors,
   } = useForm({
     initialErrors: initialErrors,
@@ -63,6 +67,17 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             label="Name"
           />
           <ErrorMessageForm value={errors.name} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.price}
+            onChange={(value) => handleChange("price", value)}
+            placeholder="price"
+            type="number"
+            label="Price"
+          />
+          <ErrorMessageForm value={errors.price} />
         </div>
         <div className="flex flex-col gap-2">
           <Dropdown
@@ -107,6 +122,13 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             label="Color"
           />
           <ErrorMessageForm value={errors.colorId} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <ImageUpdate
+            value={props.data.images}
+            onChange={(values) => handleImages("images", values)}
+          />
+          <ErrorMessageForm value={errors.images} />
         </div>
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}

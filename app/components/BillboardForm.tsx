@@ -8,6 +8,7 @@ import {
   BillboardPayload,
   billboardPayload,
 } from "../lib/validators/Billboard";
+import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 
 const initialValues: BillboardPayload = {
   name: "",
@@ -50,17 +51,13 @@ const BillboardForm = () => {
           type="text"
           label="Name"
         />
-        {errors.name !== "" ? (
-          <h1 className="text-red-500">{errors.name}</h1>
-        ) : null}
+        <ErrorMessageForm value={errors.name} />
         <ImageUploader
           value={values.images}
           label="Image"
           onChange={(values) => handleImages("images", values)}
         />
-        {errors.images !== "" ? (
-          <h1 className="text-red-500">{errors.images}</h1>
-        ) : null}
+        <ErrorMessageForm value={errors.images} />
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button label="Add" isPending={isPending} />

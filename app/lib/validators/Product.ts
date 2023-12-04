@@ -1,4 +1,4 @@
-import {  z } from "zod";
+import { z } from "zod";
 
 export const productPayload = z.object({
   name: z
@@ -17,6 +17,13 @@ export const productPayload = z.object({
   colorId: z
     .string({ required_error: "color is required" })
     .min(1, { message: "color is required" }),
+  images: z
+    .string({ required_error: "image is required" })
+    .array()
+    .min(1, { message: "must upload an image" }),
+  price: z
+    .number({ required_error: "price is required" })
+    .min(1, { message: "price is required" }),
 });
 
 export type ProductPayload = z.infer<typeof productPayload>;
@@ -39,6 +46,13 @@ export const updateProductPayload = z.object({
   colorId: z
     .string({ required_error: "color is required" })
     .min(1, { message: "color is required" }),
+  images: z
+    .string({ required_error: "image is required" })
+    .array()
+    .min(1, { message: "must upload an image" }),
+  price: z
+    .number({ required_error: "price is required" })
+    .min(1, { message: "price is required" }),
 });
 
 export type UpdateProductPayload = z.infer<typeof updateProductPayload>;

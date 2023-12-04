@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const { name, categoryId, billboardId, sizeId, colorId } =
+    const { images, price, name, categoryId, billboardId, sizeId, colorId } =
       validatedPayload.data;
 
     await prisma.product.create({
@@ -28,6 +28,8 @@ export async function POST(request: Request) {
         billoardId: billboardId,
         sizeId: sizeId,
         colorId: colorId,
+        price: price,
+        images: images,
       },
     });
 
@@ -49,8 +51,16 @@ export async function PATCH(request: Request) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const { name, categoryId, billboardId, sizeId, colorId, id } =
-      validatedPayload.data;
+    const {
+      price,
+      images,
+      name,
+      categoryId,
+      billboardId,
+      sizeId,
+      colorId,
+      id,
+    } = validatedPayload.data;
     await prisma.product.update({
       where: {
         id: id,
@@ -61,6 +71,8 @@ export async function PATCH(request: Request) {
         billoardId: billboardId,
         colorId: colorId,
         sizeId: sizeId,
+        images: images,
+        price: price,
       },
     });
 
