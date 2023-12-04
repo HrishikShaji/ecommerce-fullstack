@@ -2,3 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
+#startRange {
+  overflow: hidden;
+  height:10px;
+      
+      -webkit-appearance: none;
+      background-color: blue;
+      position:relative
+}
+
+#startRange::-webkit-slider-runnable-track {
+      -webkit-appearance: none;
+      color: black;
+}
+
+
+    #startRange::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 10px;
+      cursor: pointer;
+      background: black;
+      box-shadow: -80px 0 0 80px white;
+    }
+
+    #endRange {
+  overflow: hidden;
+  height:10px;
+      -webkit-appearance: none;
+      background-color: white;
+}
+
+#endRange::-webkit-slider-runnable-track {
+height: 100%;
+      -webkit-appearance: none;
+      color: black;
+}
+
+
+    #endRange::-webkit-slider-thumb {
+      width: 10px;
+      -webkit-appearance: none;
+      height: 10px;
+      cursor: pointer;
+      background: black;
+      box-shadow: -80px 0 0 80px blue;
+    }

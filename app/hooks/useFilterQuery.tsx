@@ -14,7 +14,7 @@ export type FilterQueryProps = {
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const values = useAppSelector((state) => state.filterReducer.values);
-  const handleCheckBox = ({
+  const setFilterCheckBoxValues = ({
     key,
     value,
     filterName,
@@ -63,7 +63,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   const data = response?.data;
   const count = response?.count;
   return {
-    handleCheckBox,
+    setFilterCheckBoxValues,
     count,
     data,
     error,

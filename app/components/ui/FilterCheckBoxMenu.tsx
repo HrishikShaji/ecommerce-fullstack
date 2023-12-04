@@ -21,7 +21,7 @@ export const FilterCheckBoxMenu: React.FC<FilterCheckBoxMenuProps> = (
     page: 1,
     sort: "LATEST",
   });
-  const { handleCheckBox } = useFilterQuery({
+  const { setFilterCheckBoxValues } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
@@ -39,7 +39,7 @@ export const FilterCheckBoxMenu: React.FC<FilterCheckBoxMenuProps> = (
             <CheckBox
               key={item.id}
               onChange={(value: boolean) =>
-                handleCheckBox({
+                setFilterCheckBoxValues({
                   key: item.id as string,
                   value: value,
                   filterName: props.field,
