@@ -61,6 +61,8 @@ const Row: React.FC<RowProps> = (props) => {
           const itemValue =
             item.name === "createdAt"
               ? format(new Date(item.value), "yyyy-MM-dd")
+              : item.name === "price"
+              ? `${item.value}$`
               : item.value;
           return (
             <td

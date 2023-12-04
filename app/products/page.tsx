@@ -6,10 +6,11 @@ import { useFilterQuery } from "../hooks/useFilterQuery";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
+import Image from "next/image";
 
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, isError, error, isLoading, refetch } = useFilterQuery({
+  const { data, isError, isLoading } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
@@ -25,17 +26,28 @@ const Page = () => {
       >
         Filter
       </button>
-      <div className="w-full min-h-screen p-10 grid grid-cols-3 gap-4">
+      <div className="w-full  p-10 grid grid-cols-3 gap-4">
         {data.length === 0 ? (
           <h1>No Results</h1>
         ) : (
           data.map((item: ProductChild) => (
-            <div key={item.id} className="p-2 bg-neutral-600 rounded-md">
-              <h1>{item.name}</h1>
-              <h1>{item.color.name}</h1>
-              <h1>{item.size.name}</h1>
-              <h1>{item.billboard.name}</h1>
-              <h1>{item.category.name}</h1>
+            <div
+              key={item.id}
+              className="p-2 bg-neutral-700 flex flex-col gap-3 rounded-md"
+            >
+              <div className="bg-white h-[200px] w-[200px] rounded-md flex justify-center items-center p-5">
+                <Image
+                  className="h-[150px] w-[150px]  object-contain"
+                  alt="image"
+                  height={1000}
+                  width={1000}
+                  src={item.images[0]}
+                />
+              </div>
+              <div>
+                <h1 className="font-semibold ">{item.name}</h1>
+                <h1 className="text-xs font-semibold">{`${item.price}$`}</h1>
+              </div>
             </div>
           ))
         )}

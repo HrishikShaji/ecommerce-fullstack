@@ -63,11 +63,20 @@ const ProductSection = () => {
               "size",
               "color",
               "createdAt",
+              "price",
             ]}
             endpoint="product"
             queryKey="products"
             data={data}
-            headings={["Product", "Billboard", "Category", "Size", "Color"]}
+            headings={[
+              "Product",
+              "Billboard",
+              "Category",
+              "Size",
+              "Color",
+              "Date",
+              "Price",
+            ]}
             mode="product"
           />
         )}
