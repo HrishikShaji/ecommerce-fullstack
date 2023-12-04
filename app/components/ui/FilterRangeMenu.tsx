@@ -1,21 +1,32 @@
-import { useState } from "react";
+import { useFilterQuery } from "@/app/hooks/useFilterQuery";
+import { useEffect, useState } from "react";
 
 interface FilterRangeMenuProps {
   label: string;
-  start: number;
-  end: number;
 }
 
 export const FilterRangeMenu: React.FC<FilterRangeMenuProps> = (props) => {
-  const [startValue, setStartValue] = useState(0);
-  const [endValue, setEndValue] = useState(10000);
-  console.log(startValue, endValue);
+  const { setFilterRangeValues, values } = useFilterQuery({
+    endpoint: "filter",
+    queryKey: "filters",
+    page: 1,
+    sort: "LATEST",
+  });
+  const [startValue, setStartValue] = useState(
+    values?.price?.min ? values.price.min : 0,
+  );
+  const [endValue, setEndValue] = useState(
+    values?.price?.max ? values.price.max : 10000,
+  );
+  useEffect(() => {
+    setFilterRangeValues({ startValue: startValue, endValue: endValue });
+  }, [startValue, endValue]);
   return (
     <div className="flex flex-col gap-4">
       <h1>{props.label}</h1>
       <div className="w-full flex justify-between">
-        <h1>{props.start}$</h1>
-        <h1>{props.end}$</h1>
+        <h1>{startValue}$</h1>
+        <h1>{endValue}$</h1>
       </div>
       <div className="flex ">
         <input

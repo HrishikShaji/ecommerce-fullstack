@@ -3,7 +3,8 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { getFilterQueryString } from "../lib/utils";
+import { capitalizeFirstChar, getFilterQueryString } from "../lib/utils";
+import querystring from "querystring";
 
 export type FilterQueryProps = {
   page: number;
@@ -31,9 +32,41 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     );
   };
 
-  const queryString = getFilterQueryString({
+  const setFilterRangeValues = ({
+    startValue,
+    endValue,
+  }: {
+    startValue: number;
+    endValue: number;
+  }) => {
+    dispatch(
+      setFilterValues({
+        ...values,
+        price: { min: startValue, max: endValue },
+      }),
+    );
+  };
+
+  const queryCheckBoxString = getFilterQueryString({
     values: values,
     filterNames: ["color", "size", "category", "billboard"],
+  });
+  function getFilterRangeString({
+    values,
+    filterName,
+  }: {
+    values: Record<string, any>;
+    filterName: string;
+  }) {
+    const min = values[filterName].min;
+    const max = values[filterName].max;
+    const newFilterName = capitalizeFirstChar(filterName);
+
+    return `min${newFilterName}=${min}&max${newFilterName}=${max}`;
+  }
+  const queryRangeString = getFilterRangeString({
+    values: values,
+    filterName: "price",
   });
 
   const {
@@ -46,7 +79,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryKey: [props.queryKey],
     queryFn: async () => {
       const response = await fetch(
-        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&${queryString}`,
+        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&${queryCheckBoxString}&${queryRangeString}`,
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -64,6 +97,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   const count = response?.count;
   return {
     setFilterCheckBoxValues,
+    setFilterRangeValues,
     count,
     data,
     error,

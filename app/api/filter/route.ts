@@ -14,6 +14,9 @@ export async function GET(request: Request) {
   const sizeId = searchParams.getAll("sizeId");
   const billboardId = searchParams.getAll("billboardId");
   const categoryId = searchParams.getAll("categoryId");
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
+  console.log(minPrice, maxPrice);
 
   try {
     await authUser({});
