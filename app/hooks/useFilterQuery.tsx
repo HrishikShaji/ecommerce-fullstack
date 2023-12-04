@@ -14,7 +14,15 @@ export type FilterQueryProps = {
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const values = useAppSelector((state) => state.filterReducer.values);
-  const handleCheckBox = (key: string, value: boolean, filterName: string) => {
+  const handleCheckBox = ({
+    key,
+    value,
+    filterName,
+  }: {
+    key: string;
+    value: boolean;
+    filterName: string;
+  }) => {
     dispatch(
       setFilterValues({
         ...values,
@@ -22,6 +30,11 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       }),
     );
   };
+
+  const queryString = getFilterQueryString({
+    values: values,
+    filterNames: ["color", "size", "category", "billboard"],
+  });
 
   const {
     data: response,
@@ -32,12 +45,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   } = useQuery({
     queryKey: [props.queryKey],
     queryFn: async () => {
-      const queryString = getFilterQueryString({
-        values: values,
-        filterNames: ["color", "size", "category", "billboard"],
-      });
-
-      console.log("finalValues", queryString);
       const response = await fetch(
         `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&${queryString}`,
         {

@@ -4,7 +4,7 @@ import CheckBox from "./CheckBox";
 import { EndpointType, QueryKey } from "@/types/types";
 import { useFilterQuery } from "@/app/hooks/useFilterQuery";
 
-interface FilterMenuProps {
+interface FilterCheckBoxMenuProps {
   values: Record<string, any>;
   field: string;
   endpoint: EndpointType;
@@ -12,7 +12,9 @@ interface FilterMenuProps {
   label: string;
 }
 
-export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
+export const FilterCheckBoxMenu: React.FC<FilterCheckBoxMenuProps> = (
+  props,
+) => {
   const { data, isError, isLoading } = useGetQuery({
     endpoint: props.endpoint,
     queryKey: props.queryKey,
@@ -37,7 +39,11 @@ export const FilterMenu: React.FC<FilterMenuProps> = (props) => {
             <CheckBox
               key={item.id}
               onChange={(value: boolean) =>
-                handleCheckBox(item.id as string, value, props.field)
+                handleCheckBox({
+                  key: item.id as string,
+                  value: value,
+                  filterName: props.field,
+                })
               }
               label={item.name as string}
               selected={props.values[item.id]?.value}

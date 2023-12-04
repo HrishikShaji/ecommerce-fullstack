@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useFilterQuery } from "../hooks/useFilterQuery";
-import { FilterMenu } from "./ui/FilterMenu";
 import { capitalizeFirstChar } from "../lib/utils";
+import { FilterCheckBoxMenu } from "./ui/FilterCheckBoxMenu";
+import { FilterRangeMenu } from "./ui/FilterRangeMenu";
 
-type FilterType = "color" | "size" | "billboard" | "category";
-const filters: FilterType[] = ["color", "size", "category", "billboard"];
+const filters = ["color", "size", "category", "billboard", "price"];
 
 export const FilterModal = () => {
-  const [filter, setFilter] = useState<FilterType>("color");
+  const [filter, setFilter] = useState("color");
   const { values, refetch } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
@@ -16,11 +16,11 @@ export const FilterModal = () => {
   });
   return (
     <div className="flex w-[500px] h-[300px] rounded-md overflow-hidden relative">
-      <div className="bg-neutral-600 w-1/3 h-full flex flex-col gap-2 p-1">
+      <div className="bg-neutral-600 w-1/3 h-full flex flex-col  p-1">
         {filters.map((filter) => (
           <button
             key={filter}
-            className="hover:bg-neutral-800   border-b-2 border-black text-left px-2"
+            className="hover:bg-neutral-800   border-b-2 border-black py-1 text-left px-2"
             onClick={() => setFilter(filter)}
           >
             {capitalizeFirstChar(filter)}
@@ -29,7 +29,7 @@ export const FilterModal = () => {
       </div>
       <div className="bg-neutral-500 w-2/3 h-full p-2">
         {filter === "color" ? (
-          <FilterMenu
+          <FilterCheckBoxMenu
             label="Color"
             endpoint="color"
             queryKey="colors"
@@ -38,7 +38,7 @@ export const FilterModal = () => {
           />
         ) : null}
         {filter === "size" ? (
-          <FilterMenu
+          <FilterCheckBoxMenu
             label="Size"
             endpoint="size"
             queryKey="sizes"
@@ -47,7 +47,7 @@ export const FilterModal = () => {
           />
         ) : null}
         {filter === "category" ? (
-          <FilterMenu
+          <FilterCheckBoxMenu
             label="Category"
             endpoint="category"
             queryKey="categories"
@@ -56,13 +56,16 @@ export const FilterModal = () => {
           />
         ) : null}
         {filter === "billboard" ? (
-          <FilterMenu
+          <FilterCheckBoxMenu
             label="Billboard"
             endpoint="billboard"
             queryKey="billboards"
             field={filter}
             values={values}
           />
+        ) : null}
+        {filter === "price" ? (
+          <FilterRangeMenu start={0} end={10000} label="Price" />
         ) : null}
       </div>
       <button
