@@ -18,6 +18,22 @@ export async function GET(request: Request) {
   const maxPrice = searchParams.get("maxPrice");
   console.log(minPrice, maxPrice);
 
+  function getFilterRange({ min, max }: { min: string; max: string }) {
+    let value = {};
+    if (min && max) {
+      value = {
+        lte: Number(max),
+        gte: Number(min),
+      };
+    } else {
+      value = {
+        lte: 10000,
+        gte: 0,
+      };
+    }
+    return value;
+  }
+  const priceObj = getFilterRange;
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -39,6 +55,7 @@ export async function GET(request: Request) {
         sizeId: getFilterObj(sizeId),
         billoardId: getFilterObj(billboardId),
         categoryId: getFilterObj(categoryId),
+        price: priceObj,
       },
     });
 

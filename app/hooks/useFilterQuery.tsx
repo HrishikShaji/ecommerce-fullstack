@@ -58,11 +58,13 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     values: Record<string, any>;
     filterName: string;
   }) {
-    const min = values[filterName].min;
-    const max = values[filterName].max;
-    const newFilterName = capitalizeFirstChar(filterName);
+    const min = values[filterName]?.min;
+    const max = values[filterName]?.max;
+    if (min && max) {
+      const newFilterName = capitalizeFirstChar(filterName);
 
-    return `min${newFilterName}=${min}&max${newFilterName}=${max}`;
+      return `min${newFilterName}=${min}&max${newFilterName}=${max}`;
+    }
   }
   const queryRangeString = getFilterRangeString({
     values: values,
