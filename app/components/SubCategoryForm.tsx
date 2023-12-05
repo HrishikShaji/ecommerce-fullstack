@@ -2,9 +2,10 @@
 
 import InputField from "./ui/InputField";
 import Button from "./ui/Button";
-import { useForm } from "./ui/useForm";
+import { useForm } from "./ui/hooks/useForm";
 import { CategoryPayload, categoryPayload } from "../lib/validators/category";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
+import ImageUploader from "./ui/ImageUploader";
 
 interface SubCategoryFormProps {
   parentId: string;
@@ -14,10 +15,12 @@ const SubCategoryForm: React.FC<SubCategoryFormProps> = (props) => {
   const initialValues: CategoryPayload = {
     name: "",
     parentId: props.parentId,
+    images: [],
   };
   const initialErrors = {
     name: "",
     parentId: "",
+    images: "",
   };
   const {
     values,
@@ -27,6 +30,7 @@ const SubCategoryForm: React.FC<SubCategoryFormProps> = (props) => {
     errors,
     handleClick,
     handleChange,
+    handleImages,
   } = useForm({
     validator: categoryPayload,
     initialErrors: initialErrors,
@@ -49,6 +53,14 @@ const SubCategoryForm: React.FC<SubCategoryFormProps> = (props) => {
           label="Name"
         />
         <ErrorMessageForm value={errors.name} />
+        <div className="flex flex-col gap-2">
+          <ImageUploader
+            value={values.images}
+            label="Image"
+            onChange={(values) => handleImages("images", values)}
+          />
+          <ErrorMessageForm value={errors.images} />
+        </div>
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}
       <Button label="Add" isPending={isPending} />

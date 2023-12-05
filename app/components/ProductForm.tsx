@@ -6,7 +6,7 @@ import Dropdown from "./ui/Dropdown";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 import ImageUploader from "./ui/ImageUploader";
 import InputField from "./ui/InputField";
-import { useForm } from "./ui/useForm";
+import { useForm } from "./ui/hooks/useForm";
 
 const initialValues: ProductPayload = {
   name: "",

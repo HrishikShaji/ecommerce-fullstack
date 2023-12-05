@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useImageUpload } from "./useImageUpload";
+import { useImageUpload } from "./hooks/useImageUpload";
 import { ChangeEvent } from "react";
 import { MdEdit } from "react-icons/md";
 import { Spinner } from "./Spinner";

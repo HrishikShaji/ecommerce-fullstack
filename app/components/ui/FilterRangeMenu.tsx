@@ -1,6 +1,5 @@
 "use client";
 import { useFilterQuery } from "@/app/hooks/useFilterQuery";
-import { useEffect, useState } from "react";
 import { InputRange } from "./InputRange";
 
 interface FilterRangeMenuProps {

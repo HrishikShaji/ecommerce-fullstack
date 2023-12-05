@@ -4,7 +4,7 @@ import { ChangeEvent, MouseEvent, useRef, useState } from "react";
 import { Spinner } from "./Spinner";
 import Image from "next/image";
 import { MdDelete, MdImage } from "react-icons/md";
-import { useImageUpload } from "./useImageUpload";
+import { useImageUpload } from "./hooks/useImageUpload";
 
 interface ImageUploaderProps {
   value: string[];

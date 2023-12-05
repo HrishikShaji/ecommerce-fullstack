@@ -5,7 +5,7 @@ import Table from "./ui/Table";
 import { SortObjectType } from "@/types/types";
 import { Sort } from "./ui/Sort";
 import { Pagination } from "./ui/Pagination";
-import { useDataTable } from "./ui/useDataTable";
+import { useDataTable } from "./ui/hooks/useDataTable";
 import { Spinner } from "./ui/Spinner";
 
 const billboardSortValues: SortObjectType[] = [
