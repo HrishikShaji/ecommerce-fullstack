@@ -16,10 +16,8 @@ export const FilterRangeMenu: React.FC<FilterRangeMenuProps> = (props) => {
   });
 
   const min = values?.price?.min ? values.price.min : 0;
-  const max = values?.price?.max ? values.price.max : 100;
+  const max = values?.price?.max ? values.price.max : 10000;
 
-  const [valuesd, setValues] = useState({});
-  console.log(valuesd);
   return (
     <div className="flex flex-col gap-4 text-white">
       <h1>{props.label}</h1>

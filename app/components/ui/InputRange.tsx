@@ -17,6 +17,13 @@ export const InputRange: React.FC<InputRangeProps> = ({
   const maxInputRef = useRef<HTMLInputElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
 
+  const left = minInputRef.current
+    ? (minValues / parseInt(minInputRef.current.max)) * 100 + "%"
+    : "0%";
+
+  const right = maxInputRef.current
+    ? 100 - (maxValues / parseInt(maxInputRef.current.max)) * 100 + "%"
+    : "0%";
   useEffect(() => {
     onChange({ min: minValue, max: maxValue });
   }, [minValue, maxValue]);
@@ -25,7 +32,7 @@ export const InputRange: React.FC<InputRangeProps> = ({
     if (minInputRef.current && maxInputRef.current && progressRef.current) {
       const rangeInput = [minInputRef.current, maxInputRef.current];
       const progress = progressRef.current;
-      let priceGap = 10;
+      let priceGap = 1000;
       rangeInput.forEach((input) => {
         input.addEventListener("input", (e) => {
           let minVal = parseInt(rangeInput[0].value);
@@ -39,6 +46,7 @@ export const InputRange: React.FC<InputRangeProps> = ({
               }
             }
           } else {
+            console.log(minVal, minValues);
             progress.style.left =
               (minVal / parseInt(rangeInput[0].max)) * 100 + "%";
             progress.style.right =
@@ -62,8 +70,8 @@ export const InputRange: React.FC<InputRangeProps> = ({
           ref={progressRef}
           style={{
             height: "5px",
-            left: "0%",
-            right: "0%",
+            left: left,
+            right: right,
             position: "absolute",
             borderRadius: "5px",
             background: "#17A2BB",
@@ -85,7 +93,7 @@ export const InputRange: React.FC<InputRangeProps> = ({
           type="range"
           className="range-min"
           min="0"
-          max="100"
+          max="10000"
           value={minValue}
           onChange={(e) => setMinValue(Number(e.target.value))}
         />
@@ -103,7 +111,7 @@ export const InputRange: React.FC<InputRangeProps> = ({
           type="range"
           className="range-max"
           min="0"
-          max="100"
+          max="10000"
           value={maxValue}
           onChange={(e) => setMaxValue(Number(e.target.value))}
         />
