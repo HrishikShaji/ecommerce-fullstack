@@ -12,8 +12,8 @@ position:relative
 
 .slider .progress{
 height:5px;
-left:25%;
-right:25%;
+left:0%;
+right:0%;
 position:absolute;
 border-radius:5px;
 background:#17A2BB;
@@ -42,55 +42,3 @@ pointer-events:auto;
 background:#17A2BB;
 }
 
-{
-	/*
-	 
-
-#startRange {
-  overflow: hidden;
-  height:10px;
-      
-      -webkit-appearance: none;
-      background-color: blue;
-      position:relative
-}
-
-#startRange::-webkit-slider-runnable-track {
-      -webkit-appearance: none;
-      color: black;
-}
-
-
-    #startRange::-webkit-slider-thumb {
-      width: 10px;
-      -webkit-appearance: none;
-      height: 10px;
-      cursor: pointer;
-      background: black;
-      box-shadow: -80px 0 0 80px white;
-    }
-
-    #endRange {
-  overflow: hidden;
-  height:10px;
-      -webkit-appearance: none;
-      background-color: white;
-}
-
-#endRange::-webkit-slider-runnable-track {
-height: 100%;
-      -webkit-appearance: none;
-      color: black;
-}
-
-
-    #endRange::-webkit-slider-thumb {
-      width: 10px;
-      -webkit-appearance: none;
-      height: 10px;
-      cursor: pointer;
-      background: black;
-      box-shadow: -80px 0 0 80px blue;
-    }
-	 */
-}
