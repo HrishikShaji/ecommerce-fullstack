@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import Image from "next/image";
+import { RangeSlider } from "../components/ui/RangeSlider";
 
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,6 +27,9 @@ const Page = () => {
       >
         Filter
       </button>
+      <div className="w-[400px] p-10">
+        <RangeSlider />
+      </div>
       <div className="w-full  p-10 grid grid-cols-3 gap-4">
         {data.length === 0 ? (
           <h1>No Results</h1>

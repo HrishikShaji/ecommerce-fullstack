@@ -4,7 +4,6 @@ import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { capitalizeFirstChar, getFilterQueryString } from "../lib/utils";
-import querystring from "querystring";
 
 export type FilterQueryProps = {
   page: number;
