@@ -31,17 +31,12 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     );
   };
 
-  const setFilterRangeValues = ({
-    startValue,
-    endValue,
-  }: {
-    startValue: number;
-    endValue: number;
-  }) => {
+  const setFilterRangeValues = ({ min, max }: { min: number; max: number }) => {
+    console.log(min, max);
     dispatch(
       setFilterValues({
         ...values,
-        price: { min: startValue, max: endValue },
+        price: { min: min, max: max },
       }),
     );
   };

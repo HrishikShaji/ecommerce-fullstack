@@ -1,15 +1,17 @@
-"use client";
 import { useEffect, useRef, useState } from "react";
 
-export const InputRange = () => {
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
+interface UseInputRangeProps {
+  minValue: number;
+  maxValue: number;
+}
 
+export const useInputRange = ({ minValue, maxValue }: UseInputRangeProps) => {
   const minInputRef = useRef<HTMLInputElement | null>(null);
   const maxInputRef = useRef<HTMLInputElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    console.log(minValue, maxValue);
     if (minInputRef.current && maxInputRef.current && progressRef.current) {
       const rangeInput = [minInputRef.current, maxInputRef.current];
       const progress = progressRef.current;
@@ -36,31 +38,11 @@ export const InputRange = () => {
       });
     }
   }, [maxValue, minValue]);
-  return (
-    <>
-      <div className="slider">
-        <div className="progress" ref={progressRef}></div>
-      </div>
-      <div className="range-input">
-        <input
-          ref={minInputRef}
-          type="range"
-          className="range-min"
-          min="0"
-          max="100"
-          value={minValue}
-          onChange={(e) => setMinValue(Number(e.target.value))}
-        />
-        <input
-          ref={maxInputRef}
-          type="range"
-          className="range-max"
-          min="0"
-          max="100"
-          value={maxValue}
-          onChange={(e) => setMaxValue(Number(e.target.value))}
-        />
-      </div>
-    </>
-  );
+  return {
+    minInputRef,
+    maxInputRef,
+    progressRef,
+    minValue,
+    maxValue,
+  };
 };

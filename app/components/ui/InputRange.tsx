@@ -1,13 +1,25 @@
-"use client";
 import { useEffect, useRef, useState } from "react";
 
-export const InputRange = () => {
-  const [minValue, setMinValue] = useState(0);
-  const [maxValue, setMaxValue] = useState(100);
+interface InputRangeProps {
+  minValues: number;
+  maxValues: number;
+  onChange: ({ min, max }: { min: number; max: number }) => void;
+}
 
+export const InputRange: React.FC<InputRangeProps> = ({
+  minValues,
+  maxValues,
+  onChange,
+}) => {
+  const [minValue, setMinValue] = useState(minValues);
+  const [maxValue, setMaxValue] = useState(maxValues);
   const minInputRef = useRef<HTMLInputElement | null>(null);
   const maxInputRef = useRef<HTMLInputElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    onChange({ min: minValue, max: maxValue });
+  }, [minValue, maxValue]);
 
   useEffect(() => {
     if (minInputRef.current && maxInputRef.current && progressRef.current) {

@@ -64,9 +64,7 @@ export const FilterModal = () => {
             values={values}
           />
         ) : null}
-        {filter === "price" ? (
-          <FilterRangeMenu start={0} end={10000} label="Price" />
-        ) : null}
+        {filter === "price" ? <FilterRangeMenu label="Price" /> : null}
       </div>
       <button
         onClick={() => refetch()}
