@@ -1,8 +1,35 @@
-import { useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 
 export const RangeSlider = () => {
   const [minValue, setMinValue] = useState(2000);
   const [maxValue, setMaxValue] = useState(8000);
+
+  useEffect(() => {
+    const rangeInput = document.querySelectorAll(".range-input input");
+    const progress = document.querySelector(".slider .progress");
+    let priceGap = 1000;
+    rangeInput.forEach((input) => {
+      input.addEventListener("input", (e) => {
+        let minVal = parseInt(rangeInput[0].value);
+        let maxVal = parseInt(rangeInput[1].value);
+
+        if (maxVal - minVal < priceGap) {
+          if (e.target.className === "range-min") {
+            rangeInput[0].value = maxVal - priceGap;
+          } else {
+            rangeInput[1].value = minVal + priceGap;
+          }
+        } else {
+          progress.style.left = (minVal / rangeInput[0].max) * 100 + "%";
+          progress.style.right = 100 - (maxVal / rangeInput[1].max) * 100 + "%";
+        }
+
+        let percent = (minVal / rangeInput[0].max) * 100;
+        console.log(percent);
+      });
+    });
+  }, [maxValue, minValue]);
   return (
     <>
       <div className="slider">
