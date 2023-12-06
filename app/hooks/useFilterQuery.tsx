@@ -3,7 +3,7 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { capitalizeFirstChar, getFilterQueryString } from "../lib/utils";
+import { getFilterQueryString, getFilterRangeString } from "../lib/utils";
 
 export type FilterQueryProps = {
   page: number;
@@ -32,7 +32,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   };
 
   const setFilterRangeValues = ({ min, max }: { min: number; max: number }) => {
-    console.log(min, max);
     dispatch(
       setFilterValues({
         ...values,
@@ -45,21 +44,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     values: values,
     filterNames: ["color", "size", "category", "billboard"],
   });
-  function getFilterRangeString({
-    values,
-    filterName,
-  }: {
-    values: Record<string, any>;
-    filterName: string;
-  }) {
-    const min = values[filterName]?.min;
-    const max = values[filterName]?.max;
-    if (min && max) {
-      const newFilterName = capitalizeFirstChar(filterName);
-
-      return `min${newFilterName}=${min}&max${newFilterName}=${max}`;
-    }
-  }
   const queryRangeString = getFilterRangeString({
     values: values,
     filterName: "price",

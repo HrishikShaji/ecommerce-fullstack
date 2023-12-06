@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const filterSlice = createSlice({
   name: "filter",
   initialState: {
-    values: {} as Record<string, any>,
+    values: { price: { min: 0, max: 10000 } } as Record<string, any>,
   },
   reducers: {
     setFilterValues: (state, action) => {

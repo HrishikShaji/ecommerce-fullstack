@@ -14,20 +14,17 @@ export const FilterRangeMenu: React.FC<FilterRangeMenuProps> = (props) => {
     sort: "LATEST",
   });
 
-  const min = values?.price?.min ? values.price.min : 0;
-  const max = values?.price?.max ? values.price.max : 10000;
-
   return (
     <div className="flex flex-col gap-4 text-white">
       <h1>{props.label}</h1>
       <div className="w-full flex justify-between">
-        <h1>{min}$</h1>
-        <h1>{max}$</h1>
+        <h1>{values.price.min}$</h1>
+        <h1>{values.price.max}$</h1>
       </div>
       <div>
         <InputRange
-          minValues={min}
-          maxValues={max}
+          minValues={values.price.min}
+          maxValues={values.price.max}
           onChange={setFilterRangeValues}
         />
       </div>

@@ -133,3 +133,17 @@ export function capitalizeFirstChar(string: string) {
 
   return firstLetter.concat(letters.join(""));
 }
+
+export function getFilterRangeString({
+  values,
+  filterName,
+}: {
+  values: Record<string, any>;
+  filterName: string;
+}) {
+  const min = values[filterName]?.min;
+  const max = values[filterName]?.max;
+  const newFilterName = capitalizeFirstChar(filterName);
+
+  return `min${newFilterName}=${min}&max${newFilterName}=${max}`;
+}
