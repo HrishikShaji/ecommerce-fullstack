@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,6 +17,8 @@ const Page = () => {
     page: 1,
     sort: "LATEST",
   });
+  const router = useRouter();
+
   if (isError) return <div className="text-white">Error</div>;
   if (isLoading) return <Spinner />;
   return (
@@ -36,7 +39,10 @@ const Page = () => {
               key={item.id}
               className="p-2 bg-neutral-700 flex flex-col gap-3 rounded-md"
             >
-              <div className="bg-white h-[200px] w-[200px] rounded-md flex justify-center items-center p-5">
+              <div
+                onClick={() => router.push(`/products/${item.id}`)}
+                className="bg-white h-[200px] w-[200px] rounded-md flex justify-center items-center p-5"
+              >
                 <Image
                   className="h-[150px] w-[150px]  object-contain"
                   alt="image"
