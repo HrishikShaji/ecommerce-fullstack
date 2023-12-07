@@ -70,7 +70,8 @@ export type QueryKey =
   | "search"
   | "sizes"
   | "colors"
-  | "filters";
+  | "filters"
+  | "product";
 
 export type ValidateTypePayload =
   | BillboardPayload
