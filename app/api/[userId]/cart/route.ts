@@ -73,3 +73,25 @@ export async function POST(request: Request) {
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    await authUser({});
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+    console.log("delete cartItem", id);
+    if (!id) {
+      return new Response(JSON.stringify("wrong input"), { status: 400 });
+    }
+    await prisma.cartItem.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return new Response(JSON.stringify("success"), { status: 200 });
+  } catch (error: any) {
+    return new Response(JSON.stringify(error.message), { status: 500 });
+  }
+}
