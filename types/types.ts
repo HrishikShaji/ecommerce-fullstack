@@ -71,7 +71,8 @@ export type QueryKey =
   | "sizes"
   | "colors"
   | "filters"
-  | "product";
+  | "product"
+  | "cart";
 
 export type ValidateTypePayload =
   | BillboardPayload

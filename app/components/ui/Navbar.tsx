@@ -13,7 +13,7 @@ export const Navbar = async () => {
       <h1>{session?.user?.role}</h1>
       <div className="flex gap-4">
         <UserAccount />
-        <Link href="/cart">
+        <Link href={`/${session.user.id}/cart`}>
           <LuShoppingCart size={25} />
         </Link>
       </div>
