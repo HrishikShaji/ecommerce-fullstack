@@ -17,7 +17,12 @@ export async function GET(request: Request, { params }: Params) {
         userId: params.userId,
       },
       include: {
-        cartItems: true,
+        cartItems: {
+          include: {
+            product: true,
+            cart: true,
+          },
+        },
       },
     });
     console.log(data);
