@@ -19,6 +19,9 @@ export async function GET(request: Request, { params }: Params) {
       where: {
         userId: params.userId,
       },
+      include: {
+        cartItems: true,
+      },
     });
     console.log(data);
     if (!data) {

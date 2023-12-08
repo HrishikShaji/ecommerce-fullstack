@@ -29,6 +29,24 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
     async jwt({ token, user }: { user?: User | undefined; token: JWT | any }) {
+      if (user && user.id) {
+        const loggedInUser = await prisma.user.findUnique({
+          where: {
+            id: user?.id,
+          },
+          include: {
+            cart: true,
+          },
+        });
+        if (loggedInUser?.cart === null) {
+          await prisma.cart.create({
+            data: {
+              userId: user.id,
+            },
+          });
+        }
+      }
+
       const users = await prisma.user.findMany({});
       if (users.length === 1 && token.email) {
         await prisma.user.update({
