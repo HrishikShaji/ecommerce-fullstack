@@ -14,6 +14,7 @@ const Page = () => {
 
   if (isError) return <div>Error</div>;
   if (isLoading) return <div>Loading...</div>;
+  console.log(data);
   return <div className="text-white">Cart</div>;
 };
 

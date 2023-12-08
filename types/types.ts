@@ -4,6 +4,7 @@ import {
   UpdateBillboardPayload,
 } from "@/app/lib/validators/Billboard";
 import { ProductPayload } from "@/app/lib/validators/Product";
+import { CartItemPayload } from "@/app/lib/validators/cartItem";
 import { CategoryPayload } from "@/app/lib/validators/category";
 import { ColorPayload } from "@/app/lib/validators/color";
 import { SizePayload } from "@/app/lib/validators/size";
@@ -26,7 +27,8 @@ export type PayloadType =
   | CategoryPayload
   | ProductPayload
   | SizePayload
-  | ColorPayload;
+  | ColorPayload
+  | CartItemPayload;
 
 export type ProductChild = Product & {
   category: Category;

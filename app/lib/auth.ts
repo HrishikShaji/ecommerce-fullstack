@@ -63,6 +63,9 @@ export const authOptions: NextAuthOptions = {
           where: {
             email: token.email,
           },
+          include: {
+            cart: true,
+          },
         });
         if (!dbUser) {
           token.id = user!.id;

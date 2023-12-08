@@ -27,11 +27,12 @@ const Page = () => {
   if (isLoading) return <div>Loading...</div>;
 
   const handleClick = () => {
-    const validatedData = cartItemPayload.safeParse(data.id);
+    const validatedData = cartItemPayload.safeParse({ productId: data.id });
     if (!validatedData.success) {
       throw new Error("error");
       return;
     }
+    add(validatedData.data);
   };
   return (
     <div className="text-white p-20">
