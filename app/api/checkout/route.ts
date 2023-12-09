@@ -1,5 +1,6 @@
 import prisma from "@/app/lib/connect";
 import { stripe } from "@/app/lib/stripe";
+import { authUser } from "@/app/lib/utils";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -13,18 +14,20 @@ export async function OPTIONS() {
   return NextResponse.json({}, { headers: corsHeaders });
 }
 
-export async function POST(
-  req: Request,
-  { params }: { params: { storeId: string } },
-) {
+export async function POST(req: Request) {
   const { productIds } = await req.json();
-
+  console.log("in the checkout", productIds);
+  const { user } = await authUser({});
+  if (!user || !user.id) {
+    return new NextResponse("user Ids are required", {
+      status: 400,
+    });
+  }
   if (!productIds || productIds.length === 0) {
     return new NextResponse("Product Ids are required", {
       status: 400,
     });
   }
-
   const products = await prisma.product.findMany({
     where: {
       id: {
@@ -50,7 +53,7 @@ export async function POST(
 
   const order = await prisma.order.create({
     data: {
-      storeId: params.storeId,
+      userId: user.id,
       isPaid: false,
       orderItems: {
         create: productIds.map((productId: string) => ({
@@ -63,6 +66,7 @@ export async function POST(
       },
     },
   });
+  console.log(order);
 
   const session = await stripe.checkout.sessions.create({
     line_items,
@@ -71,12 +75,13 @@ export async function POST(
     phone_number_collection: {
       enabled: true,
     },
-    success_url: `${process.env.FRONTEND_STORE_URL}/cart?success=1`,
-    cancel_url: `${process.env.FRONTEND_STORE_URL}/cart?canceled=1`,
+    success_url: `http://localhost:3000/${user.id}/cart?success=1`,
+    cancel_url: `http://localhost:3000/${user.id}/cart?canceled=1`,
     metadata: {
       order: order.id,
     },
   });
+  console.log("session is", session);
 
   return NextResponse.json({ url: session.url }, { headers: corsHeaders });
 }

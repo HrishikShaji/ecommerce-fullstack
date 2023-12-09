@@ -1,13 +1,16 @@
 "use client";
 
+import { useAddQuery } from "@/app/hooks/useAddQuery";
 import { useDeleteQuery } from "@/app/hooks/useDeleteQuery";
 import { useGetQuery } from "@/app/hooks/useGetQuery";
 import { Product } from "@prisma/client";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { userId } = useParams();
+  const router = useRouter();
   const { data, isError, isLoading, isSuccess } = useGetQuery({
     endpoint: `${userId}/cart`,
     queryKey: "cart",
@@ -24,9 +27,37 @@ const Page = () => {
     queryKey: "cart",
   });
 
+  const {
+    add,
+    isPending,
+    isError: isAddError,
+  } = useAddQuery({
+    endpoint: "checkout",
+    queryKey: "product",
+    reset: () => {},
+  });
+
+  const handleBuy = async (productIds: string[]) => {
+    console.log(productIds);
+    try {
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productIds }),
+      });
+
+      const data = await response.json();
+      router.push(data.url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (isError) return <div>Error</div>;
   if (deleteError) return <div>Delete Error</div>;
+  if (isAddError) return <div>Add Error</div>;
   if (isLoading) return <div>Loading...</div>;
+  if (isPending) return <div>Loading...</div>;
   return (
     <div className="text-white p-10">
       <div className="flex flex-col gap-4">
@@ -56,7 +87,10 @@ const Page = () => {
                 >
                   {isDeleting ? "Deleting" : "Remove"}
                 </button>
-                <button className="px-2 py-1 rounded-md bg-white text-black">
+                <button
+                  onClick={() => handleBuy([item.product.id])}
+                  className="px-2 py-1 rounded-md bg-white text-black"
+                >
                   Buy
                 </button>
               </div>

@@ -7,6 +7,7 @@ import { ProductPayload } from "@/app/lib/validators/Product";
 import { CartItemPayload } from "@/app/lib/validators/cartItem";
 import { CategoryPayload } from "@/app/lib/validators/category";
 import { ColorPayload } from "@/app/lib/validators/color";
+import { OrderPayload } from "@/app/lib/validators/order";
 import { SizePayload } from "@/app/lib/validators/size";
 import {
   BillBoard,
@@ -28,7 +29,8 @@ export type PayloadType =
   | ProductPayload
   | SizePayload
   | ColorPayload
-  | CartItemPayload;
+  | CartItemPayload
+  | OrderPayload;
 
 export type ProductChild = Product & {
   category: Category;
@@ -64,7 +66,9 @@ export type EndpointType =
   | "size"
   | "product"
   | "category"
-  | "filter";
+  | "filter"
+  | "checkout"
+  | "cart";
 export type QueryKey =
   | "billboards"
   | "products"
