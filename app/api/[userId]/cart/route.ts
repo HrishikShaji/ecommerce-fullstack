@@ -9,7 +9,6 @@ type Params = {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    console.log("its here", params.userId);
     await authUser({});
     const count = await prisma.cart.count();
     const data = await prisma.cart.findFirst({
@@ -25,7 +24,6 @@ export async function GET(request: Request, { params }: Params) {
         },
       },
     });
-    console.log(data);
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
