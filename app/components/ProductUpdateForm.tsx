@@ -24,6 +24,7 @@ const initialErrors = {
   colorId: "",
   images: "",
   price: "",
+  stock: "",
 };
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
   const {
@@ -47,6 +48,8 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       categoryId: props.data.categoryId,
       sizeId: props.data.sizeId,
       colorId: props.data.colorId,
+      price: props.data.price,
+      stock: props.data.stock,
     } as UpdateProductPayload,
     options: {
       endpoint: "product",
@@ -78,6 +81,18 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             label="Price"
           />
           <ErrorMessageForm value={errors.price} />
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.stock}
+            onChange={(value) => handleChange("stock", value)}
+            placeholder="stock"
+            type="number"
+            label="Stock"
+          />
+          <ErrorMessageForm value={errors.stock} />
         </div>
         <div className="flex flex-col gap-2">
           <Dropdown

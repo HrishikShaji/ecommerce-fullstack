@@ -64,6 +64,7 @@ const ProductSection = () => {
               "color",
               "createdAt",
               "price",
+              "stock",
             ]}
             endpoint="product"
             queryKey="products"

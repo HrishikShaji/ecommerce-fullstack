@@ -16,6 +16,7 @@ const initialValues: ProductPayload = {
   colorId: "",
   images: [],
   price: 0,
+  stock: 0,
 };
 const initialErrors = {
   name: "",
@@ -25,6 +26,7 @@ const initialErrors = {
   colorId: "",
   images: "",
   price: "",
+  stock: "",
 };
 const ProductForm = () => {
   const {
@@ -123,6 +125,17 @@ const ProductForm = () => {
             label="Price"
           />
           <ErrorMessageForm value={errors.price} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.stock}
+            onChange={(value) => handleChange("stock", value)}
+            placeholder="stock"
+            type="number"
+            label="Stock"
+          />
+          <ErrorMessageForm value={errors.stock} />
         </div>
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}

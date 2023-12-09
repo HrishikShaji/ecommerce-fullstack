@@ -24,6 +24,9 @@ export const productPayload = z.object({
   price: z.coerce
     .number({ required_error: "price is required" })
     .min(1, { message: "price is required" }),
+  stock: z.coerce
+    .number({ required_error: "stock is required" })
+    .min(1, { message: "stock is required" }),
 });
 
 export type ProductPayload = z.infer<typeof productPayload>;
@@ -50,9 +53,12 @@ export const updateProductPayload = z.object({
     .string({ required_error: "image is required" })
     .array()
     .min(1, { message: "must upload an image" }),
-  price: z
+  price: z.coerce
     .number({ required_error: "price is required" })
     .min(1, { message: "price is required" }),
+  stock: z.coerce
+    .number({ required_error: "stock is required" })
+    .min(1, { message: "stock is required" }),
 });
 
 export type UpdateProductPayload = z.infer<typeof updateProductPayload>;
