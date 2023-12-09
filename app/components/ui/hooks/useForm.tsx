@@ -27,6 +27,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   };
 
   const handleDropdown = (key: string, value: string) => {
+    console.log(key, value);
     setValues((prev) => ({
       ...prev,
       [key]: value,
@@ -41,6 +42,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   };
 
   const handleImages = (key: string, values: string[]) => {
+    console.log(key, values);
     setValues((prev) => ({
       ...prev,
       [key]: values,

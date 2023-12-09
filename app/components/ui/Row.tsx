@@ -63,6 +63,8 @@ const Row: React.FC<RowProps> = (props) => {
               ? format(new Date(item.value), "yyyy-MM-dd")
               : item.name === "price"
               ? `${item.value}$`
+              : item.name === "stock"
+              ? `${item.value}x`
               : item.value;
           return (
             <td

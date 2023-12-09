@@ -77,6 +77,7 @@ const ProductSection = () => {
               "Color",
               "Date",
               "Price",
+              "Stock",
             ]}
             mode="product"
           />
