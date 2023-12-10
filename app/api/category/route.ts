@@ -24,7 +24,6 @@ export async function POST(request: Request) {
         data: {
           name: name,
           parentId: parentId,
-          userId: user.user.id,
           images: images,
         },
       });
@@ -34,7 +33,7 @@ export async function POST(request: Request) {
     await prisma.category.create({
       data: {
         name: name,
-        userId: user.user.id,
+        images: images,
       },
     });
 
@@ -63,7 +62,6 @@ export const getCategories = (
       id: cat.id,
       name: cat.name,
       parentId: cat.parentId,
-      userId: cat.userId,
       createdAt: cat.createdAt,
       updatedAt: cat.updatedAt,
       images: cat.images,

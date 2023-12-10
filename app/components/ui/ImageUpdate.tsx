@@ -10,19 +10,12 @@ interface ImageUpdateProps {
 }
 
 export const ImageUpdate: React.FC<ImageUpdateProps> = (props) => {
-  console.log(props.value);
   const { startUpload, setFiles, isUploading, uploadedFiles, files } =
     useImageUpload({ value: props.value, onChange: props.onChange });
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
     setFiles(images);
   };
-
-  useEffect(() => {
-    if (files.length === 0) {
-      props.onChange(props.value);
-    }
-  }, [files.length]);
 
   const previewImage = (image: File) => {
     return URL.createObjectURL(image);

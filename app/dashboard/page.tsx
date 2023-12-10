@@ -1,9 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
-import BillBoardSection from "../components/BillboardSection";
 import CategorySection from "../components/CategorySection";
-import ProductSection from "../components/ProductSection";
 import SizeSection from "../components/SizeSection";
 import ColorSection from "../components/ColorSection";
 
@@ -14,16 +12,8 @@ type Section = {
 
 const sections: Section[] = [
   {
-    title: "Billboards",
-    component: BillBoardSection,
-  },
-  {
     title: "Categories",
     component: CategorySection,
-  },
-  {
-    title: "Products",
-    component: ProductSection,
   },
   {
     title: "Sizes",
