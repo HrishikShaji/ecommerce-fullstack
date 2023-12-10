@@ -1,4 +1,4 @@
-import { setFilterValues } from "@/redux/slices/filterSlice";
+import { setFilterValues, setCheckBoxValues } from "@/redux/slices/filterSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +14,9 @@ export type FilterQueryProps = {
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const values = useAppSelector((state) => state.filterReducer.values);
+  const checkboxValues = useAppSelector(
+    (state) => state.filterReducer.checkboxValues,
+  );
   const setFilterCheckBoxValues = ({
     key,
     value,
@@ -24,8 +27,8 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     filterName: string;
   }) => {
     dispatch(
-      setFilterValues({
-        ...values,
+      setCheckBoxValues({
+        ...checkboxValues,
         [key]: { value: value, filterName: filterName },
       }),
     );
@@ -41,7 +44,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   };
 
   const queryCheckBoxString = getFilterQueryString({
-    values: values,
+    values: checkboxValues,
     filterNames: ["color", "size", "category", "billboard"],
   });
   const queryRangeString = getFilterRangeString({
@@ -63,6 +66,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
+          cache: "reload",
         },
       );
       if (!response.ok) {
@@ -85,5 +89,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     refetch,
     isLoading,
     values,
+    checkboxValues,
   };
 };

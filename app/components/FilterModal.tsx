@@ -8,7 +8,7 @@ const filters = ["color", "size", "category", "billboard", "price"];
 
 export const FilterModal = () => {
   const [filter, setFilter] = useState("color");
-  const { values, refetch } = useFilterQuery({
+  const { values, refetch, checkboxValues } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
@@ -34,7 +34,7 @@ export const FilterModal = () => {
             endpoint="color"
             queryKey="colors"
             field={filter}
-            values={values}
+            values={checkboxValues}
           />
         ) : null}
         {filter === "size" ? (
@@ -43,7 +43,7 @@ export const FilterModal = () => {
             endpoint="size"
             queryKey="sizes"
             field={filter}
-            values={values}
+            values={checkboxValues}
           />
         ) : null}
         {filter === "category" ? (
@@ -52,7 +52,7 @@ export const FilterModal = () => {
             endpoint="category"
             queryKey="categories"
             field={filter}
-            values={values}
+            values={checkboxValues}
           />
         ) : null}
         {filter === "billboard" ? (
@@ -61,7 +61,7 @@ export const FilterModal = () => {
             endpoint="billboard"
             queryKey="billboards"
             field={filter}
-            values={values}
+            values={checkboxValues}
           />
         ) : null}
         {filter === "price" ? <FilterRangeMenu label="Price" /> : null}

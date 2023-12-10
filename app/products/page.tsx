@@ -4,20 +4,37 @@ import { ProductChild } from "@/types/types";
 import { Spinner } from "../components/ui/Spinner";
 import { useFilterQuery } from "../hooks/useFilterQuery";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { setFilterValues, setCheckBoxValues } from "@/redux/slices/filterSlice";
 
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data, isError, isLoading } = useFilterQuery({
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get("categoryId") as string;
+  const values = useAppSelector((state) => state.filterReducer.values);
+  const { data, isError, isLoading, refetch } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
     sort: "LATEST",
   });
+
+  console.log("cat id", categoryId, values);
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("refetching");
+    refetch();
+    dispatch(
+      setCheckBoxValues({
+        [categoryId]: { value: true, filterName: "category" },
+      }),
+    );
+  }, [dispatch, refetch, categoryId]);
 
   if (isError) return <div className="text-white">Error</div>;
   if (isLoading) return <Spinner />;
