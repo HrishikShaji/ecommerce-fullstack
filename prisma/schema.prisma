@@ -58,7 +58,6 @@ model Store {
   userId String @db.ObjectId
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   products      Product[]
-  categories    Category[]
   billboards    BillBoard[]
   orders        Order[]
 }
@@ -92,8 +91,6 @@ model Category {
   parentId String? @db.ObjectId
   products Product[]
   images String[]
-  storeId String @db.ObjectId
-  store         Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

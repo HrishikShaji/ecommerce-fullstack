@@ -1,5 +1,6 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { ProductPayload, productPayload } from "../lib/validators/Product";
 import Button from "./ui/Button";
 import Dropdown from "./ui/Dropdown";
@@ -29,6 +30,7 @@ const initialErrors = {
   stock: "",
 };
 const ProductForm = () => {
+  const { userId, storeId } = useParams();
   const {
     values,
     handleClick,
@@ -44,7 +46,7 @@ const ProductForm = () => {
     validator: productPayload,
     initialValues: initialValues,
     options: {
-      endpoint: "product",
+      endpoint: `${userId}/store/${storeId}/product`,
       queryKey: "products",
     },
     action: "Add",
@@ -65,7 +67,7 @@ const ProductForm = () => {
         </div>
         <div className="flex flex-col gap-2">
           <Dropdown
-            endpoint="billboard"
+            endpoint={`${userId}/store/${storeId}/billboard`}
             queryKey="billboards"
             placeholder="Select"
             value={values.billboardId}

@@ -9,6 +9,7 @@ import {
   billboardPayload,
 } from "../lib/validators/Billboard";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
+import { useParams } from "next/navigation";
 
 const initialValues: BillboardPayload = {
   name: "",
@@ -21,6 +22,7 @@ const initialErrors = {
 };
 
 const BillboardForm = () => {
+  const { userId, storeId } = useParams();
   const {
     values,
     isError,
@@ -36,7 +38,7 @@ const BillboardForm = () => {
     initialValues: initialValues,
     initialErrors: initialErrors,
     options: {
-      endpoint: "billboard",
+      endpoint: `${userId}/store/${storeId}/billboard`,
       queryKey: "billboards",
     },
   });

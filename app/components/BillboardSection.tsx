@@ -7,6 +7,7 @@ import { Sort } from "./ui/Sort";
 import { Pagination } from "./ui/Pagination";
 import { useDataTable } from "./ui/hooks/useDataTable";
 import { Spinner } from "./ui/Spinner";
+import { useParams } from "next/navigation";
 
 const billboardSortValues: SortObjectType[] = [
   {
@@ -20,6 +21,7 @@ const billboardSortValues: SortObjectType[] = [
 ];
 
 const BillBoardSection = () => {
+  const { userId, storeId } = useParams();
   const {
     data,
     count,
@@ -30,7 +32,7 @@ const BillBoardSection = () => {
     setSearchString,
     setSort,
   } = useDataTable({
-    endpoint: "billboard",
+    endpoint: `${userId}/store/${storeId}/billboard`,
     section: "billBoard",
     queryKey: "billboards",
     initialSortObj: billboardSortValues[0],
@@ -57,7 +59,7 @@ const BillBoardSection = () => {
         ) : (
           <Table
             lookup={["name", "createdAt"]}
-            endpoint="billboard"
+            endpoint={`${userId}/store/${storeId}/billboard`}
             queryKey="billboards"
             data={data}
             headings={["Billboard", "Date"]}

@@ -69,7 +69,8 @@ export type EndpointType =
   | "filter"
   | "checkout"
   | "cart"
-  | "store";
+  | "store"
+  | any;
 export type QueryKey =
   | "billboards"
   | "products"

@@ -10,6 +10,7 @@ import InputField from "./ui/InputField";
 import Button from "./ui/Button";
 import { ImageUpdate } from "./ui/ImageUpdate";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
+import { useParams } from "next/navigation";
 
 interface BillboardUpdateFormProps {
   data: BillBoard;
@@ -22,6 +23,7 @@ const initialErrors = {
 export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = (
   props,
 ) => {
+  const { userId, storeId } = useParams();
   const {
     values,
     isError,
@@ -41,7 +43,7 @@ export const BillboardUpdateForm: React.FC<BillboardUpdateFormProps> = (
       id: props.data.id,
     } as UpdateBillboardPayload,
     options: {
-      endpoint: "billboard",
+      endpoint: `${userId}/store/${storeId}/billboard`,
       queryKey: "billboards",
     },
   });

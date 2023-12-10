@@ -11,6 +11,7 @@ import {
 import { ProductChild } from "@/types/types";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 import { ImageUpdate } from "./ui/ImageUpdate";
+import { useParams } from "next/navigation";
 
 interface ProductUpdateFormProps {
   data: ProductChild;
@@ -27,6 +28,7 @@ const initialErrors = {
   stock: "",
 };
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
+  const { userId, storeId } = useParams();
   const {
     values,
     isError,
@@ -52,7 +54,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       stock: props.data.stock,
     } as UpdateProductPayload,
     options: {
-      endpoint: "product",
+      endpoint: `${userId}/store/${storeId}/product`,
       queryKey: "products",
     },
   });
@@ -96,7 +98,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
         </div>
         <div className="flex flex-col gap-2">
           <Dropdown
-            endpoint="billboard"
+            endpoint={`${userId}/store/${storeId}/billboard`}
             queryKey="billboards"
             placeholder="Select"
             value={values.billboardId}

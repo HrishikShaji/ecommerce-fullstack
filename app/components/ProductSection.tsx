@@ -7,6 +7,7 @@ import { Pagination } from "./ui/Pagination";
 import { useDataTable } from "./ui/hooks/useDataTable";
 import { Spinner } from "./ui/Spinner";
 import ProductForm from "./ProductForm";
+import { useParams } from "next/navigation";
 
 const productSortValues: SortObjectType[] = [
   {
@@ -20,6 +21,7 @@ const productSortValues: SortObjectType[] = [
 ];
 
 const ProductSection = () => {
+  const { userId, storeId } = useParams();
   const {
     data,
     count,
@@ -30,7 +32,7 @@ const ProductSection = () => {
     setSearchString,
     setSort,
   } = useDataTable({
-    endpoint: "product",
+    endpoint: `${userId}/store/${storeId}/product`,
     section: "product",
     queryKey: "products",
     initialSortObj: productSortValues[0],
@@ -66,7 +68,7 @@ const ProductSection = () => {
               "price",
               "stock",
             ]}
-            endpoint="product"
+            endpoint={`${userId}/store/${storeId}/product`}
             queryKey="products"
             data={data}
             headings={[
