@@ -68,7 +68,8 @@ export type EndpointType =
   | "category"
   | "filter"
   | "checkout"
-  | "cart";
+  | "cart"
+  | "store";
 export type QueryKey =
   | "billboards"
   | "products"
@@ -78,7 +79,8 @@ export type QueryKey =
   | "colors"
   | "filters"
   | "product"
-  | "cart";
+  | "cart"
+  | "store";
 
 export type ValidateTypePayload =
   | BillboardPayload

@@ -71,7 +71,7 @@ export const validatePayload = <T>({
 };
 
 interface AuthUserProps {
-  checkRole?: "ADMIN" | "USER";
+  checkRole?: "ADMIN" | "USER" | "SELLER";
 }
 
 export const authUser = async (props: AuthUserProps) => {
@@ -85,6 +85,12 @@ export const authUser = async (props: AuthUserProps) => {
     if (props.checkRole && props.checkRole === "ADMIN") {
       if (user.user.role !== "ADMIN") {
         throw new Error("Admin Privilege Required");
+      }
+    }
+
+    if (props.checkRole && props.checkRole === "SELLER") {
+      if (user.user.role !== "SELLER") {
+        throw new Error("Seller Privilege Required");
       }
     }
 

@@ -51,6 +51,13 @@ export const UserAccount = () => {
               Dashboard
             </Link>
           )}
+
+          <Link
+            className="py-2 px-5 hover:bg-neutral-600"
+            href={`/${data?.user.id}/profile`}
+          >
+            Profile
+          </Link>
           <button
             onClick={() => signOut()}
             className="py-2 hover:bg-neutral-600"
