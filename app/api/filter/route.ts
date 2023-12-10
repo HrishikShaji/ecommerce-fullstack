@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
-        user: true,
+        store: true,
         category: true,
         size: true,
         color: true,
@@ -65,7 +65,6 @@ export async function GET(request: Request) {
         price: priceObj,
       },
     });
-
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }

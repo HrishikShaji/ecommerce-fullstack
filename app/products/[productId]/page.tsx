@@ -11,7 +11,7 @@ const Page = () => {
   const { data: session } = useSession();
   const { productId } = useParams();
   const { data, refetch, isError, isLoading, isSuccess } = useGetQuery({
-    endpoint: `product/${productId}`,
+    endpoint: `products/${productId}`,
     queryKey: "product",
     page: 1,
     sort: "LATEST",

@@ -28,7 +28,7 @@ export async function GET(request: Request) {
         include: {
           category: true,
           billboard: true,
-          user: true,
+          store: true,
           size: true,
           color: true,
         },

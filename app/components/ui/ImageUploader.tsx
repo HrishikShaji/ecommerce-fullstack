@@ -15,7 +15,7 @@ interface ImageUploaderProps {
 const ImageUploader = (props: ImageUploaderProps) => {
   const [isImage, setIsImage] = useState(false);
   const inputRef = useRef<null | HTMLInputElement>(null);
-
+  console.log("its here");
   const {
     setFiles,
     setUploadedFiles,
@@ -42,6 +42,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
 
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
+    console.log(images);
     setFiles(images);
   };
   const onToggle = (e: MouseEvent<HTMLButtonElement>) => {

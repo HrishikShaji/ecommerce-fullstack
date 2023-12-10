@@ -19,7 +19,7 @@ export async function GET(request: Request, { params }: Params) {
         id: productId,
       },
       include: {
-        user: true,
+        store: true,
         category: true,
         size: true,
         color: true,
