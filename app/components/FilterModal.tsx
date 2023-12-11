@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFilterQuery } from "../hooks/useFilterQuery";
 import { capitalizeFirstChar } from "../lib/utils";
 import { FilterCheckBoxMenu } from "./ui/FilterCheckBoxMenu";
@@ -8,12 +8,13 @@ const filters = ["color", "size", "category", "billboard", "price"];
 
 export const FilterModal = () => {
   const [filter, setFilter] = useState("color");
-  const { values, refetch, checkboxValues } = useFilterQuery({
+  const { refetch, checkboxValues, setFilterCheckBoxValues } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
     sort: "LATEST",
   });
+
   return (
     <div className="flex w-[500px] h-[300px] rounded-md overflow-hidden relative">
       <div className="bg-neutral-600 w-1/3 h-full flex flex-col  p-1">
@@ -35,6 +36,7 @@ export const FilterModal = () => {
             queryKey="colors"
             field={filter}
             values={checkboxValues}
+            setFilterCheckBoxValues={setFilterCheckBoxValues}
           />
         ) : null}
         {filter === "size" ? (
@@ -44,6 +46,7 @@ export const FilterModal = () => {
             queryKey="sizes"
             field={filter}
             values={checkboxValues}
+            setFilterCheckBoxValues={setFilterCheckBoxValues}
           />
         ) : null}
         {filter === "category" ? (
@@ -53,6 +56,7 @@ export const FilterModal = () => {
             queryKey="categories"
             field={filter}
             values={checkboxValues}
+            setFilterCheckBoxValues={setFilterCheckBoxValues}
           />
         ) : null}
         {filter === "billboard" ? (
@@ -62,6 +66,7 @@ export const FilterModal = () => {
             queryKey="billboards"
             field={filter}
             values={checkboxValues}
+            setFilterCheckBoxValues={setFilterCheckBoxValues}
           />
         ) : null}
         {filter === "price" ? <FilterRangeMenu label="Price" /> : null}

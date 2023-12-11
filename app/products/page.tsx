@@ -8,33 +8,45 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { setFilterValues, setCheckBoxValues } from "@/redux/slices/filterSlice";
+import { setCheckBoxValues } from "@/redux/slices/filterSlice";
 
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId") as string;
-  const values = useAppSelector((state) => state.filterReducer.values);
-  const { data, isError, isLoading, refetch } = useFilterQuery({
+  const {
+    setFilterCheckBoxValues,
+    data,
+    isError,
+    isLoading,
+    refetch,
+    checkboxValues,
+  } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
     sort: "LATEST",
+    categoryId: categoryId,
   });
 
-  console.log("cat id", categoryId, values);
-  const router = useRouter();
-
   useEffect(() => {
-    console.log("refetching");
+    if (categoryId) {
+      console.log("useEffect ran");
+      dispatch(
+        setCheckBoxValues({
+          [categoryId]: {
+            value: true,
+            filterName: "category",
+          },
+        }),
+      );
+    }
     refetch();
-    dispatch(
-      setCheckBoxValues({
-        [categoryId]: { value: true, filterName: "category" },
-      }),
-    );
-  }, [dispatch, refetch, categoryId]);
+  }, []);
+
+  const router = useRouter();
 
   if (isError) return <div className="text-white">Error</div>;
   if (isLoading) return <Spinner />;

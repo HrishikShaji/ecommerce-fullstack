@@ -4,12 +4,14 @@ import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { getFilterQueryString, getFilterRangeString } from "../lib/utils";
+import { useEffect } from "react";
 
 export type FilterQueryProps = {
   page: number;
   sort: SortType;
   endpoint: string;
   queryKey: QueryKey;
+  categoryId?: string;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +19,19 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   const checkboxValues = useAppSelector(
     (state) => state.filterReducer.checkboxValues,
   );
+
+  useEffect(() => {
+    if (props.categoryId) {
+      console.log("use effect ran");
+      dispatch(
+        setCheckBoxValues({
+          [props.categoryId]: { value: true, filterName: "category" },
+        }),
+      );
+    }
+  }, [props.categoryId]);
+
+  console.log(checkboxValues);
   const setFilterCheckBoxValues = ({
     key,
     value,
@@ -33,7 +48,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       }),
     );
   };
-
   const setFilterRangeValues = ({ min, max }: { min: number; max: number }) => {
     dispatch(
       setFilterValues({
@@ -52,6 +66,35 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     filterName: "price",
   });
 
+  type FilterQueryProps = {
+    endpoint: string;
+    queryCheckBoxString: string;
+    queryRangeString: string;
+    page: number;
+    sort: string;
+  };
+
+  const fetchFilter = async ({
+    endpoint,
+    page,
+    sort,
+    queryRangeString,
+    queryCheckBoxString,
+  }: FilterQueryProps) => {
+    const response = await fetch(
+      `/api/${endpoint}?page=${page}&sort=${sort}&${queryCheckBoxString}&${queryRangeString}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+    if (!response.ok) {
+      const body = await response.json();
+      throw new Error(body);
+    }
+    return response.json();
+  };
+
   const {
     data: response,
     isError,
@@ -59,22 +102,23 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: [props.queryKey],
-    queryFn: async () => {
-      const response = await fetch(
-        `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}&${queryCheckBoxString}&${queryRangeString}`,
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-          cache: "reload",
-        },
-      );
-      if (!response.ok) {
-        const body = await response.json();
-        throw new Error(body);
-      }
-      return response.json();
-    },
+    queryKey: [
+      props.queryKey,
+      props.endpoint,
+      props.sort,
+      props.page,
+      queryRangeString,
+      queryCheckBoxString,
+    ],
+    queryFn: async () =>
+      fetchFilter({
+        endpoint: props.endpoint,
+        page: props.page,
+        sort: props.sort,
+        queryCheckBoxString: queryCheckBoxString,
+        queryRangeString: queryRangeString,
+      }),
+    enabled: true,
   });
 
   const data = response?.data;
