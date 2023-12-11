@@ -1,4 +1,8 @@
-import { setFilterValues, setCheckBoxValues } from "@/redux/slices/filterSlice";
+import {
+  setFilterValues,
+  setCheckBoxValues,
+  setSortValues,
+} from "@/redux/slices/filterSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
@@ -19,11 +23,29 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   const checkboxValues = useAppSelector(
     (state) => state.filterReducer.checkboxValues,
   );
+  const sortValues = useAppSelector((state) => state.filterReducer.sortValues);
+
   useEffect(() => {
     if (props.setDefault) {
       props.setDefault();
     }
   }, []);
+
+  const setFilterSortValues = ({
+    title,
+    value,
+  }: {
+    title: string;
+    value: SortType;
+  }) => {
+    dispatch(
+      setSortValues({
+        title: title,
+        value: value,
+      }),
+    );
+  };
+
   const setFilterCheckBoxValues = ({
     key,
     value,
@@ -118,6 +140,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   return {
     setFilterCheckBoxValues,
     setFilterRangeValues,
+    setFilterSortValues,
     count,
     data,
     error,
@@ -126,5 +149,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     isLoading,
     values,
     checkboxValues,
+    sortValues,
   };
 };

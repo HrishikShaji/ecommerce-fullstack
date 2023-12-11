@@ -20,6 +20,10 @@ export function getSortOrder(request: Request) {
   return order;
 }
 
+export function getFilterSortOrder(item: Record<string, any>) {
+  console.log(item);
+}
+
 interface ValidateUrlProps<T> {
   request: Request;
   params: string[];

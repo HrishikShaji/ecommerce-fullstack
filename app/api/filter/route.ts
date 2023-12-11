@@ -16,7 +16,6 @@ export async function GET(request: Request) {
   const categoryId = searchParams.getAll("categoryId");
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
-  console.log(minPrice, maxPrice);
 
   function getFilterRange({
     min,
