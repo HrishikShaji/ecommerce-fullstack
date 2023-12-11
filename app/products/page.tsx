@@ -27,29 +27,22 @@ const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId") as string;
-  const {
-    refetch,
-    search,
-    setSearch,
-    data,
-    isError,
-    isLoading,
-    setFilterSortValues,
-  } = useFilterQuery({
-    endpoint: "filter",
-    queryKey: "filters",
-    page: 1,
-    sort: "LATEST",
-    setDefault: () =>
-      dispatch(
-        setCheckBoxValues({
-          [categoryId]: {
-            value: true,
-            filterName: "category",
-          },
-        }),
-      ),
-  });
+  const { refetch, search, setSearch, data, isLoading, setFilterSortValues } =
+    useFilterQuery({
+      endpoint: "filter",
+      queryKey: "filters",
+      page: 1,
+      sort: "LATEST",
+      setDefault: () =>
+        dispatch(
+          setCheckBoxValues({
+            [categoryId]: {
+              value: true,
+              filterName: "category",
+            },
+          }),
+        ),
+    });
 
   return (
     <div className="flex flex-col gap-5 text-white p-5">
