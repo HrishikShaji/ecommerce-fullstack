@@ -2,6 +2,7 @@ import { ZodError, z } from "zod";
 import { authOptions } from "./auth";
 import { getServerSession, Session } from "next-auth";
 import querystring from "querystring";
+import { SortType } from "@/types/types";
 
 export const itemsPerPage = 10;
 
@@ -20,10 +21,33 @@ export function getSortOrder(request: Request) {
   return order;
 }
 
-export function getFilterSortOrder(item: Record<string, any>) {
-  console.log(item);
+export function getFilterSortOrder(sort: SortType | null) {
+  if (sort === null) return "desc";
+  if (sort === "LATEST") return "desc";
+  if (sort === "OLDEST") return "asc";
 }
 
+export function getFilterRange({
+  min,
+  max,
+}: {
+  min: string | null;
+  max: string | null;
+}) {
+  let value = {};
+  if (min !== null && max !== null) {
+    value = {
+      lte: Number(max),
+      gte: Number(min),
+    };
+  } else {
+    value = {
+      lte: 10000,
+      gte: 0,
+    };
+  }
+  return value;
+}
 interface ValidateUrlProps<T> {
   request: Request;
   params: string[];

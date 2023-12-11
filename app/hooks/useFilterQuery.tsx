@@ -85,7 +85,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryCheckBoxString: string;
     queryRangeString: string;
     page: number;
-    sort: string;
+    sort: SortType;
   };
 
   const fetchFilter = async ({
@@ -119,7 +119,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryKey: [
       props.queryKey,
       props.endpoint,
-      props.sort,
+      sortValues.value,
       props.page,
       queryRangeString,
       queryCheckBoxString,
@@ -128,7 +128,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       fetchFilter({
         endpoint: props.endpoint,
         page: props.page,
-        sort: props.sort,
+        sort: sortValues.value,
         queryCheckBoxString: queryCheckBoxString,
         queryRangeString: queryRangeString,
       }),

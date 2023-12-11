@@ -1,11 +1,17 @@
+import { SortType } from "@/types/types";
 import { createSlice } from "@reduxjs/toolkit";
+
+type SortValue = {
+  value: SortType;
+  title: string;
+};
 
 const filterSlice = createSlice({
   name: "filter",
   initialState: {
     values: { price: { min: 0, max: 10000 } } as Record<string, any>,
     checkboxValues: {},
-    sortValues: { title: "Latest", value: "LATEST" },
+    sortValues: { title: "Latest", value: "LATEST" } as SortValue,
   },
   reducers: {
     setFilterValues: (state, action) => {

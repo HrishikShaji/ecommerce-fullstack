@@ -1,10 +1,13 @@
 import {
   authUser,
   getFilterObj,
+  getFilterRange,
+  getFilterSortOrder,
   getSortOrder,
   itemsPerPage,
 } from "@/app/lib/utils";
 import prisma from "@/app/lib/connect";
+import { SortType } from "@/types/types";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -16,30 +19,8 @@ export async function GET(request: Request) {
   const categoryId = searchParams.getAll("categoryId");
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
+  const sort = searchParams.get("sort") as SortType;
 
-  function getFilterRange({
-    min,
-    max,
-  }: {
-    min: string | null;
-    max: string | null;
-  }) {
-    let value = {};
-    if (min !== null && max !== null) {
-      value = {
-        lte: Number(max),
-        gte: Number(min),
-      };
-    } else {
-      value = {
-        lte: 10000,
-        gte: 0,
-      };
-    }
-    return value;
-  }
-  const priceObj = getFilterRange({ min: minPrice, max: maxPrice });
-  console.log(priceObj);
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -54,14 +35,14 @@ export async function GET(request: Request) {
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),
       orderBy: {
-        createdAt: order,
+        createdAt: getFilterSortOrder(sort),
       },
       where: {
         colorId: getFilterObj(colorId),
         sizeId: getFilterObj(sizeId),
         billoardId: getFilterObj(billboardId),
         categoryId: getFilterObj(categoryId),
-        price: priceObj,
+        price: getFilterRange({ min: minPrice, max: maxPrice }),
       },
     });
     if (!data) {

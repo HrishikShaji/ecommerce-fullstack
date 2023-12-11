@@ -43,7 +43,6 @@ const Page = () => {
         ),
     });
 
-  console.log(sortValues);
   if (isError) return <div className="text-white">Error</div>;
   if (isLoading) return <Spinner />;
   return (
