@@ -124,6 +124,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       props.endpoint,
       sortValues.value,
       props.page,
+      search,
       queryRangeString,
       queryCheckBoxString,
     ],

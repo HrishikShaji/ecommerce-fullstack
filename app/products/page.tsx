@@ -11,6 +11,7 @@ import { setCheckBoxValues } from "@/redux/slices/filterSlice";
 import { ProductCard } from "../components/ProductCard";
 import { Sort } from "../components/ui/Sort";
 import { useState } from "react";
+import { Feed } from "../components/Feed";
 
 const sortItems: SortObjectType[] = [
   {
@@ -50,8 +51,6 @@ const Page = () => {
       ),
   });
 
-  if (isError) return <div className="text-white">Error</div>;
-  if (isLoading) return <Spinner />;
   return (
     <div className="flex flex-col gap-5 text-white p-5">
       <div className="flex gap-2 justify-end">
@@ -82,15 +81,7 @@ const Page = () => {
           }
         />
       </div>
-      <div className="w-full  grid grid-cols-3 gap-4">
-        {data.length === 0 ? (
-          <h1>No Results</h1>
-        ) : (
-          data.map((item: ProductChild) => (
-            <ProductCard item={item} key={item.id} />
-          ))
-        )}
-      </div>
+      <Feed data={data} isLoading={isLoading} />
     </div>
   );
 };
