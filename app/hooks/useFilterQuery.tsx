@@ -8,7 +8,7 @@ import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { getFilterQueryString, getFilterRangeString } from "../lib/utils";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export type FilterQueryProps = {
   page: number;
@@ -19,6 +19,7 @@ export type FilterQueryProps = {
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const [search, setSearch] = useState("");
   const values = useAppSelector((state) => state.filterReducer.values);
   const checkboxValues = useAppSelector(
     (state) => state.filterReducer.checkboxValues,
@@ -86,6 +87,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryRangeString: string;
     page: number;
     sort: SortType;
+    searchString: string;
   };
 
   const fetchFilter = async ({
@@ -94,9 +96,10 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     sort,
     queryRangeString,
     queryCheckBoxString,
+    searchString,
   }: FilterQueryProps) => {
     const response = await fetch(
-      `/api/${endpoint}?page=${page}&sort=${sort}&${queryCheckBoxString}&${queryRangeString}`,
+      `/api/${endpoint}?page=${page}&sort=${sort}&${queryCheckBoxString}&${queryRangeString}&searchString=${searchString}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -131,6 +134,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
         sort: sortValues.value,
         queryCheckBoxString: queryCheckBoxString,
         queryRangeString: queryRangeString,
+        searchString: search,
       }),
     enabled: true,
   });
@@ -150,5 +154,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     values,
     checkboxValues,
     sortValues,
+    search,
+    setSearch,
   };
 };

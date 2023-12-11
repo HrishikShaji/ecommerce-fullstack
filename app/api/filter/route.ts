@@ -5,6 +5,7 @@ import {
   getFilterSortOrder,
   getSortOrder,
   itemsPerPage,
+  paginateArray,
 } from "@/app/lib/utils";
 import prisma from "@/app/lib/connect";
 import { SortType } from "@/types/types";
@@ -20,7 +21,8 @@ export async function GET(request: Request) {
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
   const sort = searchParams.get("sort") as SortType;
-
+  const search = searchParams.get("searchString");
+  console.log(search);
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -48,7 +50,17 @@ export async function GET(request: Request) {
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    return new Response(JSON.stringify({ count, data }), { status: 200 });
+    const results = data.filter((result) => {
+      return result.name.toLowerCase().includes(search ? search : "");
+    });
+    const searchCount = results.length;
+    const searchResults = paginateArray({ array: results, page: page });
+    return new Response(
+      JSON.stringify({ count: searchCount, data: searchResults }),
+      {
+        status: 200,
+      },
+    );
   } catch (error: any) {
     console.log(error);
     return new Response(JSON.stringify(error.message), { status: 500 });
