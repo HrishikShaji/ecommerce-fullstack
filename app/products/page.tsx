@@ -4,36 +4,22 @@ import { ProductChild } from "@/types/types";
 import { Spinner } from "../components/ui/Spinner";
 import { useFilterQuery } from "../hooks/useFilterQuery";
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { setCheckBoxValues } from "@/redux/slices/filterSlice";
 
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId") as string;
-  const {
-    setFilterCheckBoxValues,
-    data,
-    isError,
-    isLoading,
-    refetch,
-    checkboxValues,
-  } = useFilterQuery({
+  const { data, isError, isLoading } = useFilterQuery({
     endpoint: "filter",
     queryKey: "filters",
     page: 1,
     sort: "LATEST",
-    categoryId: categoryId,
-  });
-
-  useEffect(() => {
-    if (categoryId) {
-      console.log("useEffect ran");
+    setDefault: () =>
       dispatch(
         setCheckBoxValues({
           [categoryId]: {
@@ -41,10 +27,8 @@ const Page = () => {
             filterName: "category",
           },
         }),
-      );
-    }
-    refetch();
-  }, []);
+      ),
+  });
 
   const router = useRouter();
 

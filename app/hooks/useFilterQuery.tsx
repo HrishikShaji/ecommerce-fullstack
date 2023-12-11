@@ -11,7 +11,7 @@ export type FilterQueryProps = {
   sort: SortType;
   endpoint: string;
   queryKey: QueryKey;
-  categoryId?: string;
+  setDefault: () => void;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,19 +19,11 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   const checkboxValues = useAppSelector(
     (state) => state.filterReducer.checkboxValues,
   );
-
   useEffect(() => {
-    if (props.categoryId) {
-      console.log("use effect ran");
-      dispatch(
-        setCheckBoxValues({
-          [props.categoryId]: { value: true, filterName: "category" },
-        }),
-      );
+    if (props.setDefault) {
+      props.setDefault();
     }
-  }, [props.categoryId]);
-
-  console.log(checkboxValues);
+  }, []);
   const setFilterCheckBoxValues = ({
     key,
     value,
