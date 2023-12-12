@@ -28,6 +28,7 @@ const Page = () => {
   const colorId = searchParams.get("colorId") as string;
   const minPrice = searchParams.get("minPrice") as string;
   const maxPrice = searchParams.get("maxPrice") as string;
+  const brandId = searchParams.get("brandId") as string;
 
   let priceObj: { min: number | null; max: number | null } = {
     min: 0,
@@ -46,6 +47,10 @@ const Page = () => {
   if (colorId) {
     obj = { id: colorId, filterName: "color" };
   }
+  if (brandId) {
+    obj = { id: brandId, filterName: "brand" };
+  }
+  console.log(obj);
   if (minPrice && maxPrice) {
     priceObj = { min: Number(minPrice), max: Number(maxPrice) };
   }

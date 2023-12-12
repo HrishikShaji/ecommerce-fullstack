@@ -81,7 +81,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
 
   const queryCheckBoxString = getFilterQueryString({
     values: checkboxValues,
-    filterNames: ["color", "size", "category", "billboard"],
+    filterNames: ["color", "size", "category", "billboard", "brand"],
   });
   const queryRangeString = getFilterRangeString({
     values: values,
