@@ -27,7 +27,7 @@ export const productPayload = z.object({
   stock: z.coerce
     .number({ required_error: "stock is required" })
     .min(1, { message: "stock is required" }),
-  brand: z
+  brandId: z
     .string()
     .min(1, { message: "must be more than 1 characters" })
     .max(30, { message: "must be less than 30 charaters" }),
@@ -63,7 +63,7 @@ export const updateProductPayload = z.object({
   stock: z.coerce
     .number({ required_error: "stock is required" })
     .min(1, { message: "stock is required" }),
-  brand: z
+  brandId: z
     .string()
     .min(1, { message: "must be more than 1 characters" })
     .max(30, { message: "must be less than 30 charaters" }),

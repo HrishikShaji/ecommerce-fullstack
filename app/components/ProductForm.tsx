@@ -18,7 +18,7 @@ const initialValues: ProductPayload = {
   images: [],
   price: 0,
   stock: 0,
-  brand: "",
+  brandId: "",
 };
 const initialErrors = {
   name: "",
@@ -29,7 +29,7 @@ const initialErrors = {
   images: "",
   price: "",
   stock: "",
-  brand: "",
+  brandId: "",
 };
 const ProductForm = () => {
   const { userId, storeId } = useParams();
@@ -68,15 +68,15 @@ const ProductForm = () => {
           <ErrorMessageForm value={errors.name} />
         </div>
         <div className="flex flex-col gap-2">
-          <InputField
-            validator={""}
-            value={values.brand}
-            onChange={(value) => handleChange("brand", value)}
-            placeholder="brand"
-            type="text"
+          <Dropdown
+            endpoint="brand"
+            queryKey="brands"
+            placeholder="Select"
+            value={values.brandId}
+            onChange={(value) => handleDropdown("brandId", value)}
             label="Brand"
           />
-          <ErrorMessageForm value={errors.brand} />
+          <ErrorMessageForm value={errors.brandId} />
         </div>
         <div className="flex flex-col gap-2">
           <Dropdown

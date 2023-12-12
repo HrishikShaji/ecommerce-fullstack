@@ -26,7 +26,7 @@ const initialErrors = {
   images: "",
   price: "",
   stock: "",
-  brand: "",
+  brandId: "",
 };
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
   const { userId, storeId } = useParams();
@@ -53,7 +53,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       colorId: props.data.colorId,
       price: props.data.price,
       stock: props.data.stock,
-      brand: props.data.brand,
+      brandId: props.data.brandId,
     } as UpdateProductPayload,
     options: {
       endpoint: `${userId}/store/${storeId}/product`,
@@ -108,6 +108,17 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             label="Stock"
           />
           <ErrorMessageForm value={errors.stock} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <Dropdown
+            endpoint="brand"
+            queryKey="brands"
+            placeholder="Select"
+            value={values.brandId}
+            onChange={(value) => handleDropdown("brandId", value)}
+            label="Brand"
+          />
+          <ErrorMessageForm value={errors.brandId} />
         </div>
         <div className="flex flex-col gap-2">
           <Dropdown
