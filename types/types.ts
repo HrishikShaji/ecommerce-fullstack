@@ -4,6 +4,7 @@ import {
   UpdateBillboardPayload,
 } from "@/app/lib/validators/Billboard";
 import { ProductPayload } from "@/app/lib/validators/Product";
+import { BrandPayload } from "@/app/lib/validators/brand";
 import { CartItemPayload } from "@/app/lib/validators/cartItem";
 import { CategoryPayload } from "@/app/lib/validators/category";
 import { ColorPayload } from "@/app/lib/validators/color";
@@ -30,7 +31,8 @@ export type PayloadType =
   | SizePayload
   | ColorPayload
   | CartItemPayload
-  | OrderPayload;
+  | OrderPayload
+  | BrandPayload;
 
 export type ProductChild = Product & {
   category: Category;
@@ -52,13 +54,15 @@ export type TitleType =
   | "Categories"
   | "Products"
   | "Sizes"
-  | "Colors";
+  | "Colors"
+  | "Brands";
 export type SectionType =
   | "billBoard"
   | "color"
   | "size"
   | "product"
-  | "category";
+  | "category"
+  | "brand";
 
 export type EndpointType =
   | "billboard"
@@ -70,6 +74,7 @@ export type EndpointType =
   | "checkout"
   | "cart"
   | "store"
+  | "brand"
   | any;
 export type QueryKey =
   | "billboards"
@@ -81,14 +86,16 @@ export type QueryKey =
   | "filters"
   | "product"
   | "cart"
-  | "store";
+  | "store"
+  | "brands";
 
 export type ValidateTypePayload =
   | BillboardPayload
   | ProductPayload
   | CategoryPayload
   | SizePayload
-  | ColorPayload;
+  | ColorPayload
+  | BrandPayload;
 
 export type Validator<T> = (inputs: T) => T;
 
