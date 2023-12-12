@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { useRouter, useSearchParams } from "next/navigation";
-import { setCheckBoxValues } from "@/redux/slices/filterSlice";
+import { setCheckBoxValues, setFilterValues } from "@/redux/slices/filterSlice";
 import { Sort } from "../components/ui/Sort";
 import { Feed } from "../components/Feed";
 
@@ -25,7 +25,13 @@ const Page = () => {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId") as string;
   const billboardId = searchParams.get("billboardId") as string;
+  const minPrice = searchParams.get("minPrice") as string;
+  const maxPrice = searchParams.get("maxPrice") as string;
 
+  let priceObj: { min: number | null; max: number | null } = {
+    min: null,
+    max: null,
+  };
   let obj: { id: string | null; filterName: string | null } = {
     id: null,
     filterName: null,
@@ -36,6 +42,10 @@ const Page = () => {
   if (categoryId) {
     obj = { id: categoryId, filterName: "category" };
   }
+  if (minPrice && maxPrice) {
+    priceObj = { min: Number(minPrice), max: Number(maxPrice) };
+  }
+
   const { refetch, search, setSearch, data, isLoading, setFilterSortValues } =
     useFilterQuery({
       endpoint: "filter",
@@ -51,6 +61,13 @@ const Page = () => {
             },
           }),
         ),
+      setDefaultPrice: () => {
+        dispatch(
+          setFilterValues({
+            price: { min: priceObj.min, max: priceObj.max },
+          }),
+        );
+      },
     });
 
   return (

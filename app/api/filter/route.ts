@@ -22,7 +22,7 @@ export async function GET(request: Request) {
   const maxPrice = searchParams.get("maxPrice");
   const sort = searchParams.get("sort") as SortType;
   const search = searchParams.get("searchString");
-  console.log(search);
+  console.log("prices", minPrice, maxPrice);
   try {
     await authUser({});
     const count = await prisma.product.count();

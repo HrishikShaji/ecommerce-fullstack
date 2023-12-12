@@ -16,6 +16,7 @@ export type FilterQueryProps = {
   endpoint: string;
   queryKey: QueryKey;
   setDefault: () => void;
+  setDefaultPrice: () => void;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -29,6 +30,12 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   useEffect(() => {
     if (props.setDefault) {
       props.setDefault();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.setDefaultPrice) {
+      props.setDefaultPrice();
     }
   }, []);
 
