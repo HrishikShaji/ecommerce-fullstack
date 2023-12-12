@@ -17,7 +17,7 @@ export const BillboardTiles = () => {
     <div className="flex gap-2">
       {data.map((item: BillBoard) => (
         <Link
-          href={`/products?categoryId=${item.id}`}
+          href={`/products?billboardId=${item.id}`}
           key={item.id}
           className="flex flex-col gap-1 items-center"
         >

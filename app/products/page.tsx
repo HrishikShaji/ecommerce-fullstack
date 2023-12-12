@@ -1,16 +1,13 @@
 "use client";
 
 import { ProductChild, SortObjectType, SortType } from "@/types/types";
-import { Spinner } from "../components/ui/Spinner";
 import { useFilterQuery } from "../hooks/useFilterQuery";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { useRouter, useSearchParams } from "next/navigation";
 import { setCheckBoxValues } from "@/redux/slices/filterSlice";
-import { ProductCard } from "../components/ProductCard";
 import { Sort } from "../components/ui/Sort";
-import { useState } from "react";
 import { Feed } from "../components/Feed";
 
 const sortItems: SortObjectType[] = [
@@ -27,6 +24,18 @@ const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId") as string;
+  const billboardId = searchParams.get("billboardId") as string;
+
+  let obj: { id: string | null; filterName: string | null } = {
+    id: null,
+    filterName: null,
+  };
+  if (billboardId) {
+    obj = { id: billboardId, filterName: "billboard" };
+  }
+  if (categoryId) {
+    obj = { id: categoryId, filterName: "category" };
+  }
   const { refetch, search, setSearch, data, isLoading, setFilterSortValues } =
     useFilterQuery({
       endpoint: "filter",
@@ -36,9 +45,9 @@ const Page = () => {
       setDefault: () =>
         dispatch(
           setCheckBoxValues({
-            [categoryId]: {
+            [obj.id as string]: {
               value: true,
-              filterName: "category",
+              filterName: obj.filterName,
             },
           }),
         ),
