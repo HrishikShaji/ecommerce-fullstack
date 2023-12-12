@@ -22,6 +22,7 @@ export async function GET(request: Request) {
   const maxPrice = searchParams.get("maxPrice");
   const sort = searchParams.get("sort") as SortType;
   const search = searchParams.get("searchString");
+  const brand = searchParams.get("brand");
   console.log("prices", minPrice, maxPrice);
   try {
     await authUser({});
@@ -45,6 +46,7 @@ export async function GET(request: Request) {
         billoardId: getFilterObj(billboardId),
         categoryId: getFilterObj(categoryId),
         price: getFilterRange({ min: minPrice, max: maxPrice }),
+        brand: brand ? brand : "",
       },
     });
     if (!data) {

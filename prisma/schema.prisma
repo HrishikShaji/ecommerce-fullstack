@@ -68,6 +68,7 @@ model Product {
   images String[]
   price Int
   stock Int
+  brand String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   storeId String @db.ObjectId
