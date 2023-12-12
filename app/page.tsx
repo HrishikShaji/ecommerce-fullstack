@@ -1,6 +1,7 @@
 "use client";
 import { BillboardTiles } from "./components/BillboardTiles";
 import { CategoryTiles } from "./components/CateggoryTiles";
+import { ColorTiles } from "./components/ColorTiles";
 import { PriceTiles } from "./components/PriceTiles";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
       <CategoryTiles />
       <BillboardTiles />
       <PriceTiles />
+      <ColorTiles />
     </main>
   );
 }

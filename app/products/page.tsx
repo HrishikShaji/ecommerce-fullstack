@@ -25,12 +25,13 @@ const Page = () => {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("categoryId") as string;
   const billboardId = searchParams.get("billboardId") as string;
+  const colorId = searchParams.get("colorId") as string;
   const minPrice = searchParams.get("minPrice") as string;
   const maxPrice = searchParams.get("maxPrice") as string;
 
   let priceObj: { min: number | null; max: number | null } = {
-    min: null,
-    max: null,
+    min: 0,
+    max: 10000,
   };
   let obj: { id: string | null; filterName: string | null } = {
     id: null,
@@ -41,6 +42,9 @@ const Page = () => {
   }
   if (categoryId) {
     obj = { id: categoryId, filterName: "category" };
+  }
+  if (colorId) {
+    obj = { id: colorId, filterName: "color" };
   }
   if (minPrice && maxPrice) {
     priceObj = { min: Number(minPrice), max: Number(maxPrice) };
