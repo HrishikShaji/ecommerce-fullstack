@@ -9,9 +9,10 @@ import { CategoryUpdateForm } from "../CategoryUpdateForm";
 import { ProductUpdateForm } from "../ProductUpdateForm";
 import { SizeUpdateForm } from "../SizeUpdateForm";
 import { ColorUpdateForm } from "../ColorUpdateForm";
-import { BillBoard, Color, Size } from "@prisma/client";
+import { BillBoard, Brand, Color, Size } from "@prisma/client";
 import SubCategoryForm from "../SubCategoryForm";
 import { FilterModal } from "../FilterModal";
+import { BrandUpdateForm } from "../BrandUpdateForm";
 
 export const Modal = () => {
   const isOpen = useAppSelector((state) => state.modalReducer.value.isOpen);
@@ -41,6 +42,7 @@ export const Modal = () => {
         {mode === "color" && <ColorUpdateForm data={data as Color} />}
         {mode === "subCategory" && <SubCategoryForm parentId={data.id} />}
         {mode === "filter" && <FilterModal />}
+        {mode === "brand" && <BrandUpdateForm data={data as Brand} />}
       </div>
     </div>
   );

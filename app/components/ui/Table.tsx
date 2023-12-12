@@ -12,6 +12,7 @@ interface TableProps {
 }
 
 const Table: React.FC<TableProps> = (props) => {
+  console.log(props.mode);
   return (
     <table className="w-full">
       <thead>

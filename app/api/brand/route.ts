@@ -65,7 +65,7 @@ export async function GET(request: Request) {
 export async function PATCH(request: Request) {
   try {
     await authUser({ checkRole: "ADMIN" });
-
+    console.log("it was here");
     const body = await request.json();
 
     const validatedPayload = updateBrandPayload.safeParse(body);

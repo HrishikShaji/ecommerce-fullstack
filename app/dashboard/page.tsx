@@ -4,6 +4,7 @@ import { ReactNode, useState } from "react";
 import CategorySection from "../components/CategorySection";
 import SizeSection from "../components/SizeSection";
 import ColorSection from "../components/ColorSection";
+import BrandSection from "../components/BrandSection";
 
 type Section = {
   title: string;
@@ -22,6 +23,10 @@ const sections: Section[] = [
   {
     title: "Colors",
     component: ColorSection,
+  },
+  {
+    title: "Brands",
+    component: BrandSection,
   },
 ];
 

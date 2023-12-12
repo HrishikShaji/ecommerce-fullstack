@@ -14,6 +14,7 @@ export type ModeType =
   | "billboard"
   | "subCategory"
   | "filter"
+  | "brand"
   | "";
 
 type ModalState = {

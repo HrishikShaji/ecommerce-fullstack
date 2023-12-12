@@ -7,6 +7,7 @@ import { Pagination } from "./ui/Pagination";
 import { useDataTable } from "./ui/hooks/useDataTable";
 import { Spinner } from "./ui/Spinner";
 import SizeForm from "./SizeForm";
+import BrandForm from "./BrandForm";
 
 const sizeSortValues: SortObjectType[] = [
   {
@@ -42,11 +43,11 @@ const BrandSection = () => {
     <div className="flex flex-col gap-10 w-full">
       <div className="flex flex-col gap-6 px-2">
         <h1 className="font-semibold text-2xl">Add Brands </h1>
-        <SizeForm />
+        <BrandForm />
       </div>
       <div className=" flex flex-col gap-6">
         <div className="flex justify-between w-full px-2">
-          <h1 className="text-2xl font-semibold">Sizes</h1>
+          <h1 className="text-2xl font-semibold">Brands</h1>
           <div className="flex gap-3">
             <Search onChange={setSearchString} />
             <Sort setSort={setSort} sortItems={sizeSortValues} />
@@ -57,11 +58,11 @@ const BrandSection = () => {
         ) : (
           <Table
             lookup={["name", "createdAt"]}
-            endpoint="size"
-            queryKey="sizes"
+            endpoint="brand"
+            queryKey="brands"
             data={data}
-            headings={["Size", "Date"]}
-            mode="size"
+            headings={["Brand", "Date"]}
+            mode="brand"
           />
         )}
       </div>
