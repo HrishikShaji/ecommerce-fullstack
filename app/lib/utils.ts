@@ -156,6 +156,15 @@ export function getFilterQueryString({
   });
   return newValues.join("&");
 }
+
+export function getFilterFieldQueryString({
+  values,
+}: {
+  values: Record<string, any>;
+}) {
+  return querystring.stringify(values);
+}
+
 export function getFilterObj(values: string[]) {
   return values.length === 0 ? {} : { in: values };
 }

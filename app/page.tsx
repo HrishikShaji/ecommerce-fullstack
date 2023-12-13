@@ -3,6 +3,7 @@ import { BillboardTiles } from "./components/BillboardTiles";
 import { BrandTiles } from "./components/BrandTiles";
 import { CategoryTiles } from "./components/CateggoryTiles";
 import { ColorTiles } from "./components/ColorTiles";
+import { DiscountTiles } from "./components/DiscountTiles";
 import { PriceTiles } from "./components/PriceTiles";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <PriceTiles />
       <ColorTiles />
       <BrandTiles />
+      <DiscountTiles />
     </main>
   );
 }

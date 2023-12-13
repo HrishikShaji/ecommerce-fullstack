@@ -2,12 +2,17 @@ import {
   setFilterValues,
   setCheckBoxValues,
   setSortValues,
+  setFieldValues,
 } from "@/redux/slices/filterSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { QueryKey, SortType } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
-import { getFilterQueryString, getFilterRangeString } from "../lib/utils";
+import {
+  getFilterFieldQueryString,
+  getFilterQueryString,
+  getFilterRangeString,
+} from "../lib/utils";
 import { useEffect, useState } from "react";
 
 export type FilterQueryProps = {
@@ -15,8 +20,9 @@ export type FilterQueryProps = {
   sort: SortType;
   endpoint: string;
   queryKey: QueryKey;
-  setDefault: () => void;
-  setDefaultPrice: () => void;
+  setDefault?: () => void;
+  setDefaultPrice?: () => void;
+  setDefaultField?: () => void;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,6 +32,9 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     (state) => state.filterReducer.checkboxValues,
   );
   const sortValues = useAppSelector((state) => state.filterReducer.sortValues);
+  const fieldValues = useAppSelector(
+    (state) => state.filterReducer.fieldValues,
+  );
 
   useEffect(() => {
     if (props.setDefault) {
@@ -36,6 +45,12 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   useEffect(() => {
     if (props.setDefaultPrice) {
       props.setDefaultPrice();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.setDefaultField) {
+      props.setDefaultField();
     }
   }, []);
 
@@ -79,6 +94,21 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     );
   };
 
+  const setFilterFieldValues = ({
+    field,
+    value,
+  }: {
+    field: string;
+    value: string;
+  }) => {
+    dispatch(
+      setFieldValues({
+        ...fieldValues,
+        [field]: value,
+      }),
+    );
+  };
+
   const queryCheckBoxString = getFilterQueryString({
     values: checkboxValues,
     filterNames: ["color", "size", "category", "billboard", "brand"],
@@ -88,10 +118,15 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     filterName: "price",
   });
 
+  const queryFieldString = getFilterFieldQueryString({
+    values: fieldValues,
+  });
+
   type FilterQueryProps = {
     endpoint: string;
     queryCheckBoxString: string;
     queryRangeString: string;
+    queryFieldString: string;
     page: number;
     sort: SortType;
     searchString: string;
@@ -104,9 +139,10 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     queryRangeString,
     queryCheckBoxString,
     searchString,
+    queryFieldString,
   }: FilterQueryProps) => {
     const response = await fetch(
-      `/api/${endpoint}?page=${page}&sort=${sort}&${queryCheckBoxString}&${queryRangeString}&searchString=${searchString}`,
+      `/api/${endpoint}?page=${page}&sort=${sort}&${queryCheckBoxString}&${queryRangeString}&searchString=${searchString}&${queryFieldString}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -134,6 +170,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
       search,
       queryRangeString,
       queryCheckBoxString,
+      queryFieldString,
     ],
     queryFn: async () =>
       fetchFilter({
@@ -143,6 +180,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
         queryCheckBoxString: queryCheckBoxString,
         queryRangeString: queryRangeString,
         searchString: search,
+        queryFieldString: queryFieldString,
       }),
     enabled: true,
   });
@@ -153,6 +191,7 @@ export const useFilterQuery = (props: FilterQueryProps) => {
     setFilterCheckBoxValues,
     setFilterRangeValues,
     setFilterSortValues,
+    setFilterFieldValues,
     count,
     data,
     error,

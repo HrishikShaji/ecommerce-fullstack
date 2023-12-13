@@ -23,7 +23,8 @@ export async function GET(request: Request) {
   const sort = searchParams.get("sort") as SortType;
   const search = searchParams.get("searchString");
   const brandId = searchParams.getAll("brandId");
-  console.log("prices", minPrice, maxPrice);
+  const discount = Number(searchParams.get("discount"));
+  console.log("discount", discount);
   try {
     await authUser({});
     const count = await prisma.product.count();
@@ -47,6 +48,7 @@ export async function GET(request: Request) {
         categoryId: getFilterObj(categoryId),
         price: getFilterRange({ min: minPrice, max: maxPrice }),
         brandId: getFilterObj(brandId),
+        discount: discount,
       },
     });
     if (!data) {

@@ -65,7 +65,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
-      <div className="grid grid-cols-2 gap-4 justify-start items-end">
+      <div className="grid grid-cols-3 gap-4 justify-start items-end">
         <div className="flex flex-col gap-2">
           <InputField
             validator={""}
@@ -74,17 +74,6 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             placeholder="name"
             type="text"
             label="Name"
-          />
-          <ErrorMessageForm value={errors.name} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <InputField
-            validator={""}
-            value={values.brand}
-            onChange={(value) => handleChange("brand", value)}
-            placeholder="brand"
-            type="text"
-            label="Brand"
           />
           <ErrorMessageForm value={errors.name} />
         </div>

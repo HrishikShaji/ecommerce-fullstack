@@ -6,7 +6,11 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
 import { useRouter, useSearchParams } from "next/navigation";
-import { setCheckBoxValues, setFilterValues } from "@/redux/slices/filterSlice";
+import {
+  setCheckBoxValues,
+  setFieldValues,
+  setFilterValues,
+} from "@/redux/slices/filterSlice";
 import { Sort } from "../components/ui/Sort";
 import { Feed } from "../components/Feed";
 
@@ -29,6 +33,9 @@ const Page = () => {
   const minPrice = searchParams.get("minPrice") as string;
   const maxPrice = searchParams.get("maxPrice") as string;
   const brandId = searchParams.get("brandId") as string;
+  const discount = searchParams.get("discount") as string;
+
+  const fieldObj = discount ? discount : null;
 
   let priceObj: { min: number | null; max: number | null } = {
     min: 0,
@@ -50,7 +57,7 @@ const Page = () => {
   if (brandId) {
     obj = { id: brandId, filterName: "brand" };
   }
-  console.log(obj);
+  console.log(fieldObj);
   if (minPrice && maxPrice) {
     priceObj = { min: Number(minPrice), max: Number(maxPrice) };
   }
@@ -74,6 +81,13 @@ const Page = () => {
         dispatch(
           setFilterValues({
             price: { min: priceObj.min, max: priceObj.max },
+          }),
+        );
+      },
+      setDefaultField: () => {
+        dispatch(
+          setFieldValues({
+            discount: fieldObj,
           }),
         );
       },

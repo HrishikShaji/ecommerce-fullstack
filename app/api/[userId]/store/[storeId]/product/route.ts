@@ -61,7 +61,7 @@ export async function POST(request: Request, { params }: Params) {
 
 export async function PATCH(request: Request) {
   try {
-    await authUser({ checkRole: "ADMIN" });
+    await authUser({ checkRole: "SELLER" });
 
     const body = await request.json();
 

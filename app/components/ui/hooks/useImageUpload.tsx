@@ -13,6 +13,7 @@ export const useImageUpload = (props: UseImageUploadProps) => {
   const [uploadedFiles, setUploadedFiles] = useState<
     UploadFileResponse<ImagesData>[]
   >([]);
+
   useEffect(() => {
     if (props.value.length === 0) {
       setUploadedFiles([]);
