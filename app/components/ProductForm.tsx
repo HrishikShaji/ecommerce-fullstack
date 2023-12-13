@@ -19,6 +19,7 @@ const initialValues: ProductPayload = {
   price: 0,
   stock: 0,
   brandId: "",
+  discount: 0,
 };
 const initialErrors = {
   name: "",
@@ -30,6 +31,7 @@ const initialErrors = {
   price: "",
   stock: "",
   brandId: "",
+  discount: "",
 };
 const ProductForm = () => {
   const { userId, storeId } = useParams();
@@ -140,6 +142,17 @@ const ProductForm = () => {
             label="Price"
           />
           <ErrorMessageForm value={errors.price} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.discount}
+            onChange={(value) => handleChange("discount", value)}
+            placeholder="discount"
+            type="number"
+            label="Discount"
+          />
+          <ErrorMessageForm value={errors.discount} />
         </div>
         <div className="flex flex-col gap-2">
           <InputField

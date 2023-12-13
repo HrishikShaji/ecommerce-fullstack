@@ -65,6 +65,8 @@ const Row: React.FC<RowProps> = (props) => {
               ? `${item.value}$`
               : item.name === "stock"
               ? `${item.value}x`
+              : item.name === "discount"
+              ? `${item.value}%`
               : item.value;
           return (
             <td

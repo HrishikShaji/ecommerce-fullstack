@@ -67,6 +67,7 @@ const ProductSection = () => {
               "createdAt",
               "price",
               "stock",
+              "discount",
             ]}
             endpoint={`${userId}/store/${storeId}/product`}
             queryKey="products"
@@ -80,6 +81,7 @@ const ProductSection = () => {
               "Date",
               "Price",
               "Stock",
+              "Discount",
             ]}
             mode="product"
           />

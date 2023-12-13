@@ -27,6 +27,7 @@ const initialErrors = {
   price: "",
   stock: "",
   brandId: "",
+  discount: "",
 };
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
   const { userId, storeId } = useParams();
@@ -54,6 +55,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       price: props.data.price,
       stock: props.data.stock,
       brandId: props.data.brandId,
+      discount: props.data.discount,
     } as UpdateProductPayload,
     options: {
       endpoint: `${userId}/store/${storeId}/product`,
@@ -96,6 +98,17 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             label="Price"
           />
           <ErrorMessageForm value={errors.price} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <InputField
+            validator={""}
+            value={values.discount}
+            onChange={(value) => handleChange("discount", value)}
+            placeholder="discount"
+            type="number"
+            label="Discount"
+          />
+          <ErrorMessageForm value={errors.discount} />
         </div>
 
         <div className="flex flex-col gap-2">
