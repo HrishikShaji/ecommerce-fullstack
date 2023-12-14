@@ -1,11 +1,10 @@
 "use client";
 
-import { ProductChild, SortObjectType, SortType } from "@/types/types";
+import { SortObjectType, SortType } from "@/types/types";
 import { useFilterQuery } from "../hooks/useFilterQuery";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
-import { useRouter, useSearchParams } from "next/navigation";
 import {
   setCheckBoxValues,
   setFieldValues,
@@ -13,6 +12,7 @@ import {
 } from "@/redux/slices/filterSlice";
 import { Sort } from "../components/ui/Sort";
 import { Feed } from "../components/Feed";
+import { useGetQueryParams } from "../hooks/useGetQueryParams";
 
 const sortItems: SortObjectType[] = [
   {
@@ -26,41 +26,8 @@ const sortItems: SortObjectType[] = [
 ];
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const searchParams = useSearchParams();
-  const categoryId = searchParams.get("categoryId") as string;
-  const billboardId = searchParams.get("billboardId") as string;
-  const colorId = searchParams.get("colorId") as string;
-  const minPrice = searchParams.get("minPrice") as string;
-  const maxPrice = searchParams.get("maxPrice") as string;
-  const brandId = searchParams.get("brandId") as string;
-  const discount = searchParams.get("discount") as string;
-
-  const fieldObj = discount ? discount : null;
-
-  let priceObj: { min: number | null; max: number | null } = {
-    min: 0,
-    max: 10000,
-  };
-  let obj: { id: string | null; filterName: string | null } = {
-    id: null,
-    filterName: null,
-  };
-  if (billboardId) {
-    obj = { id: billboardId, filterName: "billboard" };
-  }
-  if (categoryId) {
-    obj = { id: categoryId, filterName: "category" };
-  }
-  if (colorId) {
-    obj = { id: colorId, filterName: "color" };
-  }
-  if (brandId) {
-    obj = { id: brandId, filterName: "brand" };
-  }
-  console.log(fieldObj);
-  if (minPrice && maxPrice) {
-    priceObj = { min: Number(minPrice), max: Number(maxPrice) };
-  }
+  const { checkBoxObj, rangeObj, fieldObj } = useGetQueryParams();
+  console.log(checkBoxObj, rangeObj, fieldObj);
 
   const { refetch, search, setSearch, data, isLoading, setFilterSortValues } =
     useFilterQuery({
@@ -71,16 +38,16 @@ const Page = () => {
       setDefault: () =>
         dispatch(
           setCheckBoxValues({
-            [obj.id as string]: {
+            [checkBoxObj.id as string]: {
               value: true,
-              filterName: obj.filterName,
+              filterName: checkBoxObj.filterName,
             },
           }),
         ),
       setDefaultPrice: () => {
         dispatch(
           setFilterValues({
-            price: { min: priceObj.min, max: priceObj.max },
+            price: { min: rangeObj.min, max: rangeObj.max },
           }),
         );
       },
