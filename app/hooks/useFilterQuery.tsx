@@ -20,9 +20,9 @@ export type FilterQueryProps = {
   sort: SortType;
   endpoint: string;
   queryKey: QueryKey;
-  setDefault?: () => void;
-  setDefaultPrice?: () => void;
-  setDefaultField?: () => void;
+  defaultCheckBoxObj?: Record<string, any>;
+  defaultRangeObj?: Record<string, any>;
+  defaultFieldObj?: string | null;
 };
 export const useFilterQuery = (props: FilterQueryProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,20 +37,38 @@ export const useFilterQuery = (props: FilterQueryProps) => {
   );
 
   useEffect(() => {
-    if (props.setDefault) {
-      props.setDefault();
+    if (props.defaultCheckBoxObj) {
+      dispatch(
+        setCheckBoxValues({
+          [props.defaultCheckBoxObj.id as string]: {
+            value: true,
+            filterName: props.defaultCheckBoxObj.filterName,
+          },
+        }),
+      );
     }
   }, []);
 
   useEffect(() => {
-    if (props.setDefaultPrice) {
-      props.setDefaultPrice();
+    if (props.defaultRangeObj) {
+      dispatch(
+        setFilterValues({
+          price: {
+            min: props.defaultRangeObj.min,
+            max: props.defaultRangeObj.max,
+          },
+        }),
+      );
     }
   }, []);
 
   useEffect(() => {
-    if (props.setDefaultField) {
-      props.setDefaultField();
+    if (props.defaultFieldObj) {
+      dispatch(
+        setFieldValues({
+          discount: props.defaultFieldObj,
+        }),
+      );
     }
   }, []);
 

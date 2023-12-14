@@ -5,11 +5,6 @@ import { useFilterQuery } from "../hooks/useFilterQuery";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { onOpen } from "@/redux/slices/modalSlice";
-import {
-  setCheckBoxValues,
-  setFieldValues,
-  setFilterValues,
-} from "@/redux/slices/filterSlice";
 import { Sort } from "../components/ui/Sort";
 import { Feed } from "../components/Feed";
 import { useGetQueryParams } from "../hooks/useGetQueryParams";
@@ -27,37 +22,15 @@ const sortItems: SortObjectType[] = [
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { checkBoxObj, rangeObj, fieldObj } = useGetQueryParams();
-  console.log(checkBoxObj, rangeObj, fieldObj);
-
   const { refetch, search, setSearch, data, isLoading, setFilterSortValues } =
     useFilterQuery({
       endpoint: "filter",
       queryKey: "filters",
       page: 1,
       sort: "LATEST",
-      setDefault: () =>
-        dispatch(
-          setCheckBoxValues({
-            [checkBoxObj.id as string]: {
-              value: true,
-              filterName: checkBoxObj.filterName,
-            },
-          }),
-        ),
-      setDefaultPrice: () => {
-        dispatch(
-          setFilterValues({
-            price: { min: rangeObj.min, max: rangeObj.max },
-          }),
-        );
-      },
-      setDefaultField: () => {
-        dispatch(
-          setFieldValues({
-            discount: fieldObj,
-          }),
-        );
-      },
+      defaultRangeObj: rangeObj,
+      defaultFieldObj: fieldObj ? fieldObj : null,
+      defaultCheckBoxObj: checkBoxObj,
     });
 
   return (
