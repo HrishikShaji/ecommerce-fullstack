@@ -14,16 +14,16 @@ const arr = [
 const Page = () => {
   return (
     <div className="text-white h-screen w-full flex justify-center items-center flex-col gap-10 ">
-      <div className=" h-40  w-40 ">
-        <Slider autoSlide={false} autoSlideInterval={1000} slides={arr} />
-      </div>
-
-      <div className="h-[200px] m-auto w-[200px] border-2 border-white ">
-        <div className="flex gap-2 overflow-hidden">
-          <div className="w-40 h-40 bg-white flex-shrink-0" />
-          <div className="w-40 h-40 bg-white flex-shrink-0" />
-          <div className="w-40 h-40 bg-white flex-shrink-0 " />
-        </div>
+      <div className=" h-60  w-60 ">
+        <Slider autoSlide={false} autoSlideInterval={1000}>
+          {arr.map((item, i) => (
+            <div
+              key={i}
+              className="w-60 h-60 object-cover flex-shrink-0 bg-center"
+              style={{ backgroundImage: `url(${item})` }}
+            />
+          ))}
+        </Slider>
       </div>
     </div>
   );
