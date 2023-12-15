@@ -13,7 +13,6 @@ export const useGetQueryParams = () => {
     min: 0,
     max: 10000,
   };
-  const fieldObj = searchParams.get("discount"); // Use searchParams to get the discount parameter
 
   if (searchParams.get("billboardId")) {
     checkBoxObj = {
@@ -29,6 +28,8 @@ export const useGetQueryParams = () => {
     checkBoxObj = { id: searchParams.get("colorId"), filterName: "color" };
   } else if (searchParams.get("brandId")) {
     checkBoxObj = { id: searchParams.get("brandId"), filterName: "brand" };
+  } else if (searchParams.get("discount")) {
+    checkBoxObj = { id: searchParams.get("discount"), filterName: "discount" };
   }
 
   const minPrice = searchParams.get("minPrice");
@@ -38,5 +39,5 @@ export const useGetQueryParams = () => {
     rangeObj = { min: Number(minPrice), max: Number(maxPrice) };
   }
 
-  return { checkBoxObj, rangeObj, fieldObj };
+  return { checkBoxObj, rangeObj };
 };

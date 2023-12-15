@@ -21,7 +21,7 @@ const sortItems: SortObjectType[] = [
 ];
 const Page = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { checkBoxObj, rangeObj, fieldObj } = useGetQueryParams();
+  const { checkBoxObj, rangeObj } = useGetQueryParams();
   const { refetch, search, setSearch, data, isLoading, setFilterSortValues } =
     useFilterQuery({
       endpoint: "filter",
@@ -29,7 +29,6 @@ const Page = () => {
       page: 1,
       sort: "LATEST",
       defaultRangeObj: rangeObj,
-      defaultFieldObj: fieldObj ? fieldObj : null,
       defaultCheckBoxObj: checkBoxObj,
     });
 

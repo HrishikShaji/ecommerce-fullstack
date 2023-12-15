@@ -47,9 +47,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
         }),
       );
     }
-  }, []);
-
-  useEffect(() => {
     if (props.defaultRangeObj) {
       dispatch(
         setFilterValues({
@@ -57,16 +54,6 @@ export const useFilterQuery = (props: FilterQueryProps) => {
             min: props.defaultRangeObj.min,
             max: props.defaultRangeObj.max,
           },
-        }),
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    if (props.defaultFieldObj) {
-      dispatch(
-        setFieldValues({
-          discount: props.defaultFieldObj,
         }),
       );
     }
@@ -129,7 +116,14 @@ export const useFilterQuery = (props: FilterQueryProps) => {
 
   const queryCheckBoxString = getFilterQueryString({
     values: checkboxValues,
-    filterNames: ["color", "size", "category", "billboard", "brand"],
+    filterNames: [
+      "color",
+      "size",
+      "category",
+      "billboard",
+      "brand",
+      "discount",
+    ],
   });
   const queryRangeString = getFilterRangeString({
     values: values,

@@ -3,7 +3,6 @@ import {
   getFilterObj,
   getFilterRange,
   getFilterSortOrder,
-  getSortOrder,
   itemsPerPage,
   paginateArray,
 } from "@/app/lib/utils";
@@ -14,7 +13,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const page = Number(searchParams.get("page"));
   const colorId = searchParams.getAll("colorId");
-  const order = getSortOrder(request);
   const sizeId = searchParams.getAll("sizeId");
   const billboardId = searchParams.getAll("billboardId");
   const categoryId = searchParams.getAll("categoryId");
@@ -23,11 +21,9 @@ export async function GET(request: Request) {
   const sort = searchParams.get("sort") as SortType;
   const search = searchParams.get("searchString");
   const brandId = searchParams.getAll("brandId");
-  const discount = Number(searchParams.get("discount"));
-  console.log("discount", discount, colorId);
+  const discount = Number(searchParams.get("discountId"));
   try {
     await authUser({});
-    const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
         store: true,
