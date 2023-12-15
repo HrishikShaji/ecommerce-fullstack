@@ -1,20 +1,17 @@
 import Link from "next/link";
 
-const data = [20, 40, 50];
+const data = [20, 40, 50, 60, 70];
 
 export const DiscountTiles = () => {
   return (
-    <div className="flex gap-2">
+    <div className="grid grid-cols-5 gap-2 w-full ">
       {data.map((item, i) => (
         <Link
           href={`/products?discount=${item}`}
           key={i}
-          className="flex flex-col gap-1 items-center"
+          className="text-center text-red-500 hover:bg-red-900 hover:text-white py-2 rounded-md duration-700 transition ease-in-out"
         >
-          <div className="h-28 w-28 bg-red-500 rounded-md flex items-center justify-center text-black">
-            <h1 className="font-light text-4xl">{`${item}%`}</h1>
-          </div>
-          <h1>{`upto ${item}% off`}</h1>
+          <h6 className="font-light text-4xl">{` upto ${item}%`}</h6>
         </Link>
       ))}
     </div>

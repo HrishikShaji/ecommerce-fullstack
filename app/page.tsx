@@ -12,9 +12,9 @@ export default function Home() {
       <BillboardTiles />
       <CategoryTiles />
       <PriceTiles />
-      <ColorTiles />
-      <BrandTiles />
       <DiscountTiles />
+      <BrandTiles />
+      <ColorTiles />
     </main>
   );
 }

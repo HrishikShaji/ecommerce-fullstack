@@ -11,18 +11,15 @@ export const BrandTiles = () => {
   });
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
-  console.log(error);
   return (
-    <div className="flex gap-2">
+    <div className="grid grid-cols-3 gap-4 w-full">
       {data.map((item: Brand) => (
         <Link
           href={`/products?brandId=${item.id}`}
           key={item.id}
-          className="flex flex-col gap-1 items-center"
+          className="flex bg-neutral-500 rounded-3xl h-40 justify-center w-full flex-col gap-1 items-center"
         >
-          <h1 className="p-2 rounde-md bg-neutral-500 rounded-md">
-            {item.name}
-          </h1>
+          <h6 className="text-3xl">{item.name}</h6>
         </Link>
       ))}
     </div>
