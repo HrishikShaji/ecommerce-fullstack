@@ -2,7 +2,7 @@ import { ZodError, z } from "zod";
 import { authOptions } from "./auth";
 import { getServerSession, Session } from "next-auth";
 import querystring from "querystring";
-import { SortType } from "@/types/types";
+import { CategoryChild, SortType } from "@/types/types";
 
 export const itemsPerPage = 10;
 
@@ -189,4 +189,27 @@ export function getFilterRangeString({
   const newFilterName = capitalizeFirstChar(filterName);
 
   return `min${newFilterName}=${min}&max${newFilterName}=${max}`;
+}
+
+export function getCategoryChildrenSplit(categories: CategoryChild[]) {
+  const getSubs = (categories: CategoryChild[]): CategoryChild[] => {
+    let subCats: CategoryChild[] = [];
+    categories.forEach((category) => {
+      subCats.push(category);
+      if (category.children) {
+        subCats = subCats.concat(getSubs(category.children));
+      }
+    });
+    return subCats;
+  };
+
+  const allCategories = getSubs(categories);
+  const mainCategories = allCategories.filter(
+    (cat: CategoryChild) => cat.parentId === null,
+  );
+  const subCategories = allCategories.filter(
+    (cat: CategoryChild) => cat.parentId !== null,
+  );
+
+  return { mainCategories, subCategories };
 }
