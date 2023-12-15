@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+             font-family:"aventa";
+             src:url(Aventa.ttf);
+           }
+
+h6{
+font-family:"aventa"
+}
+
 .slider {
 height:5px;
 border-radius:5px;

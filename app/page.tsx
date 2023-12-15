@@ -8,9 +8,9 @@ import { PriceTiles } from "./components/PriceTiles";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen text-white flex-col items-center  p-24">
-      <CategoryTiles />
+    <main className="flex min-h-screen text-white flex-col gap-20 items-center  p-10">
       <BillboardTiles />
+      <CategoryTiles />
       <PriceTiles />
       <ColorTiles />
       <BrandTiles />

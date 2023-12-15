@@ -27,12 +27,12 @@ export const Slider: React.FC<SliderProps> = ({
 
   return (
     <div className="relative text-black">
-      <div className="h-full left-0 absolute z-10  bg-gradient-to-l flex items-center px-3 from-transparent to-black/50">
+      <div className="h-full left-0 absolute z-10  bg-gradient-to-l flex items-center w-[30%] justify-start pl-3 from-transparent to-black/50 hover:to-black ">
         <button onClick={prev}>
           <BiSolidLeftArrow color="white" />
         </button>
       </div>
-      <div className="h-full right-0 absolute z-10 bg-gradient-to-r flex items-center px-3 from-transparent to-black/50">
+      <div className="h-full right-0 absolute z-10 bg-gradient-to-r flex items-center w-[30%] justify-end pr-3 from-transparent to-black/50 hover:to-black ">
         <button onClick={next}>
           <BiSolidRightArrow color="white" />
         </button>
