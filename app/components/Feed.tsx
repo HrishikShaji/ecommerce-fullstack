@@ -9,6 +9,7 @@ interface FeedProps {
 
 export const Feed: React.FC<FeedProps> = ({ data, isLoading }) => {
   if (isLoading) return <Spinner />;
+  console.log(data);
   return (
     <div className="w-full  grid grid-cols-5 gap-4">
       {data.length === 0 ? (

@@ -22,7 +22,7 @@ export const CategoryTiles = () => {
       <div className="grid grid-cols-3 w-full gap-10">
         {mainCategories.map((item: CategoryChild) => (
           <Link
-            href={`/products?categoryId=${item.id}`}
+            href={`/categories/?categoryId=${item.id}`}
             key={item.id}
             className=" h-full  w-full flex flex-col gap-2 items-center"
           >

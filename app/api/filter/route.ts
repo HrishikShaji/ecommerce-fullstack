@@ -22,6 +22,8 @@ export async function GET(request: Request) {
   const search = searchParams.get("searchString");
   const brandId = searchParams.getAll("brandId");
   const discount = Number(searchParams.get("discountId"));
+
+  console.log("filter here", categoryId);
   try {
     await authUser({});
     const data = await prisma.product.findMany({
@@ -50,11 +52,14 @@ export async function GET(request: Request) {
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
+
     const results = data.filter((result) => {
       return result.name.toLowerCase().includes(search ? search : "");
     });
+
     const searchCount = results.length;
     const searchResults = paginateArray({ array: results, page: page });
+    console.log("data is", searchResults);
     return new Response(
       JSON.stringify({ count: searchCount, data: searchResults }),
       {
