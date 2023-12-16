@@ -35,6 +35,7 @@ export async function POST(request: Request, { params }: Params) {
       colorId,
       brandId,
       discount,
+      slug,
     } = validatedPayload.data;
 
     await prisma.product.create({
@@ -50,6 +51,7 @@ export async function POST(request: Request, { params }: Params) {
         stock: stock,
         brandId: brandId,
         discount: discount,
+        slug: slug,
       },
     });
 
@@ -83,6 +85,7 @@ export async function PATCH(request: Request) {
       stock,
       brandId,
       discount,
+      slug,
     } = validatedPayload.data;
     await prisma.product.update({
       where: {
@@ -99,6 +102,7 @@ export async function PATCH(request: Request) {
         stock: stock,
         brandId: brandId,
         discount: discount,
+        slug: slug,
       },
     });
 
