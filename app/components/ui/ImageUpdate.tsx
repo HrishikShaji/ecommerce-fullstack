@@ -42,23 +42,44 @@ export const ImageUpdate: React.FC<ImageUpdateProps> = (props) => {
           <MdEdit size={15} />
         </label>
       </div>
-      <Image
-        src={
-          files.length === 1
-            ? previewImage(files[0])
-            : uploadedFiles.length === 1
-            ? uploadedFiles[0].serverData.fileUrl
-            : props.value[0]
-        }
-        height={1000}
-        width={1000}
-        alt="image"
-        className="w-full h-40 rounded-md"
-      />
-      {files.length === 1 ? (
+      <div className="flex gap-2">
+        {files.length >= 1
+          ? files.map((img, i) => (
+              <Image
+                key={i}
+                src={previewImage(img)}
+                height={1000}
+                width={1000}
+                alt="image"
+                className="h-40 w-40 rounded-md object-contain bg-white"
+              />
+            ))
+          : uploadedFiles.length >= 1
+          ? uploadedFiles.map((img, i) => (
+              <Image
+                key={i}
+                src={img.serverData.fileUrl}
+                height={1000}
+                width={1000}
+                alt="image"
+                className="h-40 w-40 rounded-md object-contain bg-white"
+              />
+            ))
+          : props.value.map((img, i) => (
+              <Image
+                key={i}
+                src={img}
+                height={1000}
+                width={1000}
+                alt="image"
+                className="h-40 w-40 rounded-md object-contain bg-white"
+              />
+            ))}
+      </div>
+      {files.length > 1 ? (
         <button
           type="button"
-          className="absolute bottom-0 z-10"
+          className="absolute bg-blue-500 p-2 rounded-md bottom-0 z-10"
           onClick={(e) => {
             e.stopPropagation();
             startUpload(files as File[]);

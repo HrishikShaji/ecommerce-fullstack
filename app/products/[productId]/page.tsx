@@ -10,12 +10,13 @@ import { useParams } from "next/navigation";
 const Page = () => {
   const { data: session } = useSession();
   const { productId } = useParams();
-  const { data, refetch, isError, isLoading, isSuccess } = useGetQuery({
-    endpoint: `products/${productId}`,
-    queryKey: "product",
-    page: 1,
-    sort: "LATEST",
-  });
+  const { slugProducts, data, refetch, isError, isLoading, isSuccess } =
+    useGetQuery({
+      endpoint: `products/${productId}`,
+      queryKey: "product",
+      page: 1,
+      sort: "LATEST",
+    });
 
   const { isPending, add } = useAddQuery({
     endpoint: `${session?.user.id}/cart`,
@@ -25,6 +26,7 @@ const Page = () => {
 
   if (isError) return <div>Error</div>;
   if (isLoading) return <div>Loading...</div>;
+  console.log(slugProducts);
 
   const handleClick = () => {
     const validatedData = cartItemPayload.safeParse({ productId: data.id });
@@ -40,7 +42,7 @@ const Page = () => {
           <Slider autoSlide={false} autoSlideInterval={1000}>
             {data.images.map((item: string) => (
               <div
-                className="h-[60vh] w-full bg-white rounded-3xl p-5 flex justify-center"
+                className="h-[60vh] flex-shrink-0 w-full bg-white rounded-3xl p-5 flex justify-center"
                 key={item}
               >
                 <Image

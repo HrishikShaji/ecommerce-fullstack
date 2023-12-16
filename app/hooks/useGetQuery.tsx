@@ -35,5 +35,15 @@ export const useGetQuery = (props: GetQueryProps) => {
 
   const data = response?.data;
   const count = response?.count;
-  return { isSuccess, count, data, error, isError, refetch, isLoading };
+  const slugProducts = response?.sameSlugProducts;
+  return {
+    isSuccess,
+    count,
+    data,
+    error,
+    isError,
+    refetch,
+    isLoading,
+    slugProducts,
+  };
 };

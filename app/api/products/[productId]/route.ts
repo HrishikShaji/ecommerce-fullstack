@@ -26,11 +26,18 @@ export async function GET(request: Request, { params }: Params) {
         billboard: true,
       },
     });
+    const sameSlugProducts = await prisma.product.findMany({
+      where: {
+        slug: data?.slug,
+      },
+    });
 
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    return new Response(JSON.stringify({ count, data }), { status: 200 });
+    return new Response(JSON.stringify({ count, data, sameSlugProducts }), {
+      status: 200,
+    });
   } catch (error: any) {
     console.log(error);
     return new Response(JSON.stringify(error.message), { status: 500 });
