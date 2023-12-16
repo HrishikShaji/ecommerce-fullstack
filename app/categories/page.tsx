@@ -4,6 +4,8 @@ import { CategoryChild } from "@/types/types";
 import { useGetQuery } from "../hooks/useGetQuery";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import { Category } from "@prisma/client";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -21,9 +23,20 @@ const Page = () => {
   console.log(data);
   return (
     <div className="p-10 text-white">
-      {data.map((category: CategoryChild) => (
-        <Link key={category.id} href={`/categories?categoryId=${category.id}`}>
-          {category.name}
+      {data.map((category: Category) => (
+        <Link
+          key={category.id}
+          href={`/categories?categoryId=${category.id}`}
+          className="flex flex-col gap-2 items-center"
+        >
+          <Image
+            height={1000}
+            width={1000}
+            alt="image"
+            className="h-60 w-60 rounded-md"
+            src={category.images[0]}
+          />
+          <h1>{category.name}</h1>
         </Link>
       ))}
     </div>
