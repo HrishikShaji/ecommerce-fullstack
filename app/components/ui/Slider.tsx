@@ -1,5 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import { BiSolidRightArrow, BiSolidLeftArrow } from "react-icons/bi";
+import { motion } from "framer";
 
 interface SliderProps {
   children: ReactNode[];
@@ -27,13 +28,31 @@ export const Slider: React.FC<SliderProps> = ({
 
   return (
     <div className="relative text-black">
-      <div className="h-full left-0 absolute z-10  bg-gradient-to-l flex items-center w-[30%] justify-start pl-3 from-transparent to-black/50 hover:to-black ">
-        <button onClick={prev}>
+      <div className="group w-[30%] top-0 flex justify-end items-center bg-gradient-to-l from-transparent to-black/70  left-0 h-full  absolute z-30">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeIn" }}
+          className="h-full hidden group-hover:block absolute w-full bg-gradient-to-l from-transparent to-black "
+        />
+        <button
+          onClick={prev}
+          className="absolute left-2 top-50% -translate-y-[50%]"
+        >
           <BiSolidLeftArrow color="white" />
         </button>
       </div>
-      <div className="h-full right-0 absolute z-10 bg-gradient-to-r flex items-center w-[30%] justify-end pr-3 from-transparent to-black/50 hover:to-black ">
-        <button onClick={next}>
+      <div className="group w-[30%] top-0 flex justify-end items-center bg-gradient-to-r from-transparent to-black/70  right-0 h-full  absolute z-30">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeIn" }}
+          className="h-full hidden group-hover:block absolute w-full bg-gradient-to-r from-transparent to-black "
+        />
+        <button
+          onClick={next}
+          className="absolute right-2 top-50% -translate-y-[50%]"
+        >
           <BiSolidRightArrow color="white" />
         </button>
       </div>
