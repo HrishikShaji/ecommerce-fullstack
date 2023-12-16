@@ -20,6 +20,8 @@ export async function GET(request: Request, { params }: Params) {
       },
     });
 
+    console.log(data);
+
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
