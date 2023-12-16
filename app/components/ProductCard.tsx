@@ -12,7 +12,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
     <div className="p-2 bg-neutral-700 flex flex-col gap-3 rounded-md">
       <div
         onClick={() => router.push(`/products/${item.id}`)}
-        className="bg-white h-[200px] w-[200px] rounded-md flex justify-center items-center p-5"
+        className="bg-white h-[200px] w-full rounded-md flex justify-center items-center p-5"
       >
         <Image
           className="h-[150px] w-[150px]  object-contain"
