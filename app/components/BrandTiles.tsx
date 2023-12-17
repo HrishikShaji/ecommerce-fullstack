@@ -5,7 +5,7 @@ import { BillBoard, Brand } from "@prisma/client";
 export const BrandTiles = () => {
   const { data, error, isError, isLoading } = useGetQuery({
     endpoint: "brand",
-    queryKey: "brands",
+    queryKeys: ["brands"],
     page: 1,
     sort: "LATEST",
   });
