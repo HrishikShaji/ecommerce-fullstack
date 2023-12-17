@@ -2,6 +2,8 @@
 
 import { useDeleteQuery } from "@/app/hooks/useDeleteQuery";
 import { useGetQuery } from "@/app/hooks/useGetQuery";
+import { ProductChild } from "@/types/types";
+import { CartItem, Product } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect, useParams } from "next/navigation";
@@ -17,6 +19,8 @@ const Page = () => {
     sort: "LATEST",
   });
 
+  console.log(data);
+
   const {
     remove,
     isDeleting,
@@ -26,12 +30,18 @@ const Page = () => {
     queryKey: "cart",
   });
 
-  const handleBuy = async (productIds: string[]) => {
+  const handleBuy = async ({
+    productIds,
+    storeId,
+  }: {
+    productIds: string[];
+    storeId: string;
+  }) => {
     try {
       const response = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ productIds }),
+        body: JSON.stringify({ productIds, storeId }),
       });
 
       const data = await response.json();
@@ -82,7 +92,12 @@ const Page = () => {
                     {isDeleting ? "Deleting" : "Remove"}
                   </button>
                   <button
-                    onClick={() => handleBuy([item.product.id])}
+                    onClick={() =>
+                      handleBuy({
+                        productIds: [item.product.id],
+                        storeId: item.product.storeId,
+                      })
+                    }
                     className="px-2 py-1 rounded-md bg-white text-black"
                   >
                     Buy

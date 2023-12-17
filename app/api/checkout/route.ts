@@ -5,14 +5,19 @@ import Stripe from "stripe";
 
 export async function POST(request: Request) {
   try {
-    const { productIds } = await request.json();
-    console.log("in the checkout", productIds);
+    const { productIds, storeId } = await request.json();
+    console.log("in the checkout", productIds, storeId);
     const { user } = await authUser({});
     if (!user || !user.id) {
       return new Response(JSON.stringify("Invalid User"), { status: 400 });
     }
     if (!productIds || productIds.length === 0) {
       return new Response(JSON.stringify("Product ids are required"), {
+        status: 400,
+      });
+    }
+    if (!storeId) {
+      return new Response(JSON.stringify("storeId are required"), {
         status: 400,
       });
     }
@@ -41,6 +46,7 @@ export async function POST(request: Request) {
 
     const order = await prisma.order.create({
       data: {
+        storeId: storeId,
         userId: user.id,
         isPaid: false,
         orderItems: {

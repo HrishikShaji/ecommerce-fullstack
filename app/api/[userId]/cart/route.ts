@@ -18,7 +18,11 @@ export async function GET(request: Request, { params }: Params) {
       include: {
         cartItems: {
           include: {
-            product: true,
+            product: {
+              include: {
+                store: true,
+              },
+            },
             cart: true,
           },
         },
