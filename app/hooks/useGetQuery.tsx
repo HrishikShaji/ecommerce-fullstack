@@ -36,6 +36,7 @@ export const useGetQuery = (props: GetQueryProps) => {
   const data = response?.data;
   const count = response?.count;
   const slugProducts = response?.sameSlugProducts;
+  const subCategories = response?.subCategories;
   return {
     isSuccess,
     count,
@@ -45,5 +46,6 @@ export const useGetQuery = (props: GetQueryProps) => {
     refetch,
     isLoading,
     slugProducts,
+    subCategories,
   };
 };

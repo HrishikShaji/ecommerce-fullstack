@@ -17,12 +17,25 @@ export async function GET(request: Request, { params }: Params) {
       where: {
         parentId: categoryId,
       },
+      include: {
+        products: true,
+      },
     });
+    const getSubCategories = data.map(async (category) => {
+      const subCategories = await prisma.category.findMany({
+        where: {
+          parentId: category.id,
+        },
+      });
+      return { category, subCategories };
+    });
+
+    const subCategories = await Promise.all(getSubCategories);
 
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
-    return new Response(JSON.stringify({ count, data }), {
+    return new Response(JSON.stringify({ count, data: subCategories }), {
       status: 200,
     });
   } catch (error: any) {

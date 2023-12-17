@@ -1,11 +1,9 @@
 "use client";
 
-import { CategoryChild } from "@/types/types";
 import { useGetQuery } from "../hooks/useGetQuery";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Category } from "@prisma/client";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -20,13 +18,17 @@ const Page = () => {
   if (isError) return <div>Error</div>;
   if (isLoading) return <div>Loading...</div>;
 
-  console.log(data);
+  console.log("subcats are", data);
   return (
     <div className="p-10 text-white">
-      {data.map((category: Category) => (
+      {data.map((category: any) => (
         <Link
-          key={category.id}
-          href={`/categories?categoryId=${category.id}`}
+          key={category.category.id}
+          href={
+            category.subCategories.length === 0
+              ? `/products?categoryId=${category.category.id}`
+              : `/categories?categoryId=${category.category.id}`
+          }
           className="flex flex-col gap-2 items-center"
         >
           <Image
@@ -34,9 +36,9 @@ const Page = () => {
             width={1000}
             alt="image"
             className="h-60 w-60 rounded-md"
-            src={category.images[0]}
+            src={category.category.images[0]}
           />
-          <h1>{category.name}</h1>
+          <h1>{category.category.name}</h1>
         </Link>
       ))}
     </div>
