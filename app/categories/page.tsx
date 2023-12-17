@@ -14,7 +14,7 @@ const Page = () => {
     endpoint: `category/${categoryId}`,
     page: 1,
     sort: "LATEST",
-    queryKey: "categories",
+    queryKeys: ["categories", categoryId as string],
   });
 
   if (isError) return <div>Error</div>;

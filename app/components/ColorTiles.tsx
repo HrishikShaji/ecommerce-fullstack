@@ -5,7 +5,7 @@ import { BillBoard, Color } from "@prisma/client";
 export const ColorTiles = () => {
   const { data, error, isError, isLoading } = useGetQuery({
     endpoint: "color",
-    queryKey: "colors",
+    queryKeys: ["colors"],
     page: 1,
     sort: "LATEST",
   });

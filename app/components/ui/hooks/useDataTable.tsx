@@ -30,7 +30,7 @@ export const useDataTable = (props: useDataTableProps) => {
     endpoint: props.endpoint,
     page: page,
     sort: sort.value,
-    queryKey: props.queryKey,
+    queryKeys: [props.queryKey],
   });
 
   const {

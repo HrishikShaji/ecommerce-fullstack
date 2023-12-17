@@ -7,7 +7,7 @@ import { Slider } from "./ui/Slider";
 export const BillboardTiles = () => {
   const { data, error, isError, isLoading } = useGetQuery({
     endpoint: "billboard",
-    queryKey: "billboards",
+    queryKeys: ["billboards"],
     page: 1,
     sort: "LATEST",
   });

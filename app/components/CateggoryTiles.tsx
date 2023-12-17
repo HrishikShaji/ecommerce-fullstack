@@ -7,7 +7,7 @@ import { getCategoryChildrenSplit } from "../lib/utils";
 export const CategoryTiles = () => {
   const { data, isError, isLoading } = useGetQuery({
     endpoint: "category",
-    queryKey: "categories",
+    queryKeys: ["categories"],
     page: 1,
     sort: "LATEST",
   });

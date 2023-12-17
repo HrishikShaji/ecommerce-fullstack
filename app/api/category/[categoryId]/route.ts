@@ -19,7 +19,6 @@ export async function GET(request: Request, { params }: Params) {
       },
     });
 
-
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }

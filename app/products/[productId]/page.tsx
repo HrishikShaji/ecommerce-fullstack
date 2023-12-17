@@ -13,7 +13,7 @@ const Page = () => {
   const { slugProducts, data, refetch, isError, isLoading, isSuccess } =
     useGetQuery({
       endpoint: `products/${productId}`,
-      queryKey: "product",
+      queryKeys: ["product"],
       page: 1,
       sort: "LATEST",
     });

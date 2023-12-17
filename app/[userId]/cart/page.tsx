@@ -12,7 +12,7 @@ const Page = () => {
   const router = useRouter();
   const { data, isError, isLoading, isSuccess } = useGetQuery({
     endpoint: `${userId}/cart`,
-    queryKey: "cart",
+    queryKeys: ["cart"],
     page: 1,
     sort: "LATEST",
   });

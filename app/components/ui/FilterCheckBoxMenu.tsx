@@ -21,7 +21,7 @@ export const FilterCheckBoxMenu: React.FC<FilterCheckBoxMenuProps> = (
 ) => {
   const { data, isError, isLoading } = useGetQuery({
     endpoint: props.endpoint,
-    queryKey: props.queryKey,
+    queryKeys: [props.queryKey],
     page: 1,
     sort: "LATEST",
   });

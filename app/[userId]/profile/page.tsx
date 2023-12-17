@@ -9,7 +9,7 @@ const Page = () => {
   const { userId } = useParams();
   const { data, isError, isLoading } = useGetQuery({
     endpoint: `${userId}/store`,
-    queryKey: "store",
+    queryKeys: ["store"],
     page: 1,
     sort: "LATEST",
   });

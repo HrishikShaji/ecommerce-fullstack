@@ -5,7 +5,7 @@ export type GetQueryProps = {
   page: number;
   sort: SortType;
   endpoint: string;
-  queryKey: QueryKey;
+  queryKeys: string[];
 };
 export const useGetQuery = (props: GetQueryProps) => {
   const {
@@ -16,7 +16,7 @@ export const useGetQuery = (props: GetQueryProps) => {
     error,
     isSuccess,
   } = useQuery({
-    queryKey: [props.queryKey],
+    queryKey: props.queryKeys,
     queryFn: async () => {
       const response = await fetch(
         `/api/${props.endpoint}?page=${props.page}&sort=${props.sort}`,
