@@ -76,7 +76,7 @@ export const ImageUpdate: React.FC<ImageUpdateProps> = (props) => {
               />
             ))}
       </div>
-      {files.length > 1 ? (
+      {files.length >= 1 ? (
         <button
           type="button"
           className="absolute bg-blue-500 p-2 rounded-md bottom-0 z-10"

@@ -29,7 +29,8 @@ export const useImageUpload = (props: UseImageUploadProps) => {
       });
       props.onChange(images);
     },
-    onUploadError: () => {
+    onUploadError: (error: Error) => {
+      console.log(error);
       alert("error occurred while uploading");
     },
     onUploadBegin: () => {

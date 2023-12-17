@@ -118,7 +118,7 @@ model BillBoard {
 
 }
 
-model Size {
+model Brand {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name String
@@ -127,7 +127,7 @@ model Size {
   updatedAt DateTime @updatedAt
 
   }
-model Brand {
+model Size {
 
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   name String

@@ -67,7 +67,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
-      <div className="grid grid-cols-3 gap-4 justify-start items-end">
+      <div className="grid grid-cols-4 gap-4 justify-start items-end">
         <div className="flex flex-col gap-2">
           <InputField
             validator={""}
