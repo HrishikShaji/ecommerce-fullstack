@@ -10,6 +10,7 @@ import { CategoryPayload } from "@/app/lib/validators/category";
 import { ColorPayload } from "@/app/lib/validators/color";
 import { OrderPayload } from "@/app/lib/validators/order";
 import { SizePayload } from "@/app/lib/validators/size";
+import { VariantPayload } from "@/app/lib/validators/variant";
 import {
   BillBoard,
   Category,
@@ -95,7 +96,8 @@ export type ValidateTypePayload =
   | CategoryPayload
   | SizePayload
   | ColorPayload
-  | BrandPayload;
+  | BrandPayload
+  | VariantPayload;
 
 export type Validator<T> = (inputs: T) => T;
 

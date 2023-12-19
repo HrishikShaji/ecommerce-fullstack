@@ -59,7 +59,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
     <div className="flex flex-col gap-2">
       <h1>{props.label}</h1>
       <div className="bg-neutral-800 rounded-md w-[150px] relative z-1 text-white">
-        <div className="flex justify-between p-2 ">
+        <div className="flex justify-between p-1 text-sm">
           <h1>{selectedValue ? selectedValue : "Select"}</h1>
           <div
             ref={buttonRef}

@@ -10,8 +10,8 @@ interface useFormProps<T> {
   initialValues: Record<string, any>;
   initialErrors: Record<string, any>;
   validator: ValidationSchema<T>;
-  options: AddQueryProps | UpdateQueryProps;
-  action: "Add" | "Update";
+  options?: AddQueryProps | UpdateQueryProps;
+  action?: "Add" | "Update";
 }
 
 export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(

@@ -22,7 +22,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
       {props.label && <label>{props.label}</label>}
       {props.type === "textarea" ? (
         <textarea
-          className="p-2 rounded-md"
+          className="p-1 rounded-md"
           value={props.value}
           onChange={handleChange}
           placeholder={props.placeholder}
@@ -31,7 +31,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
         <input
           value={props.value}
           type={props.type}
-          className="p-2 rounded-md text-black"
+          className="p-1 rounded-md text-black"
           placeholder={props.placeholder}
           onChange={handleChange}
         />
