@@ -40,8 +40,6 @@ export const useCustomForm = <
     }));
   };
 
-  console.log(values);
-
   return {
     values,
     handleImages,

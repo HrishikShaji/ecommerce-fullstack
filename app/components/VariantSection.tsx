@@ -37,12 +37,12 @@ export const VariantSection: React.FC<VariantSectionProps> = ({
   });
 
   const handleClick = () => {
-    setVariants([values]);
+    setVariants((prev) => [...prev, values]);
   };
 
   return (
-    <div className="w-full gap-4 grid grid-cols-7">
-      <div className="flex flex-col gap-2">
+    <div className="w-full gap-4 grid grid-cols-7 items-end">
+      <div className="flex flex-col gap-2 ">
         <Dropdown
           endpoint="size"
           queryKey="sizes"
@@ -100,6 +100,7 @@ export const VariantSection: React.FC<VariantSectionProps> = ({
         />
       </div>
       <button
+        type="button"
         onClick={handleClick}
         className="p-2 rounded-md bg-white text-black"
       >

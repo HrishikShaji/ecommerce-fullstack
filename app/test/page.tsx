@@ -5,7 +5,7 @@ import { Slider } from "../components/ui/Slider";
 
 const Page = () => {
   return (
-    <div className="text-white h-screen w-full flex justify-center items-center flex-col gap-10 ">
+    <div className="text-white h-screen w-full flex  items-center flex-col gap-10 ">
       <ProductForm />
     </div>
   );

@@ -39,6 +39,7 @@ const initialErrors = {
 };
 const ProductForm = () => {
   const { userId, storeId } = useParams();
+  const [noOfVariants, setNoOfVariants] = useState(1);
   const [variants, setVariants] = useState<any[]>([]);
   const {
     values,
@@ -122,12 +123,19 @@ const ProductForm = () => {
             <ErrorMessageForm value={errors.categoryId} />
           </div>
         </div>
+        <button
+          type="button"
+          className="p-2 rounded-md bg-neutral-600"
+          onClick={() => setNoOfVariants((prev) => prev + 1)}
+        >
+          New
+        </button>
+        {Array.from({ length: noOfVariants }).map((_, i) => (
+          <VariantSection key={i} setVariants={setVariants} />
+        ))}
         {isError && <h1 className="text-red-500">{error?.message}</h1>}
         <Button label="Add" isPending={isPending} />
       </form>
-      <div>
-        <VariantSection setVariants={setVariants} />
-      </div>
     </>
   );
 };
