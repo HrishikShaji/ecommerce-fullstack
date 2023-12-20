@@ -78,7 +78,7 @@ const ImageUploader = (props: ImageUploaderProps) => {
             </button>
           )}
           <div>
-            {files.length > 0 && (
+            {files.length > 0 && uploadedFiles.length === 0 && (
               <button
                 type="button"
                 onClick={(e) => {

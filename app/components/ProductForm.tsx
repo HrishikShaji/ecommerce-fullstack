@@ -9,21 +9,8 @@ import ImageUploader from "./ui/ImageUploader";
 import InputField from "./ui/InputField";
 import { useForm } from "./ui/hooks/useForm";
 import { VariantSection } from "./VariantSection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const initialValues: ProductPayload = {
-  name: "",
-  billboardId: "",
-  categoryId: "",
-  sizeId: "",
-  colorId: "",
-  images: [],
-  price: 0,
-  stock: 0,
-  brandId: "",
-  discount: 0,
-  slug: "",
-};
 const initialErrors = {
   name: "",
   billboardId: "",
@@ -36,11 +23,21 @@ const initialErrors = {
   brandId: "",
   discount: "",
   slug: "",
+  variants: "",
 };
 const ProductForm = () => {
   const { userId, storeId } = useParams();
   const [noOfVariants, setNoOfVariants] = useState(1);
   const [variants, setVariants] = useState<any[]>([]);
+  const initialValues: ProductPayload = {
+    name: "",
+    billboardId: "",
+    categoryId: "",
+    brandId: "",
+    discount: 0,
+    slug: "",
+    variants: [],
+  };
   const {
     values,
     handleClick,
@@ -50,6 +47,7 @@ const ProductForm = () => {
     handleDropdown,
     handleChange,
     handleImages,
+    handleVariants,
     errors,
   } = useForm({
     initialErrors: initialErrors,
@@ -62,7 +60,11 @@ const ProductForm = () => {
     action: "Add",
   });
 
-  console.log("variants are", variants);
+  useEffect(() => {
+    console.log("ran");
+    handleVariants("variants", variants);
+  }, [variants]);
+
   return (
     <>
       <form onSubmit={handleClick} className="">

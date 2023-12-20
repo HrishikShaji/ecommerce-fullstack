@@ -19,24 +19,13 @@ export async function POST(request: Request, { params }: Params) {
     const body = await request.json();
 
     const validatedPayload = productPayload.safeParse(body);
-
+    console.log(body);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const {
-      stock,
-      images,
-      price,
-      name,
-      categoryId,
-      billboardId,
-      sizeId,
-      colorId,
-      brandId,
-      discount,
-      slug,
-    } = validatedPayload.data;
+    const { name, categoryId, billboardId, brandId, slug } =
+      validatedPayload.data;
 
     await prisma.product.create({
       data: {
@@ -44,13 +33,7 @@ export async function POST(request: Request, { params }: Params) {
         categoryId: categoryId,
         storeId: params.storeId,
         billoardId: billboardId,
-        sizeId: sizeId,
-        colorId: colorId,
-        price: price,
-        images: images,
-        stock: stock,
         brandId: brandId,
-        discount: discount,
         slug: slug,
       },
     });
@@ -73,20 +56,8 @@ export async function PATCH(request: Request) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const {
-      price,
-      images,
-      name,
-      categoryId,
-      billboardId,
-      sizeId,
-      colorId,
-      id,
-      stock,
-      brandId,
-      discount,
-      slug,
-    } = validatedPayload.data;
+    const { name, categoryId, billboardId, id, brandId, slug } =
+      validatedPayload.data;
     await prisma.product.update({
       where: {
         id: id,
@@ -95,13 +66,7 @@ export async function PATCH(request: Request) {
         name: name,
         categoryId: categoryId,
         billoardId: billboardId,
-        colorId: colorId,
-        sizeId: sizeId,
-        images: images,
-        price: price,
-        stock: stock,
         brandId: brandId,
-        discount: discount,
         slug: slug,
       },
     });
@@ -123,8 +88,6 @@ export async function GET(request: Request) {
       include: {
         store: true,
         category: true,
-        size: true,
-        color: true,
         billboard: true,
       },
       take: itemsPerPage,

@@ -49,6 +49,15 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
     }));
   };
 
+  const handleVariants = (key: string, values: any[]) => {
+    setValues((prev) => ({
+      ...prev,
+      [key]: values,
+    }));
+  };
+
+  console.log(values);
+
   const {
     add,
     isPending: isAddPending,
@@ -105,5 +114,6 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
     isError,
     error,
     errors,
+    handleVariants,
   };
 };
