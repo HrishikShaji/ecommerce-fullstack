@@ -14,20 +14,21 @@ type Params = {
 
 export async function POST(request: Request, { params }: Params) {
   try {
+    console.log("in the backend");
     await authUser({ checkRole: "SELLER" });
 
     const body = await request.json();
 
     const validatedPayload = productPayload.safeParse(body);
-    console.log(body);
     if (!validatedPayload.success) {
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
-    const { name, categoryId, billboardId, brandId, slug } =
+    const { name, categoryId, billboardId, brandId, slug, variants } =
       validatedPayload.data;
 
-    await prisma.product.create({
+    console.log(body);
+    const response = await prisma.product.create({
       data: {
         name: name,
         categoryId: categoryId,
@@ -35,11 +36,17 @@ export async function POST(request: Request, { params }: Params) {
         billoardId: billboardId,
         brandId: brandId,
         slug: slug,
+        variants: {
+          create: body.variants,
+        },
       },
     });
 
+    console.log(response);
+
     return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error: any) {
+    console.log(error);
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }

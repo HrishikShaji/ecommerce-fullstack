@@ -10,8 +10,8 @@ interface useFormProps<T> {
   initialValues: Record<string, any>;
   initialErrors: Record<string, any>;
   validator: ValidationSchema<T>;
-  options?: AddQueryProps | UpdateQueryProps;
-  action?: "Add" | "Update";
+  options: AddQueryProps | UpdateQueryProps;
+  action: "Add" | "Update";
 }
 
 export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
@@ -27,7 +27,6 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   };
 
   const handleDropdown = (key: string, value: string) => {
-    console.log(key, value);
     setValues((prev) => ({
       ...prev,
       [key]: value,
@@ -42,7 +41,6 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   };
 
   const handleImages = (key: string, values: string[]) => {
-    console.log(key, values);
     setValues((prev) => ({
       ...prev,
       [key]: values,
@@ -55,8 +53,6 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
       [key]: values,
     }));
   };
-
-  console.log(values);
 
   const {
     add,
@@ -81,6 +77,9 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
     const validatedData = props.validator.safeParse(values);
+    {
+      /*  
+
     if (!validatedData.success) {
       const newErrors: Record<string, any> = {};
       validatedData.error.errors.map(
@@ -89,8 +88,12 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
       );
       return;
     }
+		*/
+    }
     setErrors(props.initialErrors);
+    console.log("oooohere");
     if (props.action === "Add") {
+      console.log("add clicked", values);
       add(values as PayloadType);
     }
 

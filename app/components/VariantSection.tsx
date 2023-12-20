@@ -83,7 +83,7 @@ export const VariantSection: React.FC<VariantSectionProps> = ({
         <InputField
           validator={""}
           value={values.price}
-          onChange={(value) => handleChange("price", value)}
+          onChange={(value) => handleChange("price", parseInt(value))}
           placeholder="price"
           type="number"
           label="Price"
@@ -93,7 +93,7 @@ export const VariantSection: React.FC<VariantSectionProps> = ({
         <InputField
           validator={""}
           value={values.discount}
-          onChange={(value) => handleChange("discount", value)}
+          onChange={(value) => handleChange("discount", parseInt(value))}
           placeholder="discount"
           type="number"
           label="Discount"
@@ -103,7 +103,7 @@ export const VariantSection: React.FC<VariantSectionProps> = ({
         <InputField
           validator={""}
           value={values.stock}
-          onChange={(value) => handleChange("stock", value)}
+          onChange={(value) => handleChange("stock", parseInt(value))}
           placeholder="stock"
           type="number"
           label="Stock"

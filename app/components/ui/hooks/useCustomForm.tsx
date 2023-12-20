@@ -12,7 +12,7 @@ export const useCustomForm = <
   props: useCustomFormProps<T>,
 ) => {
   const [values, setValues] = useState(props.initialValues);
-  const handleChange = (key: string, value: string) => {
+  const handleChange = (key: string, value: number) => {
     setValues((prev) => ({
       ...prev,
       [key]: value,

@@ -19,9 +19,6 @@ export const productPayload = z.object({
     .string()
     .min(1, { message: "must be more than 1 characters" })
     .max(30, { message: "must be less than 30 charaters" }),
-  discount: z.coerce
-    .number({ required_error: "discount is required" })
-    .min(1, { message: "discount is required" }),
   variants: z.array(z.object({})),
 });
 
@@ -47,9 +44,6 @@ export const updateProductPayload = z.object({
     .string()
     .min(1, { message: "must be more than 1 characters" })
     .max(30, { message: "must be less than 30 charaters" }),
-  discount: z.coerce
-    .number({ required_error: "discount is required" })
-    .min(1, { message: "discount is required" }),
   variants: z.array(z.object({})),
 });
 

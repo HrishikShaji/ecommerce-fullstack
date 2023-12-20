@@ -27,6 +27,7 @@ const initialErrors = {
 };
 const ProductForm = () => {
   const { userId, storeId } = useParams();
+  console.log(userId, storeId);
   const [noOfVariants, setNoOfVariants] = useState(1);
   const [variants, setVariants] = useState<any[]>([]);
   const initialValues: ProductPayload = {
@@ -34,7 +35,6 @@ const ProductForm = () => {
     billboardId: "",
     categoryId: "",
     brandId: "",
-    discount: 0,
     slug: "",
     variants: [],
   };
