@@ -9,7 +9,6 @@ interface UseImageUploadProps {
 }
 
 export const useImageUpload = (props: UseImageUploadProps) => {
-  const [files, setFiles] = useState<File[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<
     UploadFileResponse<ImagesData>[]
   >([]);
@@ -23,7 +22,6 @@ export const useImageUpload = (props: UseImageUploadProps) => {
   const { startUpload, isUploading } = useUploadThing("imageUploader", {
     onClientUploadComplete: (file) => {
       setUploadedFiles(file);
-      setFiles([]);
       const images = file.map((image) => {
         return image.serverData.fileUrl;
       });
@@ -39,11 +37,9 @@ export const useImageUpload = (props: UseImageUploadProps) => {
   });
 
   return {
-    setFiles,
     setUploadedFiles,
     startUpload,
     isUploading,
-    files,
     uploadedFiles,
   };
 };

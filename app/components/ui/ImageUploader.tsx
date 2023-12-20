@@ -10,20 +10,16 @@ interface ImageUploaderProps {
   value: string[];
   label: string;
   onChange: (values: string[]) => void;
+  index: number;
 }
 
 const ImageUploader = (props: ImageUploaderProps) => {
   const [isImage, setIsImage] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
   const inputRef = useRef<null | HTMLInputElement>(null);
   console.log("its here");
-  const {
-    setFiles,
-    setUploadedFiles,
-    isUploading,
-    uploadedFiles,
-    startUpload,
-    files,
-  } = useImageUpload({ value: props.value, onChange: props.onChange });
+  const { setUploadedFiles, isUploading, uploadedFiles, startUpload } =
+    useImageUpload({ value: props.value, onChange: props.onChange });
 
   const handleDelete = async (id: string) => {
     try {
@@ -40,6 +36,9 @@ const ImageUploader = (props: ImageUploaderProps) => {
     }
   };
 
+  const previewImage = (image: File) => {
+    return URL.createObjectURL(image);
+  };
   const handleSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const images = Array.from(e.target.files || []);
     console.log(images);
@@ -51,31 +50,31 @@ const ImageUploader = (props: ImageUploaderProps) => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 justify-end">
       <h1>{props.label}</h1>
-      <div className="  flex flex-col gap-2 items-center relative">
-        <div className="flex gap-2 ">
+      <div className="  flex flex-col gap-2 justify-end relative">
+        <div className="flex gap-2 items-end">
           <input
             multiple
             onChange={(e) => handleSelect(e)}
             type="file"
             ref={inputRef}
-            id="custom-input"
+            id={`custom-input-${props.index}`}
             hidden
           />
           <label
-            htmlFor="custom-input"
-            className=" p-2 cursor-pointer rounded-md bg-neutral-500"
+            htmlFor={`custom-input-${props.index}`}
+            className=" cursor-pointer p-1 rounded-md bg-gray-500"
           >
             <MdImage size={24} />
           </label>
-          {uploadedFiles.length > 0 && (
+          {files.length > 0 && (
             <button
               type="button"
-              className="p-2 rounded-md bg-blue-500"
+              className="p-1 rounded-md bg-blue-500"
               onClick={(e) => onToggle(e)}
             >
-              Images
+              {`Images(${files.length})`}
             </button>
           )}
           <div>
@@ -86,32 +85,31 @@ const ImageUploader = (props: ImageUploaderProps) => {
                   e.stopPropagation();
                   startUpload(files as File[]);
                 }}
-                className="p-2 bg-neutral-400 rounded-md"
+                className="p-1 bg-neutral-400 rounded-md"
               >
-                {isUploading ? <Spinner /> : `Upload ${files.length} files`}
+                {isUploading ? <Spinner /> : "Upload"}
               </button>
             )}
           </div>
         </div>
-        {isImage && uploadedFiles.length > 0 && (
+        {isImage && files.length > 0 && (
           <div className=" items-center   gap-2 inline-flex  min-h-[100px] origin-center  absolute  top-12 z-10 bg-neutral-700 rounded-md  p-5">
-            {uploadedFiles.length === 0 ? (
+            {files.length === 0 ? (
               <div className="">No Images Selected</div>
             ) : (
-              uploadedFiles?.map((img) => (
-                <div key={img.serverData.fileUrl} className="relative ">
+              files?.map((file, i) => (
+                <div key={i} className="relative ">
                   <button
                     type="button"
                     className="absolute cursor-pointer top-1 right-1 z-20"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDelete(img.key);
                     }}
                   >
                     <MdDelete color="white" />
                   </button>
                   <Image
-                    src={img.serverData.fileUrl}
+                    src={previewImage(file)}
                     height={1000}
                     width={1000}
                     className="h-[100px] min-w-[100px] object-cover  rounded-md flex-grow"

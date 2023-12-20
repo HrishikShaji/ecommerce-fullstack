@@ -22,7 +22,6 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
       setSelectedValue("");
     }
   }, [props.value]);
-
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
       if (

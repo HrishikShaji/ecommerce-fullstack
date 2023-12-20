@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useState,
+} from "react";
 import Dropdown from "./ui/Dropdown";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 import ImageUploader from "./ui/ImageUploader";
@@ -6,6 +12,7 @@ import InputField from "./ui/InputField";
 import { useForm } from "./ui/hooks/useForm";
 import { VariantPayload, variantPayload } from "../lib/validators/variant";
 import { useCustomForm } from "./ui/hooks/useCustomForm";
+import { MdImage } from "react-icons/md";
 
 const initialValues: VariantPayload = {
   sizeId: "",
@@ -27,10 +34,12 @@ const initialErrors = {
 
 interface VariantSectionProps {
   setVariants: Dispatch<SetStateAction<any[]>>;
+  index: number;
 }
 
 export const VariantSection: React.FC<VariantSectionProps> = ({
   setVariants,
+  index,
 }) => {
   const { values, handleDropdown, handleImages, handleChange } = useCustomForm({
     initialValues: initialValues,
@@ -64,9 +73,10 @@ export const VariantSection: React.FC<VariantSectionProps> = ({
       </div>
       <div className="flex flex-col gap-2">
         <ImageUploader
-          value={values.images}
-          label="Image"
           onChange={(values) => handleImages("images", values)}
+          value={values.images}
+          label="image"
+          index={index}
         />
       </div>
       <div className="flex flex-col gap-2">

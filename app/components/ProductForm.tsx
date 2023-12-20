@@ -131,7 +131,7 @@ const ProductForm = () => {
           New
         </button>
         {Array.from({ length: noOfVariants }).map((_, i) => (
-          <VariantSection key={i} setVariants={setVariants} />
+          <VariantSection key={i} setVariants={setVariants} index={i} />
         ))}
         {isError && <h1 className="text-red-500">{error?.message}</h1>}
         <Button label="Add" isPending={isPending} />
