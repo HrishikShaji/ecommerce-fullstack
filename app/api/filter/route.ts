@@ -30,9 +30,18 @@ export async function GET(request: Request) {
       include: {
         store: true,
         category: true,
-        size: true,
-        color: true,
         billboard: true,
+        variants: {
+          include: {
+            color: true,
+            size: true,
+          },
+          where: {
+            colorId: getFilterObj(colorId),
+            sizeId: getFilterObj(sizeId),
+            price: getFilterRange({ min: minPrice, max: maxPrice }),
+          },
+        },
       },
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),
@@ -40,11 +49,8 @@ export async function GET(request: Request) {
         createdAt: getFilterSortOrder(sort),
       },
       where: {
-        colorId: getFilterObj(colorId),
-        sizeId: getFilterObj(sizeId),
-        billoardId: getFilterObj(billboardId),
+        billboardId: getFilterObj(billboardId),
         categoryId: getFilterObj(categoryId),
-        price: getFilterRange({ min: minPrice, max: maxPrice }),
         brandId: getFilterObj(brandId),
         ...(discount && { discount: discount }),
       },

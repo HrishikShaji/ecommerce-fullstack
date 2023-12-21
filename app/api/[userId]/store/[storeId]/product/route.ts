@@ -33,7 +33,7 @@ export async function POST(request: Request, { params }: Params) {
         name: name,
         categoryId: categoryId,
         storeId: params.storeId,
-        billoardId: billboardId,
+        billboardId: billboardId,
         brandId: brandId,
         slug: slug,
         variants: {
@@ -75,7 +75,7 @@ export async function PATCH(request: Request) {
       data: {
         name: name,
         categoryId: categoryId,
-        billoardId: billboardId,
+        billboardId: billboardId,
         brandId: brandId,
         slug: slug,
       },
@@ -92,13 +92,13 @@ export async function GET(request: Request) {
   const order = getSortOrder(request);
   try {
     await authUser({});
-
     const count = await prisma.product.count();
     const data = await prisma.product.findMany({
       include: {
         store: true,
         category: true,
         billboard: true,
+        brand: true,
         variants: {
           include: {
             size: true,
@@ -113,11 +113,13 @@ export async function GET(request: Request) {
       },
     });
 
+    console.log("in the update form", data);
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }
     return new Response(JSON.stringify({ count, data }), { status: 200 });
   } catch (error: any) {
+    console.log("error is from here", error);
     return new Response(JSON.stringify(error.message), { status: 500 });
   }
 }

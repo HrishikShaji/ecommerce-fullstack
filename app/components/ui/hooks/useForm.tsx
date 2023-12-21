@@ -25,7 +25,7 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
       [key]: value,
     }));
   };
-
+  console.log(values);
   const handleDropdown = (key: string, value: string) => {
     setValues((prev) => ({
       ...prev,

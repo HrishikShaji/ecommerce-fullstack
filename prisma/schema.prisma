@@ -72,8 +72,8 @@ model Product {
   store         Store     @relation(fields: [storeId], references: [id], onDelete: Cascade)
   categoryId String @db.ObjectId
   category         Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  billoardId String @db.ObjectId
-  billboard         BillBoard     @relation(fields: [billoardId], references: [id], onDelete: Cascade)
+  billboardId String @db.ObjectId
+  billboard         BillBoard     @relation(fields: [billboardId], references: [id], onDelete: Cascade)
   brandId String  @db.ObjectId
   brand         Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
   cartItems CartItem[]

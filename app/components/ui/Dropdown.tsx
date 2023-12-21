@@ -47,6 +47,11 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
       return response.json();
     },
   });
+
+  useEffect(() => {
+    setSelectedValue(props.value);
+  }, []);
+
   const handleChange = ({ label, value }: { label: string; value: string }) => {
     setSelectedValue(label);
     props.onChange(value);

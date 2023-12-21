@@ -44,10 +44,20 @@ const ProductSection = () => {
     ?.map((product: any) => {
       return product.variants.map((variant: any) => {
         return {
+          id: product.id,
           name: product.name,
+          billboardId: product.billboardId,
+          categoryId: product.categoryId,
+          brandId: product.brandId,
+          billboard: product.billboard.name,
+          category: product.category.name,
+          brand: product.brand.name,
           color: variant.color.name,
           size: variant.size.name,
           price: variant.price,
+          slug: product.slug,
+          variantId: variant.id,
+          discount: variant.discount,
         };
       });
     })
@@ -71,11 +81,31 @@ const ProductSection = () => {
           <Spinner />
         ) : (
           <Table
-            lookup={["name", "size", "color", "price"]}
+            lookup={[
+              "name",
+              "size",
+              "color",
+              "price",
+              "brand",
+              "discount",
+              "slug",
+              "billboard",
+              "category",
+            ]}
             endpoint={`${userId}/store/${storeId}/product`}
             queryKey="products"
             data={newData}
-            headings={["Product", "Size", "Color", "Price"]}
+            headings={[
+              "Product",
+              "Size",
+              "Color",
+              "Price",
+              "Brand",
+              "Discount",
+              "Slug",
+              "Billboard",
+              "Category",
+            ]}
             mode="product"
           />
         )}

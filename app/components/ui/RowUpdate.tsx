@@ -13,6 +13,7 @@ interface RowUpdateProps {
 }
 
 export const RowUpdate: React.FC<RowUpdateProps> = (props) => {
+  console.log("in the row", props.endpoint);
   const dispatch = useDispatch<AppDispatch>();
   return (
     <button

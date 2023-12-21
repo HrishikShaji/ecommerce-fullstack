@@ -49,7 +49,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
     initialValues: {
       name: props.data.name,
       id: props.data.id,
-      billboardId: props.data.billoardId,
+      billboardId: props.data.billboardId,
       categoryId: props.data.categoryId,
       brandId: props.data.brandId,
       slug: props.data.slug,
@@ -60,6 +60,8 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       queryKey: "products",
     },
   });
+
+  console.log("ids are", userId, storeId);
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">

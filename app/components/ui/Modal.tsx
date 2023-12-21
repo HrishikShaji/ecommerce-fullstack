@@ -20,6 +20,7 @@ export const Modal = () => {
   const mode = useAppSelector((state) => state.modalReducer.value.mode);
   const dispatch = useDispatch<AppDispatch>();
   if (!isOpen) return null;
+  console.log("data in modal", data);
   return (
     <div className=" fixed flex justify-center  items-center text-white bg-neutral-900/90 h-screen w-full  z-20 ">
       <div className="relative p-10 rounded-md flex justify-center items-center bg-neutral-700">
