@@ -41,8 +41,8 @@ const ProductSection = () => {
   if (isError) return <div>Error</div>;
 
   const newData = data
-    ?.map((product) => {
-      return product.variants.map((variant) => {
+    ?.map((product: any) => {
+      return product.variants.map((variant: any) => {
         return {
           name: product.name,
           color: variant.color.name,

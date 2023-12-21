@@ -18,6 +18,7 @@ import {
   Product,
   Size,
   User,
+  Variant,
 } from "@prisma/client";
 import { Dispatch, SetStateAction } from "react";
 
@@ -41,6 +42,7 @@ export type ProductChild = Product & {
   color: Color;
   billboard: BillBoard;
   user: User;
+  variants: Variant[];
 };
 
 export type SortType = "LATEST" | "OLDEST";

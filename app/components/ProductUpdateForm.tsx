@@ -51,13 +51,9 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
       id: props.data.id,
       billboardId: props.data.billoardId,
       categoryId: props.data.categoryId,
-      sizeId: props.data.sizeId,
-      colorId: props.data.colorId,
-      price: props.data.price,
-      stock: props.data.stock,
       brandId: props.data.brandId,
-      discount: props.data.discount,
       slug: props.data.slug,
+      variants: props.data.variants,
     } as UpdateProductPayload,
     options: {
       endpoint: `${userId}/store/${storeId}/product`,
@@ -67,7 +63,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
-      <div className="grid grid-cols-4 gap-4 justify-start items-end">
+      <div className="grid grid-cols-6 gap-4 justify-start items-end">
         <div className="flex flex-col gap-2">
           <InputField
             validator={""}
@@ -90,40 +86,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
           />
           <ErrorMessageForm value={errors.slug} />
         </div>
-        <div className="flex flex-col gap-2">
-          <InputField
-            validator={""}
-            value={values.price}
-            onChange={(value) => handleChange("price", value)}
-            placeholder="price"
-            type="number"
-            label="Price"
-          />
-          <ErrorMessageForm value={errors.price} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <InputField
-            validator={""}
-            value={values.discount}
-            onChange={(value) => handleChange("discount", value)}
-            placeholder="discount"
-            type="number"
-            label="Discount"
-          />
-          <ErrorMessageForm value={errors.discount} />
-        </div>
 
-        <div className="flex flex-col gap-2">
-          <InputField
-            validator={""}
-            value={values.stock}
-            onChange={(value) => handleChange("stock", value)}
-            placeholder="stock"
-            type="number"
-            label="Stock"
-          />
-          <ErrorMessageForm value={errors.stock} />
-        </div>
         <div className="flex flex-col gap-2">
           <Dropdown
             endpoint="brand"
@@ -156,35 +119,6 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             label="Category"
           />
           <ErrorMessageForm value={errors.categoryId} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Dropdown
-            endpoint="size"
-            queryKey="sizes"
-            placeholder="Select"
-            value={values.sizeId}
-            onChange={(value) => handleDropdown("sizeId", value)}
-            label="Size"
-          />
-          <ErrorMessageForm value={errors.sizeId} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <Dropdown
-            endpoint="color"
-            queryKey="colors"
-            placeholder="Select"
-            value={values.colorId}
-            onChange={(value) => handleDropdown("colorId", value)}
-            label="Color"
-          />
-          <ErrorMessageForm value={errors.colorId} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <ImageUpdate
-            value={props.data.images}
-            onChange={(values) => handleImages("images", values)}
-          />
-          <ErrorMessageForm value={errors.images} />
         </div>
       </div>
       {isError && <h1 className="text-red-500">{error?.message}</h1>}

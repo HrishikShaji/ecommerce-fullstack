@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { variantPayload } from "./variant";
 
 export const productPayload = z.object({
   name: z
@@ -19,7 +20,7 @@ export const productPayload = z.object({
     .string()
     .min(1, { message: "must be more than 1 characters" })
     .max(30, { message: "must be less than 30 charaters" }),
-  variants: z.array(z.object({})),
+  variants: z.array(variantPayload),
 });
 
 export type ProductPayload = z.infer<typeof productPayload>;
@@ -44,7 +45,7 @@ export const updateProductPayload = z.object({
     .string()
     .min(1, { message: "must be more than 1 characters" })
     .max(30, { message: "must be less than 30 charaters" }),
-  variants: z.array(z.object({})),
+  variants: z.array(variantPayload),
 });
 
 export type UpdateProductPayload = z.infer<typeof updateProductPayload>;

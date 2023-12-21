@@ -37,7 +37,7 @@ export async function POST(request: Request, { params }: Params) {
         brandId: brandId,
         slug: slug,
         variants: {
-          create: body.variants,
+          create: variants,
         },
       },
       include: {
