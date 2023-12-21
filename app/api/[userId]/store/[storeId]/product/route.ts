@@ -40,6 +40,9 @@ export async function POST(request: Request, { params }: Params) {
           create: body.variants,
         },
       },
+      include: {
+        variants: true,
+      },
     });
 
     console.log(response);
@@ -96,6 +99,12 @@ export async function GET(request: Request) {
         store: true,
         category: true,
         billboard: true,
+        variants: {
+          include: {
+            size: true,
+            color: true,
+          },
+        },
       },
       take: itemsPerPage,
       skip: itemsPerPage * (page - 1),

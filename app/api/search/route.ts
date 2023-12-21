@@ -29,8 +29,12 @@ export async function GET(request: Request) {
           category: true,
           billboard: true,
           store: true,
-          size: true,
-          color: true,
+          variants: {
+            include: {
+              size: true,
+              color: true,
+            },
+          },
         },
         orderBy: {
           createdAt: order,
