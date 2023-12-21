@@ -23,9 +23,13 @@ export async function GET(request: Request, { params }: Params) {
       include: {
         store: true,
         category: true,
-        size: true,
-        color: true,
         billboard: true,
+        variants: {
+          include: {
+            size: true,
+            color: true,
+          },
+        },
       },
     });
     const sameSlugProducts = await prisma.product.findMany({

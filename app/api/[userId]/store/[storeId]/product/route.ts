@@ -14,20 +14,18 @@ type Params = {
 
 export async function POST(request: Request, { params }: Params) {
   try {
-    console.log("in the backend");
     await authUser({ checkRole: "SELLER" });
 
     const body = await request.json();
-
     const validatedPayload = productPayload.safeParse(body);
     if (!validatedPayload.success) {
+      console.log(validatedPayload.error);
       return new Response(JSON.stringify("Invalid Input"), { status: 400 });
     }
 
     const { name, categoryId, billboardId, brandId, slug, variants } =
       validatedPayload.data;
 
-    console.log(body);
     const response = await prisma.product.create({
       data: {
         name: name,
@@ -44,8 +42,6 @@ export async function POST(request: Request, { params }: Params) {
         variants: true,
       },
     });
-
-    console.log(response);
 
     return new Response(JSON.stringify("success"), { status: 200 });
   } catch (error: any) {
@@ -113,7 +109,7 @@ export async function GET(request: Request) {
       },
     });
 
-    console.log("in the update form", data);
+    console.log("in the form", data, request.url);
     if (!data) {
       return new Response(JSON.stringify("No data"), { status: 400 });
     }

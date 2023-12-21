@@ -25,19 +25,17 @@ export const useDataTable = (props: useDataTableProps) => {
     isError: isDataError,
     count: dataCount,
     isLoading: isDataLoading,
-    refetch: refetchData,
   } = useGetQuery({
     endpoint: props.endpoint,
     page: page,
     sort: sort.value,
-    queryKeys: [props.queryKey],
+    queryKeys: [props.queryKey, searchString, sort, page],
   });
 
   const {
     results: searchData,
     isError: isSearchError,
     isLoading: isSearchLoading,
-    refetch: refetchResults,
     count: searchCount,
   } = useSearchQuery({
     searchString: searchString,
@@ -45,11 +43,6 @@ export const useDataTable = (props: useDataTableProps) => {
     page: page,
     sort: sort.value,
   });
-
-  useEffect(() => {
-    refetchData();
-    refetchResults();
-  }, [searchString, sort, page]);
 
   const data = searchString ? searchData : allData;
   const count = searchString ? searchCount : dataCount;

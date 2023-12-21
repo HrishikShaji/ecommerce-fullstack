@@ -36,9 +36,7 @@ export const Modal = () => {
         {mode === "category" && (
           <CategoryUpdateForm data={data as CategoryChild} />
         )}
-        {mode === "product" && (
-          <ProductUpdateForm data={data as ProductChild} />
-        )}
+        {mode === "product" && <ProductUpdateForm productId={data.id} />}
         {mode === "size" && <SizeUpdateForm data={data as Size} />}
         {mode === "color" && <ColorUpdateForm data={data as Color} />}
         {mode === "subCategory" && <SubCategoryForm parentId={data.id} />}

@@ -5,7 +5,7 @@ export type GetQueryProps = {
   page: number;
   sort: SortType;
   endpoint: string;
-  queryKeys: string[];
+  queryKeys: any[];
 };
 export const useGetQuery = (props: GetQueryProps) => {
   const {

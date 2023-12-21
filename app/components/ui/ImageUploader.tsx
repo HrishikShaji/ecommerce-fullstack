@@ -17,7 +17,6 @@ const ImageUploader = (props: ImageUploaderProps) => {
   const [isImage, setIsImage] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const inputRef = useRef<null | HTMLInputElement>(null);
-  console.log("its here");
   const { setUploadedFiles, isUploading, uploadedFiles, startUpload } =
     useImageUpload({ value: props.value, onChange: props.onChange });
 

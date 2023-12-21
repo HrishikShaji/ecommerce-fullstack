@@ -12,9 +12,11 @@ import { ProductChild } from "@/types/types";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 import { ImageUpdate } from "./ui/ImageUpdate";
 import { useParams } from "next/navigation";
+import { useGetQuery } from "../hooks/useGetQuery";
+import { Spinner } from "./ui/Spinner";
 
 interface ProductUpdateFormProps {
-  data: ProductChild;
+  productId: string;
 }
 
 const initialErrors = {
@@ -32,9 +34,17 @@ const initialErrors = {
 };
 export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
   const { userId, storeId } = useParams();
+
+  const { data, isLoading, isError } = useGetQuery({
+    endpoint: `products/${props.productId}`,
+    queryKeys: ["product"],
+    page: 1,
+    sort: "LATEST",
+  });
+
   const {
     values,
-    isError,
+    isError: isFormError,
     isPending,
     error,
     handleClick,
@@ -47,13 +57,13 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
     validator: updateProductPayload,
     action: "Update",
     initialValues: {
-      name: props.data.name,
-      id: props.data.id,
-      billboardId: props.data.billboardId,
-      categoryId: props.data.categoryId,
-      brandId: props.data.brandId,
-      slug: props.data.slug,
-      variants: props.data.variants,
+      name: data?.name,
+      id: data?.id,
+      billboardId: data?.billboardId,
+      categoryId: data?.categoryId,
+      brandId: data?.brandId,
+      slug: data?.slug,
+      variants: data?.variants,
     } as UpdateProductPayload,
     options: {
       endpoint: `${userId}/store/${storeId}/product`,
@@ -61,7 +71,9 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
     },
   });
 
-  console.log("ids are", userId, storeId);
+  if (isLoading) return <Spinner />;
+
+  console.log(data);
 
   return (
     <form onSubmit={handleClick} className=" flex items-start flex-col gap-4">
@@ -69,7 +81,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
         <div className="flex flex-col gap-2">
           <InputField
             validator={""}
-            value={values.name}
+            value={data?.name}
             onChange={(value) => handleChange("name", value)}
             placeholder="name"
             type="text"
@@ -80,7 +92,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
         <div className="flex flex-col gap-2">
           <InputField
             validator={""}
-            value={values.slug}
+            value={data?.slug}
             onChange={(value) => handleChange("slug", value)}
             placeholder="slug"
             type="text"
@@ -94,7 +106,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             endpoint="brand"
             queryKey="brands"
             placeholder="Select"
-            value={values.brandId}
+            item={{ label: data?.brand.name, id: data?.brandId }}
             onChange={(value) => handleDropdown("brandId", value)}
             label="Brand"
           />
@@ -105,7 +117,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             endpoint={`${userId}/store/${storeId}/billboard`}
             queryKey="billboards"
             placeholder="Select"
-            value={values.billboardId}
+            item={{ label: data?.billboard.name, id: data?.billboardId }}
             onChange={(value) => handleDropdown("billboardId", value)}
             label="Billboard"
           />
@@ -116,7 +128,7 @@ export const ProductUpdateForm: React.FC<ProductUpdateFormProps> = (props) => {
             endpoint="category"
             queryKey="categories"
             placeholder="Select"
-            value={values.categoryId}
+            item={{ label: data?.category.name, id: data?.categoryId }}
             onChange={(value) => handleDropdown("categoryId", value)}
             label="Category"
           />

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { BiDownArrow } from "react-icons/bi";
 
 interface DropdownProps {
-  value: string;
+  item: { id: string; label: string };
   placeholder: string;
   onChange: (value: string) => void;
   label: string;
@@ -13,15 +13,17 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = (props) => {
-  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedItem, setSelectedItem] = useState(props.item);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
+
+  console.log(selectedItem);
   useEffect(() => {
-    if (props.value === "") {
-      setSelectedValue("");
+    if (props.item?.id === "") {
+      setSelectedItem({ label: "", id: "" });
     }
-  }, [props.value]);
+  }, [props.item?.id]);
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
       if (
@@ -48,13 +50,9 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
     },
   });
 
-  useEffect(() => {
-    setSelectedValue(props.value);
-  }, []);
-
-  const handleChange = ({ label, value }: { label: string; value: string }) => {
-    setSelectedValue(label);
-    props.onChange(value);
+  const handleChange = ({ label, id }: { label: string; id: string }) => {
+    setSelectedItem({ id: id, label: label });
+    props.onChange(id);
     setIsOpen(false);
   };
 
@@ -64,7 +62,7 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
       <h1>{props.label}</h1>
       <div className="bg-neutral-800 rounded-md w-[150px] relative z-1 text-white">
         <div className="flex justify-between p-1 text-sm">
-          <h1>{selectedValue ? selectedValue : "Select"}</h1>
+          <h1>{selectedItem?.label ? selectedItem?.label : "Select"}</h1>
           <div
             ref={buttonRef}
             className="p-1 rounded-md bg-neutral-400 cursor-pointer"
@@ -104,7 +102,7 @@ interface DropItemProps {
   value: string;
   label: string;
   item: Record<string, any>;
-  handleChange: ({ label, value }: { label: string; value: string }) => void;
+  handleChange: ({ label, id }: { label: string; id: string }) => void;
 }
 
 const DropItem: React.FC<DropItemProps> = (props) => {
@@ -113,7 +111,7 @@ const DropItem: React.FC<DropItemProps> = (props) => {
     <>
       <div
         onClick={() =>
-          props.handleChange({ value: props.value, label: props.label })
+          props.handleChange({ id: props.value, label: props.label })
         }
         className=" p-1 border-b-2 border-neutral-800 hover:bg-neutral-900 flex cursor-pointer justify-between"
       >

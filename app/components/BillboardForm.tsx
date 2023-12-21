@@ -55,6 +55,7 @@ const BillboardForm = () => {
         />
         <ErrorMessageForm value={errors.name} />
         <ImageUploader
+          index={1}
           value={values.images}
           label="Image"
           onChange={(values) => handleImages("images", values)}

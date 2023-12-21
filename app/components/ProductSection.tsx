@@ -71,7 +71,7 @@ const ProductSection = () => {
       </div>
       <div className=" flex flex-col gap-6">
         <div className="flex justify-between w-full px-2">
-          <h1 className="text-2xl font-semibold">Billboards</h1>
+          <h1 className="text-2xl font-semibold">Products</h1>
           <div className="flex gap-3">
             <Search onChange={setSearchString} />
             <Sort setSort={setSort} sortItems={productSortValues} />

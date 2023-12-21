@@ -27,7 +27,6 @@ const initialErrors = {
 };
 const ProductForm = () => {
   const { userId, storeId } = useParams();
-  console.log(userId, storeId);
   const [noOfVariants, setNoOfVariants] = useState(1);
   const [variants, setVariants] = useState<any[]>([]);
   const initialValues: ProductPayload = {
@@ -61,7 +60,6 @@ const ProductForm = () => {
   });
 
   useEffect(() => {
-    console.log("ran");
     handleVariants("variants", variants);
   }, [variants]);
 
@@ -96,7 +94,7 @@ const ProductForm = () => {
               endpoint="brand"
               queryKey="brands"
               placeholder="Select"
-              value={values.brandId}
+              item={{ label: "", id: "" }}
               onChange={(value) => handleDropdown("brandId", value)}
               label="Brand"
             />
@@ -107,7 +105,7 @@ const ProductForm = () => {
               endpoint={`${userId}/store/${storeId}/billboard`}
               queryKey="billboards"
               placeholder="Select"
-              value={values.billboardId}
+              item={{ label: "", id: "" }}
               onChange={(value) => handleDropdown("billboardId", value)}
               label="Billboard"
             />
@@ -118,7 +116,7 @@ const ProductForm = () => {
               endpoint="category"
               queryKey="categories"
               placeholder="Select"
-              value={values.categoryId}
+              item={{ label: "", id: "" }}
               onChange={(value) => handleDropdown("categoryId", value)}
               label="Category"
             />
