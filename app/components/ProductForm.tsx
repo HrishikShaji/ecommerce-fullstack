@@ -3,13 +3,13 @@
 import { useParams } from "next/navigation";
 import { ProductPayload, productPayload } from "../lib/validators/Product";
 import Button from "./ui/Button";
-import Dropdown from "./ui/Dropdown";
+import Dropdown, { DropdownRef } from "./ui/Dropdown";
 import { ErrorMessageForm } from "./ui/ErrorMessageForm";
 import ImageUploader from "./ui/ImageUploader";
 import InputField from "./ui/InputField";
 import { useForm } from "./ui/hooks/useForm";
 import { VariantSection } from "./VariantSection";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const initialErrors = {
   name: "",
@@ -29,6 +29,9 @@ const ProductForm = () => {
   const { userId, storeId } = useParams();
   const [noOfVariants, setNoOfVariants] = useState(1);
   const [variants, setVariants] = useState<any[]>([]);
+  const brandDropdownRef = useRef<DropdownRef>(null);
+  const billboardDropdownRef = useRef<DropdownRef>(null);
+  const categoryDropdownRef = useRef<DropdownRef>(null);
   const initialValues: ProductPayload = {
     name: "",
     billboardId: "",
@@ -57,6 +60,11 @@ const ProductForm = () => {
       queryKey: "products",
     },
     action: "Add",
+    reset: [
+      brandDropdownRef.current?.reset,
+      categoryDropdownRef.current?.reset,
+      billboardDropdownRef.current?.reset,
+    ],
   });
 
   useEffect(() => {
@@ -97,6 +105,7 @@ const ProductForm = () => {
               item={{ label: "", id: "" }}
               onChange={(value) => handleDropdown("brandId", value)}
               label="Brand"
+              ref={brandDropdownRef}
             />
             <ErrorMessageForm value={errors.brandId} />
           </div>
@@ -108,6 +117,7 @@ const ProductForm = () => {
               item={{ label: "", id: "" }}
               onChange={(value) => handleDropdown("billboardId", value)}
               label="Billboard"
+              ref={billboardDropdownRef}
             />
             <ErrorMessageForm value={errors.billboardId} />
           </div>
@@ -119,6 +129,7 @@ const ProductForm = () => {
               item={{ label: "", id: "" }}
               onChange={(value) => handleDropdown("categoryId", value)}
               label="Category"
+              ref={categoryDropdownRef}
             />
             <ErrorMessageForm value={errors.categoryId} />
           </div>

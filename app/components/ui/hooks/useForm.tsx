@@ -12,6 +12,7 @@ interface useFormProps<T> {
   validator: ValidationSchema<T>;
   options: AddQueryProps | UpdateQueryProps;
   action: "Add" | "Update";
+  reset?: (() => void)[];
 }
 
 export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
@@ -76,8 +77,6 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
   const handleClick = (e: FormEvent) => {
     e.preventDefault();
     const validatedData = props.validator.safeParse(values);
-    {
-      /*  
 
     if (!validatedData.success) {
       const newErrors: Record<string, any> = {};
@@ -87,12 +86,18 @@ export const useForm = <T extends ValidateTypePayload | UpdateBillboardPayload>(
       );
       return;
     }
-		*/
-    }
     setErrors(props.initialErrors);
-    console.log("oooohere");
+    if (
+      validatedData.success &&
+      props.reset?.length &&
+      props.reset.length > 0
+    ) {
+      props.reset?.forEach((reset) => {
+        console.log(reset, "ran");
+        reset();
+      });
+    }
     if (props.action === "Add") {
-      console.log("add clicked", values);
       add(values as PayloadType);
     }
 

@@ -1,6 +1,12 @@
 import { EndpointType, QueryKey } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { BiDownArrow } from "react-icons/bi";
 
 interface DropdownProps {
@@ -12,18 +18,16 @@ interface DropdownProps {
   queryKey: QueryKey;
 }
 
-const Dropdown: React.FC<DropdownProps> = (props) => {
+export type DropdownRef = {
+  reset: () => void;
+};
+
+const Dropdown = forwardRef<DropdownRef, DropdownProps>((props, ref) => {
   const [selectedItem, setSelectedItem] = useState(props.item);
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLDivElement | null>(null);
 
-  console.log(selectedItem);
-  useEffect(() => {
-    if (props.item?.id === "") {
-      setSelectedItem({ label: "", id: "" });
-    }
-  }, [props.item?.id]);
   useEffect(() => {
     const handleClickOutside: EventListener = (e) => {
       if (
@@ -39,6 +43,19 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
       window.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      reset: () => {
+        console.log("reset ran");
+        setSelectedItem({ label: "", id: "" });
+      },
+    }),
+    [],
+  );
+  console.log(selectedItem);
+
   const { data, isError } = useQuery({
     queryKey: [`dropdown${props.queryKey}`],
     queryFn: async () => {
@@ -94,7 +111,9 @@ const Dropdown: React.FC<DropdownProps> = (props) => {
       </div>
     </div>
   );
-};
+});
+
+Dropdown.displayName = "Dropdown";
 
 export default Dropdown;
 
